@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Money</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        text-decoration: none;
+    }
+    body{
+        background-color: #f9f9f9;
+    }
+    .container{
+        height: 100vh;
+        display: flex;
+    }
+    .sidebar{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 75px;
+        height: 100vh;
+        padding: 20px 20px 20px 25px;
+        color: #030303;
+    }
+    .sidebar a{
+        color: #030303;
+    }
+    .sidebar:hover{
+        align-items: flex-start;
+        width: 300px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    }
+    .sidebar i{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #030303;
+        font-size: 22px;
+        cursor: pointer;
+        width: 35px;
+        height: 35px;
+        border: solid 2px #030303;
+        border-radius: 50%;
+    }
+    .sidebar .sidebar-list{
+        display: none;
+        position: relative;
+        margin-top: 25px;
+        line-height: 45px;
+        width: 100%;
+        border-bottom: solid 1px #d8d8d8;
+    }
+    .sidebar .sidebar-list .my-list i{
+        font-size: 15px;
+        margin-right: 10px;
+        border: none;
+        color: #030303;
+    }
+    .sidebar .sidebar-list .my-list{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 8px;
+    }
+    .sidebar-list .my-list:hover{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .sidebar .sidebar-account{
+        display: none;
+        position: relative;
+        margin-top: 25px;
+        line-height: 45px;
+        width: 100%;
+    }
+    .sidebar .sidebar-account .my-list i{
+        font-size: 15px;
+        margin-right: 10px;
+        border: none;
+        color: #030303;
+    }
+    .sidebar .sidebar-account .my-list{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 8px;
+    }
+    .sidebar-account .my-list:hover{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        padding: 0px 150px 20px 150px;
+    }
+    .content .header{
+        padding: 15px 25px 15px 25px;
+        max-width: 50%;
+        margin-top: 20px;
+        border-radius: 10rem;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        height: 50px;
+    }
+    .header .header-left{
+        display: flex;
+        color: #030303;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .content .header i{
+        margin-right: 10px;
+    }
+    .content .content-container{
+        display: flex;
+        width: 100%;
+        height: 100hv;
+        margin-top: 50px;
+    }
+    .content-container .card-container{
+        display: flex;
+        width: 75%;
+    }
+    .card-container .card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: calc(100% / 3);
+        background-color: #f9f9f9;
+        margin-right: 10px;
+        padding: 10px 20px 10px 20px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        height: 200px;
+        border-radius: 15px;
+    }
+    .card .header-card{
+        font-size: 18px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+    }
+    .card .balance,
+    .card .deposite,
+    .card .withdraw{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        width: 100%;
+    }
+    #balance{
+        width: 100%;
+        height: 35px;
+        padding: 5px 5px 5px;
+        color: #030303;
+        background-color: #d8d8d8;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+    }
+    .balance .rupiah,
+    .deposite .rupiah,
+    .withdraw .rupiah{
+        font-size: 25px;
+        font-weight: 700;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: #b9b9b9;
+    }
+    .balance .reset-btn{
+        padding: 5px 15px 5px 15px;
+        background-color: #030303;
+        border: solid 3px #030303;
+        border-radius: 8px;
+        color: #f9f9f9;
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: .05s;
+    }
+    .balance .reset-btn:hover{
+        color: #030303;
+        background-color: transparent;
+    }
+    .submit-deposite-btn,
+    .submit-withdraw-btn{
+        padding: 5px 10px 5px 10px;
+        background-color: #030303;
+        border: solid 3px #030303;
+        border-radius: 8px;
+        color: #f9f9f9;
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: .05s;
+    }
+    .submit-deposite-btn:hover,
+    .submit-withdraw-btn:hover{
+        color: #030303;
+        background-color: transparent;
+    }
+    .header-card i{
+        margin-right: 10px;
+    }
+    .input-money{
+        outline: none;
+        border: none;
+        background-color: #d8d8d8;
+        color: #030303;
+        height: 35px;
+        padding: 5px 5px 5px 5px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .content-container .history-container{
+        padding: 10px 5px 10px 15px;
+        border-radius: 15px;
+        width: 25%;
+        height: 450px;
+        margin-left: 15px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    }
+    .content-container #trash-can{
+        position: absolute;
+        right: 160px;
+        color: #030303;
+        bottom: 440px;
+        scale: 1;
+        cursor: pointer;
+    }
+    .content-container #trash-can:hover{
+        scale: 1.1;
+    }
+    .history-container .header-history{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: #b9b9b9;
+        margin-bottom: 15px;
+        padding: 0px 10px 5px 0px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .header-history i{
+        margin-right: 5px;
+    }
+    .history-log{
+        width: 100%;
+        height: 360px;
+        display: flex;
+        flex-direction: column;
+        justify-content: first baseline;
+        overflow-y: auto;
+
+    }
+    .history-log .log{
+        font-size: 12px;
+        font-weight: 600;
+        color: #030303;
+        width: 100%;
+        background-color: #b9b9b9;
+        padding: 5px 5px 5px 5px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+    }
+    .log .date-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .date-container .date-log{
+        font-size: 14px;
+    }
+    .date-container .time-log{
+        font-size: 12px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div onmouseover="main()" onmouseout="hide()" class="sidebar">
+            <i class="fa-solid fa-bars"></i>
+            <div id="barList" class="sidebar-list">
+                <a href="/dashboard"><div onmouseover="setColor7()" onmouseout="unsetColor7()" class="my-list">
+                    <i id="color7" class="fa-solid fa-table-columns"></i>
+                    <div>Dashboard</div>
+                </div></a>
+                <a href="/daily"><div onmouseover="setColor()" onmouseout="unsetColor()" class="my-list">
+                    <i id="color" class="fa-solid fa-calendar-day"></i>
+                    <div>My Daily</div>
+                </div></a>
+                <div onmouseover="setColor1()" onmouseout="unsetColor1()" class="my-list">
+                    <i id="color1" id="color" class="fa-solid fa-calendar-week"></i>
+                    <div>My Weekly</div>
+                </div>
+                <div onmouseover="setColor2()" onmouseout="unsetColor2()" class="my-list">
+                    <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
+                    <div>My Monthly</div>
+                </div>
+                <a href="/money"><div onmouseover="setColor3()" onmouseout="unsetColor3()" class="my-list">
+                    <i id="color3" id="color" class="fa-solid fa-wallet"></i>
+                    <div>My Money</div>
+                </div></a>
+                <div onmouseover="setColor4()" onmouseout="unsetColor4()" class="my-list">
+                    <i id="color4" id="color" class="fa-solid fa-gift"></i>
+                    <div>My Reward</div>
+                </div>
+            </div>
+            <div id="account-list" class="sidebar-account">
+                <a href="/setting"><div onmouseover="setColor5()" onmouseout="unsetColor5()" class="my-list">
+                    <i id="color5" id="color" class="fa-solid fa-gear"></i>
+                    <div>Setting</div>
+                </div></a>
+                <div onclick="confirmLogout()" onmouseover="setColor6()" onmouseout="unsetColor6()" class="my-list">
+                    <i id="color6" id="color" class="fa-solid fa-right-from-bracket"></i>
+                    <div>Logout</div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="header">
+                <div class="header-left">
+                    <i id="color" class="fa-solid fa-calendar-day"></i>
+                    <div>My Money</div>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="card-container">
+                    <div class="card">
+                        <div class="header-card">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                            <div>Balance</div>
+                        </div>
+                        <div class="balance">
+                            <div class="rupiah">Rp</div>
+                            <div id="balance"></div>
+                            <button id="reset-btn" class="reset-btn">Reset</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="header-card">
+                            <i class="fa-solid fa-money-bill-transfer"></i>
+                            <div>Deposite</div>
+                        </div>
+                        <div class="deposite">
+                            <div class="rupiah">Rp</div>
+                            <input id="deposite" class="input-money" type="number" min="1" step="any" />
+                            <button id="deposit-button" class="submit-deposite-btn">Submit</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="header-card">
+                            <i class="fa-solid fa-money-bill-transfer"></i>
+                            <div>Withdraw</div>
+                        </div>
+                        <div class="withdraw">
+                            <div class="rupiah">Rp</div>
+                            <input id="withdraw" class="input-money" type="number" min="1" step="any" />
+                            <button id="withdraw-button" class="submit-withdraw-btn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="history-container">
+                    <div id="trash-can">
+                        <i onclick="cardRemoveFunction()" class="fa-solid fa-trash-can"></i>
+                    </div>
+                    <div class="header-history">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <div class="header-history-text">Transaction History</div>
+                    </div>
+                    <div class="history-log">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function main(){
+            document.getElementById("barList").style.display = "block";
+            document.getElementById("account-list").style.display = "block";
+        }
+        function hide(){
+            document.getElementById("barList").style.display = "none";
+            document.getElementById("account-list").style.display = "none";
+        }
+    
+        function setColor(){
+            document.getElementById("color").style.color = "#cfcfcf";
+        }
+        function unsetColor(){
+            document.getElementById("color").style.color = "#030303";
+        }
+        function setColor1(){
+            document.getElementById("color1").style.color = "#cfcfcf";
+        }
+        function unsetColor1(){
+            document.getElementById("color1").style.color = "#030303";
+        }
+        function setColor2(){
+            document.getElementById("color2").style.color = "#cfcfcf";
+        }
+        function unsetColor2(){
+            document.getElementById("color2").style.color = "#030303";
+        }
+        function setColor3(){
+            document.getElementById("color3").style.color = "#cfcfcf";
+        }
+        function unsetColor3(){
+            document.getElementById("color3").style.color = "#030303";
+        }
+        function setColor4(){
+            document.getElementById("color4").style.color = "#cfcfcf";
+        }
+        function unsetColor4(){
+            document.getElementById("color4").style.color = "#030303";
+        }
+        function setColor5(){
+            document.getElementById("color5").style.color = "#cfcfcf";
+        }
+        function unsetColor5(){
+            document.getElementById("color5").style.color = "#030303";
+        }
+        function setColor6(){
+            document.getElementById("color6").style.color = "#cfcfcf";
+        }
+        function unsetColor6(){
+            document.getElementById("color6").style.color = "#030303";
+        }
+        function setColor7(){
+            document.getElementById("color7").style.color = "#cfcfcf";
+        }
+        function unsetColor7(){
+            document.getElementById("color7").style.color = "#030303";
+        }
+    
+        document.addEventListener('DOMContentLoaded', function (){
+            var depositeInput = document.getElementById('deposite');
+            var depositeButton = document.getElementById('deposit-button');
+            var withdrawInput = document.getElementById('withdraw');
+            var withdrawButton = document.getElementById('withdraw-button');
+            var balanceElement = document.getElementById('balance');
+            var resetButton = document.getElementById('reset-btn');
+            var historyLogElement = document.querySelector('.history-log');
+            var initialBalance = 0;
+            initializeBalance();
+            function updateBalance(amount) {
+                balance += amount;
+                balanceElement.textContent = balance;
+    
+                postToServer(balance);
+            }
+            depositeButton.addEventListener('click', function() {
+                var depositeAmount = parseFloat(depositeInput.value);
+                if (!isNaN(depositeAmount) && depositeAmount > 0) {
+                    var logElement = document.createElement('div');
+                    const d = new Date();
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const hours = String(d.getHours()).padStart(2, '0');
+                    const minutes = String(d.getMinutes()).padStart(2, '0');
+                    const formattedDate = year + '-' + month + '-' + day;
+                    const formattedTime = hours + ':' + minutes;
+                    const time = formattedDate + 'T' + formattedTime
+                    const type = 'Deposite';
+                    logElement.className = 'log';
+                    logElement.innerHTML = '<div class="date-container"><div class="date-log">' + formattedDate + '</div><div class="time-log">' + formattedTime + '</div></div><div id="text-log" class="text-log">' + type + ' Rp' + depositeAmount +'</div>';
+                    historyLogElement.appendChild(logElement);
+                    updateBalance(depositeAmount);
+                    const amount = depositeAmount;
+                    sendHistoryToServer(formattedDate, formattedTime, type, amount);
+                }
+                depositeInput.value = '';
+            });
+            withdrawButton.addEventListener('click', function() {
+                var withdrawAmount = parseFloat(withdrawInput.value);
+                if (!isNaN(withdrawAmount) && withdrawAmount > 0 && withdrawAmount <= balance) {
+                    var logElement = document.createElement('div');
+                    const d = new Date();
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const hours = String(d.getHours()).padStart(2, '0');
+                    const minutes = String(d.getMinutes()).padStart(2, '0');
+                    const formattedDate = year + '-' + month + '-' + day;
+                    const formattedTime = hours + ':' + minutes;
+                    const type = 'Withdraw';
+                    logElement.className = 'log';
+                    logElement.innerHTML = '<div class="date-container"><div class="date-log">' + formattedDate + '</div><div class="time-log">' + formattedTime + '</div></div><div id="text-log" class="text-log">' + type + ' Rp' + withdrawAmount +'</div>';
+                    historyLogElement.appendChild(logElement);
+                    updateBalance(-withdrawAmount)
+                    const amount = withdrawAmount;
+                    sendHistoryToServer(formattedDate, formattedTime, type, amount);
+                }
+                withdrawInput.value = '';
+            });
+            resetButton.addEventListener('click', function() {
+                balance = initialBalance;
+                balanceElement.textContent = balance;
+                postToServer(balance);
+                var logElement = document.createElement('div');
+                const d = new Date();
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const hours = String(d.getHours()).padStart(2, '0');
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                const formattedDate = year + '-' + month + '-' + day;
+                const formattedTime = hours + ':' + minutes;
+                const type = 'Reset';
+                logElement.className = 'log';
+                logElement.innerHTML = '<div class="date-container"><div class="date-log">' + formattedDate + '</div><div class="time-log">' + formattedTime + '</div></div><div id="text-log" class="text-log">' + type + '</div>';
+                historyLogElement.appendChild(logElement);
+                sendHistoryToServer(formattedDate, formattedTime, type);
+            });
+    
+            async function cardRemoveFunction() {
+                var logElements = document.querySelectorAll('.log');
+                var confirmation = window.confirm("Are you sure you want to delete all transaction logs?");
+    
+                if (confirmation) {
+                    logElements.forEach(function (logElement) {
+                        logElement.remove();
+                    });
+                    try {
+                        const response = await fetch('/history/delete', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        if (!response.ok) {
+                            throw new Error(`Error deleting transaction logs: ${response.statusText}`);
+                        }
+                        const data = await response.json();
+                        console.log(data.message);
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                }
+            }
+    
+            async function getBalance() {
+                try {
+                    const response = await fetch('/getBalance', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Gagal mendapatkan nilai balance');
+                    }
+    
+                    const data = await response.json();
+                    return data.value;
+                } catch (error) {
+                    console.error('Terjadi kesalahan saat mendapatkan balance:', error);
+                    throw error;
+                }
+            }
+    
+            async function postToServer(balance) {
+                try {
+                    const response = await fetch('/updateBalance', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            balance: balance,
+                        }),
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Gagal memperbarui nilai balance');
+                    }
+    
+                    console.log('Berhasil memperbarui balance di server');
+                } catch (error) {
+                    console.error('Terjadi kesalahan saat memperbarui balance di server:', error);
+                }
+            }
+    
+            async function initializeBalance() {
+                try {
+                    const serverBalance = await getBalance();
+                    var balanceElement = document.getElementById('balance');
+                    balance = serverBalance;
+                    balanceElement.textContent = balance;
+                } catch (error) {
+                    console.error('Terjadi kesalahan saat inisialisasi balance:', error);
+                }
+            }
+    
+            initializeBalance();
+    
+            async function sendHistoryToServer(formattedDate, formattedTime, type, amount) {
+                try {
+                    const response = await fetch('/history', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            formattedDate: formattedDate,
+                            formattedTime: formattedTime,
+                            type: type,
+                            amount: amount,
+                        }),
+                    });
+    
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        console.log('Server response:', data);
+                    } else {
+                        console.error('Unexpected response type:', contentType);
+                    }
+                } catch (error) {
+                    console.error('Error sending data to server:', error);
+    
+                    if (error instanceof TypeError || error.name === 'TypeError') {
+                        console.error('Network error. Unable to fetch data from the server.');
+                    } else if (error instanceof SyntaxError || error.name === 'SyntaxError') {
+                        console.error('Error parsing JSON from the server response.');
+                    } else {
+                        console.error('Other error:', error);
+                    }
+                }
+            }
+    
+            async function getHistory() {
+                try{
+                    const response = await fetch('/gethistory', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Error retrieving daily tasks: ${response.statusText}');
+                    }
+    
+                    const data = await response.json();
+                    return data.getHistory;
+                } catch (error) {
+                    console.error('Error:', error);
+                    return [];
+                }
+            }
+    
+            async function displayHistory() {
+                const history = await getHistory();
+    
+                const historyLogElement = document.querySelector('.history-log');
+                historyLogElement.innerHTML = '';
+    
+                const cards = history.map(historyItem => {
+                    const dateString = historyItem.formattedDate;
+                    const type = historyItem.type;
+                    const amount = historyItem.amount;
+                    const formattedDate = new Date(dateString).toISOString().split('T')[0];
+                    var logElement = document.createElement('div');
+                    logElement.className = 'log';
+                    if (historyItem.type === 'Reset') {
+                        logElement.innerHTML = `<div class="date-container"><div class="date-log">` + formattedDate + `</div><div class="time-log">${historyItem.formattedTime}</div></div><div id="text-log" class="text-log">Reset</div>`;
+                    } else {
+                        logElement.innerHTML = `<div class="date-container"><div class="date-log">` + formattedDate + `</div><div class="time-log">${historyItem.formattedTime}</div></div><div id="text-log" class="text-log">` + type + ' Rp' + amount + `</div>`;
+                    }
+                    return logElement;
+                });
+                cards.forEach(card => {
+                    historyLogElement.appendChild(card);
+                });
+            }
+    
+            displayHistory();
+            
+        });
+    
+        function confirmLogout() {
+            const logoutConfirmed = window.confirm("Are you sure you want to logout?");
+            if (logoutConfirmed) {
+                fetch("/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "/";
+                    } else {
+                        alert("Logout failed!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during logout:", error);
+                    alert("Logout failed");
+                });
+            } else {
+                window.location.href = "/money";
+            }
+        }
+    </script>
+</body>
+</html>

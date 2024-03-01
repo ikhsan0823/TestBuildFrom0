@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const { Users } = require('../models/users.js');
 const { Daily } = require('../models/dailies.js');
+const { Balance, History } = require('../models/money.js');
 
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
@@ -128,6 +129,111 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
     } catch (error) {
         console.error("Error deleting task:", error);
         res.status(500).json({ success: false, message: 'Internal Server Error'});
+    }
+});
+
+router.get("/money", (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        res.redirect("/");
+        return;
+    }
+    res.render('money');
+});
+
+router.get('/getBalance', async (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        res.redirect("/");
+        return;
+    }
+    try {
+        const balance = await Balance.findOne({ username: req.session.user });
+        if (balance) {
+            res.json({ value: balance.value });
+        } else {
+            res.status(404).json({ error: 'Balance data not found!' });
+        }
+    } catch (error) {
+        console.error('An error occurred while getting the balance:', error);
+        res.status(500).send('An error occurred while getting the balance,');
+    }
+})
+
+router.post('/updateBalance', async (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        res.redirect("/");
+        return;
+    }
+    const newValue = req.body.balance;
+    try {
+        await Balance.findOneAndUpdate({ username: req.session.user }, { value: newValue }, { upsert: true, new: true });
+        res.send('Successfully updated balance.');
+    } catch (error) {
+        res.status(500).send('An error occurred while updating the balance!');
+    }
+});
+
+router.post("/history", async (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        return res.redirect("/");
+    }
+    try {
+        const currentHistory = await History.find({ username: req.session.user });
+        if (currentHistory.length >= 10) {
+            const oldestHistory = currentHistory.shift();
+            await History.findByIdAndDelete(oldestHistory._id);
+        };
+        let newHistory = new History({
+            username: req.session.user,
+            formattedDate: req.body.formattedDate,
+            formattedTime: req.body.formattedTime,
+            type: req.body.type,
+            amount: req.body.amount
+        });
+
+        await newHistory.save();
+        res.status(200).json({ success: true, message: 'Daily task saved successfully' });
+    } catch (error) {
+        console.error("Error saving daily task:", error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    } 
+});
+
+router.delete("/history/delete", async (req, res) => {
+    const username = req.session.user;
+    try {
+        const deleteHistory = await History.deleteMany({ username: username });
+
+        if (deleteHistory.deletedCount === 0) {
+            res.status(404).json({ success: false, message: 'History not found' });
+            return;
+        }
+        res.status(200).json({ success: true, message: 'All tasks deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting history:", error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+});
+
+router.get("/gethistory", async (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        res.redirect("/");
+        return;
+    }
+
+    try {
+        const getHistory = await History.find({ username: req.session.user });
+        const formattedHistory = getHistory.map(history => ({
+            username: history.username,
+            formattedDate: history.formattedDate,
+            formattedTime: history.formattedTime,
+            type: history.type,
+            amount: history.amount
+        }));
+
+        res.json({ getHistory: formattedHistory });
+    } catch (error) {
+        console.error("Error retrieving daily tasks:", error);
+        res.status(500).send("Internal Server Error");
     }
 });
 
