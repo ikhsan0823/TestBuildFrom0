@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { Users } = require('../models/users.js');
+const { Daily } = require('../models/dailies.js');
 
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
@@ -57,6 +58,77 @@ router.get("/dashboard", async (req, res) => {
     const username = name || req.session.user;
     const usernames = req.session.user;
     res.render("dashboard", { username: username });
+});
+
+router.get("/daily", (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        res.redirect("/");
+        return;
+    }
+    res.render('daily')
+});
+
+router.post("/dailytask", async (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        return res.redirect("/");
+    }
+    try {
+        let newDaily = new Daily({
+            username: req.session.user,
+            title: req.body.title,
+            description: req.body.description,
+            date: req.body.date,
+            uniqueId: req.body.uniqueId,
+            nameday: req.body.nameday
+        });
+
+        await newDaily.save();
+        res.status(200).json({ success: true, message: 'Daily task saved successfully' });
+    } catch (error) {
+        console.error("Error saving daily task:", error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    } 
+});
+
+router.get("/carddaily", async (req, res) => {
+    if (!req.session.user || !req.session.clientId) {
+        res.redirect("/");
+        return;
+    }
+
+    try {
+        const dailyTasks = await Daily.find({ username: req.session.user });
+        const formattedTask = dailyTasks.map(task => ({
+            username: task.username,
+            title: task.title,
+            description: task.description,
+            date: task.date,
+            uniqueId: task.uniqueId,
+            nameday: task.nameday
+        }));
+
+        res.json({ dailyTasks: formattedTask });
+    } catch (error) {
+        console.error("Error retrieving daily tasks:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.delete("/dailytask/:uniqueId", async (req, res) => {
+    const uniqueId = req.params.uniqueId
+    try {
+        const deleteTask = await Daily.findOneAndDelete({ uniqueId: uniqueId });
+
+        if (!deleteTask) {
+            res.status(404).json({ success: false, message: 'Task not found' });
+            return;
+        }
+
+        res.status(200).json({ success: true, message: 'Task deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        res.status(500).json({ success: false, message: 'Internal Server Error'});
+    }
 });
 
 module.exports = router;
