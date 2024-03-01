@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const { Users } = require('../models/users.js');
 const { Daily } = require('../models/dailies.js');
 const { Balance, History } = require('../models/money.js');
-const { File } = require('../models/upload.js');
+const { upload, File } = require('../models/upload.js');
 
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
@@ -135,12 +135,13 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
 });
 
 router.post('/upload', async (req, res) => {
+        const fileBuffer = req.file.buffer;
         const newFile = new File({
             username: req.session.user,
-            filename: req.file.filename,
-            path: req.file.path,
+            filename: req.file.originalname,
             size: req.file.size,
-            uniqueId: req.body.uniqueId
+            uniqueId: req.body.uniqueId,
+            content: fileBuffer
         });
 
         try {
