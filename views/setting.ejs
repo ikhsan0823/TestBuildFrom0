@@ -415,6 +415,7 @@
                                 <div>
                                     <div id="emailText">Please click "Get Token" first!<br>We will send an email to your email. Enter the token below to complete setting your new password.</div>
                                     <label for="emailpass">Email</label>
+                                    <input type="hidden" name="emailspass" id="emailspass" value="<%= user.email %>">
                                     <input type="email" id="emailpass" name="emailpass" readonly value="<%= user.email %>">
                                 </div>
                                 <button id="get-token-btn" type="button" onclick="sendResetEmail()">Get Token</button>
@@ -513,7 +514,7 @@
         }
     
         async function sendResetEmail() {
-            const emailpass = document.getElementById('emailpass').value;
+            const emailpass = document.getElementById('emailspass').value;
             const response = await fetch('/forgot-password', {
                 method: 'POST',
                 headers: {
