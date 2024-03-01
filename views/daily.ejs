@@ -32,16 +32,8 @@
         pointer-events: none;
         opacity: 0;
     }
-    section.active .overlay{
-        z-index: 50;
-        pointer-events: auto;
-        opacity: 1;
-    }
-    section.true .overlay{
-        z-index: 50;
-        pointer-events: auto;
-        opacity: 1;
-    }
+    section.active .overlay,
+    section.true .overlay,
     section.false .overlay{
         z-index: 50;
         pointer-events: auto;
@@ -162,7 +154,6 @@
         color: #f9f9f9;
         transition: .05s;
         cursor: pointer;
-        transition: .05s;
     }
     .create-item form input.btn:hover{
         background-color: transparent;
@@ -259,46 +250,22 @@
         font-size: 15px;
         color: #b9b9b9;
     }
-    .finish-task-content form{
-        margin-top: 10px;
-    }
+    .finish-task-content form,
     .notcompleted-task-content form{
         margin-top: 10px;
     }
-    .finish-task-content label{
-        color: #030303;
-        font-size: 12px;
-        font-weight: 600;
-    }
+    .finish-task-content label,
     .notcompleted-task-content label{
         color: #030303;
         font-size: 12px;
         font-weight: 600;
     }
-    .finish-task-content form .input-image{
-        font-size: 12px;
-        color: #030303;
-    }
+    .finish-task-content form .input-image,
     .notcompleted-task-content form .input-image{
         font-size: 12px;
         color: #030303;
     }
-    .finish-task-content form .submit-image{
-        font-size: 15px;
-        font-weight: 600;
-        color: #f9f9f9;
-        background-color: #030303;
-        border: solid 3px #f9f9f9;
-        padding: 10px 10px 10px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: .05s;
-    }
-    .finish-task-content form .submit-image:hover{
-        background-color: transparent;
-        border: solid 3px #030303;
-        color: #030303;
-    }
+    .finish-task-content form .submit-image,
     .notcompleted-task-content form .submit-image1{
         font-size: 15px;
         font-weight: 600;
@@ -310,6 +277,7 @@
         cursor: pointer;
         transition: .05s;
     }
+    .finish-task-content form .submit-image:hover,
     .notcompleted-task-content form .submit-image1:hover{
         background-color: transparent;
         border: solid 3px #030303;
@@ -666,7 +634,7 @@
                     <div>My Daily</div>
                 </div>
                 <div class="header-right">
-                    <div class="uncompleted">
+                    <div onclick="uncompletedShow()" class="uncompleted">
                         <i class="fa-solid fa-square-xmark"></i>
                         <div id="uncompleted-count"></div>
                     </div>
@@ -829,11 +797,15 @@
             observer.observe(parentElement, observerConfig);
     
             const popupTaskUncompeted = document.querySelector("section");
-            document.body.addEventListener("click", function (event) {
+            /*document.body.addEventListener("click", function (event) {
                 if (event.target.classList.contains("uncompleted")) {
                     popupTaskUncompeted.classList.toggle("false");
                 }
-            });
+            });*/
+
+            function uncompletedShow() {
+                popupTaskUncompeted.classList.toggle("false");
+            }
     
             function myEnterFunction() {
                 popupTaskUncompeted.classList.remove("false");
@@ -1033,11 +1005,15 @@
     
         //Function related to displaying uncompleted tasks
         const popupTaskUncompeted = document.querySelector("section");
-        document.body.addEventListener("click", function(event) {
+        /*document.body.addEventListener("click", function(event) {
             if (event.target.classList.contains("uncompleted")) {
                 popupTaskUncompeted.classList.toggle("false");
             }
-        });
+        });*/
+        function uncompletedShow() {
+            popupTaskUncompeted.classList.toggle("false");
+        }
+
         function myEnterFunction() {
             popupTaskUncompeted.classList.remove("false");
         }

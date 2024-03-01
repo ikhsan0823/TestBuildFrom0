@@ -239,4 +239,60 @@ router.get("/gethistory", async (req, res) => {
     }
 });
 
+router.get("/setting", async (req, res) => {
+    try {
+        if (!req.session.user || !req.session.clientId) {
+            res.redirect("/");
+            return;
+        }
+
+        const username = req.session.user;
+        const account = await Users.find({ username: username });
+        const accountInfo = account.map((users) => ({
+            name: users.name,
+            email: users.email,
+            gender: users.gender,
+            phoneNum: users.phoneNum,
+            birth: users.birth,
+        }));
+
+        res.render('setting', { username: username, users: accountInfo });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+router.post("/editProfile", async (req, res) => {
+    try {
+        const { name, email, birth, gender, phoneNum } = req.body;
+        const user = await Users.find({ username: req.session.user });
+
+        await Users.findOneAndUpdate({ username: req.session.user }, {
+            $set: {
+                name: name || user.name,
+                email: email || user.email,
+                birth: birth || user.birth,
+                gender: gender || user.gender,
+                phoneNum: phoneNum || user.phoneNum,
+            }
+        });
+        res.redirect('setting');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Terjadi kesalahan saat memperbarui profil');
+    }
+});
+
+router.post("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error during logout:", err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            res.json({ success: true, message: "Logout successful" });
+        }
+    });
+});
+
 module.exports = router;
