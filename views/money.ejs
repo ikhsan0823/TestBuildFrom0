@@ -584,14 +584,16 @@
                         const data = JSON.parse(responseText);
                         return data.value;
                     } else {
-                        throw new Error('Respons bukan tipe JSON yang valid');
+                        console.warn('Respons dari server bukan JSON yang valid:', contentType);
+                        // Tangani respons non-JSON di sini (misalnya, catat respons)
+                        return null; // Atau kembalikan nilai default atau lemparkan kesalahan
                     }
                 } catch (error) {
                     console.error('Terjadi kesalahan saat mendapatkan balance:', error);
                     throw error;
                 }
             }
-    
+            
             async function postToServer(balance) {
                 try {
                     const response = await fetch('/updateBalance', {
