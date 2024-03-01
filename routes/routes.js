@@ -6,6 +6,7 @@ const { Users } = require('../models/users.js');
 router.get("/", async (req, res) => {
     if (req.session.user) {
         const username = req.session.user;
+        console.log('username:', username);
         res.render("dashboard", { username: username });
         return;
     }
@@ -47,7 +48,7 @@ router.get("/dashboard", async (req, res) => {
         return;
     }
     const username = req.session.user;
-    console.log = username;
+    console.log('username:', username);
     res.render("dashboard", { username: username });
 });
 
