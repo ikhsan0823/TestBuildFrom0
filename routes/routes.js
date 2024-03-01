@@ -134,7 +134,8 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
     }
 });
 
-router.post('/upload', async (req, res) => {
+router.post('/upload', upload.single('myfile'), async (req, res) => {
+    if (req.file) {
         const fileBuffer = req.file.buffer;
         const newFile = new File({
             username: req.session.user,
@@ -152,6 +153,9 @@ router.post('/upload', async (req, res) => {
             console.error('Error saving file info to MongoDB:', error);
             res.status(500).json({ success: false, error: 'Internal Server Error' });
         }
+    } else {
+        res.status(400).json({ success: false, error: 'Tidak ada file yang diberikan' });
+    };
 });
 
 router.get("/money", (req, res) => {
