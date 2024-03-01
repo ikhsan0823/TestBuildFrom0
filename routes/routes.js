@@ -4,6 +4,13 @@ const bcrypt = require('bcrypt');
 const { Users } = require('../models/users.js');
 
 router.get("/", async (req, res) => {
+    if (req.session.user) {
+        const nameUser = await Users.findOne({ username: req.session.user })
+        const name = nameUser.name;
+        const username = name || req.session.user;
+        res.render("dashboard", { username: username });
+        return;
+    }
     res.render('index');
 });
 
@@ -34,6 +41,17 @@ router.post("/login", async (req, res) => {
         console.error("Error during login:", error);
         res.status(500).send("Internal Server Error");
     }
+});
+
+router.get("/dashboard", async (req, res) => {
+    if (!req.session.user) {
+        res.redirect("/");
+        return;
+    }
+    const nameUser = await Users.findOne({ username: req.session.user })
+    const name = nameUser.name;
+    const username = name || req.session.user;
+    res.render("dashboard", { username: username });
 });
 
 module.exports = router;
