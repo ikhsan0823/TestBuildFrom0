@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 const { Users } = require('../models/users.js');
 const { Daily } = require('../models/dailies.js');
 const { Balance, History } = require('../models/money.js');
@@ -281,6 +282,69 @@ router.post("/editProfile", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send('Terjadi kesalahan saat memperbarui profil');
+    }
+});
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'thisistips919@gmail.com',
+        pass: 'qwtmgtvljuobrxks'
+    }
+});
+
+const generateToken = () => {
+    const token = Math.floor(100000 + Math.random() * 900000).toString();
+    return token;
+};
+
+router.post('/forgot-password', async (req, res) => {
+    try {
+      const { emailpass } = req.body;
+      const user = await Users.findOne({ email: emailpass });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const resetToken = generateToken();
+      user.resetToken = resetToken;
+      await user.save();
+  
+      const mailOptions = {
+        from: 'thisistips919@gmail.com',
+        to: emailpass,
+        subject: 'My SelfManage Account Password Reset',
+        text: `Your token is ${resetToken}`
+      };
+  
+      await transporter.sendMail(mailOptions);
+  
+      res.status(200).json({ message: 'Password reset email sent' });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ message: 'Error sending email' });
+    }
+});
+
+router.post('/reset-password', async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+
+        const user = await Users.findOne({ resetToken: token });
+        if (!user) {
+            return res.status(404).json({ message: 'Invalid or expired token' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        user.resetToken = undefined;
+        await user.save();
+        
+        res.status(200).json({ message: 'Password successfully reset' });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ message: 'Error resetting password' });
     }
 });
 
