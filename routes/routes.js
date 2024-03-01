@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const { Users } = require('../models/users.js');
 const { Daily } = require('../models/dailies.js');
 const { Balance, History } = require('../models/money.js');
-const { upload, File } = require('../models/upload.js');
+const { File } = require('../models/upload.js');
 
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
@@ -134,8 +134,7 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
     }
 });
 
-router.post('/upload', (req, res) => {
-    upload(req, res, async (err) => {
+router.post('/upload', async (req, res) => {
         if (!req.file) {
             const alertScript = `
                 <script>
@@ -168,7 +167,6 @@ router.post('/upload', (req, res) => {
             console.error('Error saving file info to MongoDB:', error);
             res.status(500).json({ success: false, error: 'Internal Server Error' });
         }
-    });
 });
 
 router.get("/money", (req, res) => {
