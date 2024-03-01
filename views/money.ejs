@@ -573,18 +573,18 @@
                             'Content-Type': 'application/json',
                         },
                     });
-    
+
                     if (!response.ok) {
-                        throw new Error('Gagal mendapatkan nilai balance');
-                    }
-                    
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        throw new Error('Respons bukan tipe JSON yang valid');
+                        throw new Error(`Gagal mendapatkan nilai balance: ${response.statusText}`);
                     }
 
-                    const data = await response.json();
-                    return data.value;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        return data.value;
+                    } else {
+                        throw new Error('Respons bukan tipe JSON yang valid');
+                    }
                 } catch (error) {
                     console.error('Terjadi kesalahan saat mendapatkan balance:', error);
                     throw error;
