@@ -5,9 +5,7 @@ const { Users } = require('../models/users.js');
 
 router.get("/", async (req, res) => {
     if (req.session.user) {
-        const nameUser = await Users.findOne({ username: req.session.user })
-        const name = nameUser.name;
-        const username = name || req.session.user;
+        const username = req.session.user;
         res.render("dashboard", { username: username });
         return;
     }
@@ -48,9 +46,8 @@ router.get("/dashboard", async (req, res) => {
         res.redirect("/");
         return;
     }
-    const nameUser = await Users.findOne({ username: req.session.user })
-    const name = nameUser.name;
-    const username = name || req.session.user;
+    const username = req.session.user;
+    console.log = username;
     res.render("dashboard", { username: username });
 });
 

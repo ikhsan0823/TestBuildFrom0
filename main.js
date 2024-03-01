@@ -27,13 +27,6 @@ app.use(session({
     cookie: { maxAge: 1440 * 60 * 1000 }
 }));
 
-app.use((req, res, next) => {
-    console.log(req.session.message);
-    res.locals.message = req.session.message;
-    delete req.session.message;
-    next();
-});
-
 app.use("", require("./routes/routes.js"));
 
 const PORT = process.env.PORT || 2002;

@@ -507,7 +507,7 @@
             document.getElementById("color7").style.color = "#030303";
         }
         document.addEventListener('DOMContentLoaded', function () {
-            var username = '<%= username %>';
+            var username = '<%= username %>' || 'none';
             var greetingMessageElement = document.getElementById('greeting-message');
             var currentTime = new Date().getHours();
     
