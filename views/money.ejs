@@ -577,7 +577,12 @@
                     if (!response.ok) {
                         throw new Error('Gagal mendapatkan nilai balance');
                     }
-    
+                    
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        throw new Error('Respons bukan tipe JSON yang valid');
+                    }
+
                     const data = await response.json();
                     return data.value;
                 } catch (error) {

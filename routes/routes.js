@@ -148,6 +148,7 @@ router.get('/getBalance', async (req, res) => {
     try {
         const balance = await Balance.findOne({ username: req.session.user });
         if (balance) {
+            res.setHeader('Content-Type', 'application/json');
             res.json({ value: balance.value });
         } else {
             res.status(404).json({ error: 'Balance data not found!' });
@@ -156,7 +157,7 @@ router.get('/getBalance', async (req, res) => {
         console.error('An error occurred while getting the balance:', error);
         res.status(500).send('An error occurred while getting the balance,');
     }
-})
+});
 
 router.post('/updateBalance', async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
