@@ -135,22 +135,6 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
 });
 
 router.post('/upload', async (req, res) => {
-        if (!req.file) {
-            const alertScript = `
-                <script>
-                    alert('No images uploaded!');
-                    window.location.href = '/daily';
-                </script>
-            `;
-            res.send(alertScript);
-            return;
-        }
-
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, error: "Internal Server Error" });
-        }
-
         const newFile = new File({
             username: req.session.user,
             filename: req.file.filename,
