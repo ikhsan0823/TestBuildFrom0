@@ -230,7 +230,8 @@ router.get("/gethistory", async (req, res) => {
             type: history.type,
             amount: history.amount
         }));
-
+        
+        res.setHeader('Content-Type', 'application/json');
         res.json({ getHistory: formattedHistory });
     } catch (error) {
         console.error("Error retrieving daily tasks:", error);
