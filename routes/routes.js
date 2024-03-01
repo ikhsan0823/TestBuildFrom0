@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const { Users } = require('../models/users.js');
 const { Daily } = require('../models/dailies.js');
 const { Balance, History } = require('../models/money.js');
+const { upload, File } = require('../models/upload.js');
 
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
@@ -131,6 +132,43 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
         console.error("Error deleting task:", error);
         res.status(500).json({ success: false, message: 'Internal Server Error'});
     }
+});
+
+router.post('/upload', (req, res) => {
+    upload(req, res, async (err) => {
+        if (!req.file) {
+            const alertScript = `
+                <script>
+                    alert('No images uploaded!');
+                    window.location.href = '/daily';
+                </script>
+            `;
+            res.send(alertScript);
+            return;
+        }
+
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, error: "Internal Server Error" });
+        }
+
+        const newFile = new File({
+            username: req.session.user,
+            filename: req.file.filename,
+            path: req.file.path,
+            size: req.file.size,
+            uniqueId: req.body.uniqueId
+        });
+
+        try {
+            await newFile.save();
+            await Daily.findOneAndDelete({ uniqueId: req.body.uniqueId });
+            res.redirect("daily");
+        } catch (error) {
+            console.error('Error saving file info to MongoDB:', error);
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
+    });
 });
 
 router.get("/money", (req, res) => {
@@ -340,7 +378,6 @@ router.post('/reset-password', async (req, res) => {
         user.password = hashedPassword;
         user.resetToken = undefined;
         await user.save();
-        
         res.status(200).json({ message: 'Password successfully reset' });
     } catch (error) {
         console.error('Error resetting password:', error);
