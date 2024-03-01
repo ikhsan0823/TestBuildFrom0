@@ -18,6 +18,44 @@ router.get("/", async (req, res) => {
     res.render('index');
 });
 
+router.post("/signup", async function (req, res) {
+    try {
+        const existingUser = await Users.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] });
+
+        if (existingUser) {
+            const alertScript = `
+                <script>
+                    alert('Username or email already taken!');
+                    window.location.href = '/';
+                </script>
+            `;
+            res.send(alertScript);
+            return;
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        let newUsers = new Users({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashedPassword
+        });
+
+        let newBalance = new Balance({
+            username: req.body.username,
+            value: 0
+        });
+
+        await newUsers.save();
+        await newBalance.save();
+
+        res.redirect('/');
+    } catch (error) {
+        console.error('An error occurred during signup:', error);
+        res.status(500).send('An error occurred during signup.');
+    }
+});
+
 router.get("/forgotpass", async (req, res) => {
     res.render("forgotpass");
 });
