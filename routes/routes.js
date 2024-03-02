@@ -98,7 +98,7 @@ router.get("/dashboard", async (req, res) => {
     const name = nameUser.name;
     const username = name || req.session.user;
     const usernames = req.session.user;
-    res.render("dashboard", { username: username });
+    res.render("dashboard", { username: username, usernames: usernames });
 });
 
 router.get("/daily", (req, res) => {

@@ -605,5 +605,56 @@
             }
         }   
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        const socket = io();
+        const username = '<%= usernames %>';
+
+        socket.emit('login', username);
+
+        $('form').submit(function() {
+            var inputValue = $('#m').val();
+            if (inputValue.trim() === "") {
+                return false;
+            }
+
+            socket.emit('chat', { message: inputValue, username: username });
+            $('#m').val('');
+            return false;
+        });
+
+        socket.on('chat', function(data) {
+            var chatUser = data.username;
+            var chatText = data.message;
+            var now = new Date();
+            var chatTimeHours = now.getHours();
+            var chatTimeMinutes = now.getMinutes();
+
+            var listChat = $('<li>');
+            var component1 = $('<div class="username-chat">').text(chatUser);
+            var component2 = $('<div class="chat-text">').text(chatText);
+            var component3 = $('<div class="chat-time">').text(chatTimeHours + ':' + (chatTimeMinutes < 10 ? '0' : '') + chatTimeMinutes);
+            
+            listChat.append(component1, component2, component3);
+            $('#messages').append(listChat);
+
+            var lastChatList = $('#messages li:last')[0];
+            lastChatList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
+        });
+
+        socket.on('userStatus', ({ username, online }) => {
+            $('#messages').append($('<li>').text(`${username} is ${online ? 'online' : 'offline'}`));
+        });
+
+        socket.on('updateUserCount', (count) => {
+            let sumCount = count + 1;
+            $('#online-count').text(sumCount);
+        });
+
+        window.addEventListener('beforeunload', () => {
+            socket.emit('logout', username);
+        });
+    </script>
 </body>
 </html>
