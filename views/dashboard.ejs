@@ -616,7 +616,7 @@
     <script>
         const username = '<%= usernames %>';
 
-        const socket = io('https://socket-io-five-nu.vercel.app',{
+        const socket = io('http://localhost:3000',{
             withCredentials: true,
             query: {
                 username: username
