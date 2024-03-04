@@ -365,17 +365,28 @@
             z-index: 300;
             position: fixed;
         }
+        .list .content-list{
+            padding: 30px 0 50px 0;
+        }
         
     }
     @media screen and (max-device-width: 480px)
     and (orientation: portrait) {
+        .headershape{
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 200;
+        }
         .sidebar{
             position: fixed;
             z-index: 200;
-            background-color: #f9f9f9;
+            background-color: transparent;
         }
         .dashboard{
-            padding: 30px 10px 30px 90px;
+            padding: 75px 20px 30px 20px;
             height: 100%;
         }
         .header .greeting{
@@ -387,7 +398,7 @@
             padding: 20px 15px 20px 15px;
         }
         .list .content-list{
-            padding: 30px 0 0 0;
+            padding: 30px 0 50px 0;
         }
         .chat-container .button-chat{
             position: fixed;
@@ -419,6 +430,9 @@
             z-index: 300;
             position: fixed;
         }
+        .list .content-list{
+            padding: 30px 0 50px 0;
+        }
     }
     @media screen and (max-device-width: 640px) {
         
@@ -426,6 +440,7 @@
 </style>
 <body>
     <div class="container">
+        <div class="headershape"></div>
         <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
             <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
             <div id="barList" class="sidebar-list">
