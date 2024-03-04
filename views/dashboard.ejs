@@ -34,11 +34,6 @@
     .sidebar a{
         color: #030303;
     }
-    .sidebar:hover{
-        align-items: flex-start;
-        width: 300px;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
-    }
     .sidebar i{
         display: flex;
         align-items: center;
@@ -346,11 +341,93 @@
     .user-online i{
         margin-right: 5px;
     }
+
+    /*media query*/
+
+    @media screen and (min-width: 1024px) {
+        
+    }
+    @media screen and (min-device-width: 768px)
+    and (max-device-width: 1024px) {
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: #f9f9f9;
+        }
+        .content-list .list-card {
+            width: calc(100% / 2 - 20px);
+        }
+        .chat-container .button-chat{
+            position: fixed;
+        }
+        .live-chat{
+            width: 320px;
+            z-index: 300;
+            position: fixed;
+        }
+        
+    }
+    @media screen and (max-device-width: 480px)
+    and (orientation: portrait) {
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: #f9f9f9;
+        }
+        .dashboard{
+            padding: 30px 10px 30px 90px;
+            height: 100%;
+        }
+        .header .greeting{
+            font-size: 23px;
+            line-height: 30px;
+        }
+        .content-list .list-card {
+            width: 100%;
+            padding: 20px 15px 20px 15px;
+        }
+        .list .content-list{
+            padding: 30px 0 0 0;
+        }
+        .chat-container .button-chat{
+            position: fixed;
+        }
+        .live-chat{
+            position: fixed;
+            width: 320px;
+            z-index: 300;
+        }
+    }
+    @media screen and (max-device-width: 640px)
+    and (orientation: landscape) {
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: #f9f9f9;
+        }
+        .dashboard{
+            padding: 0px 50px 0px 100px;
+        }
+        .content-list .list-card {
+            width: calc(100% / 2 - 20px);
+        }
+        .chat-container .button-chat{
+            position: fixed;
+        }
+        .live-chat{
+            width: 320px;
+            z-index: 300;
+            position: fixed;
+        }
+    }
+    @media screen and (max-device-width: 640px) {
+        
+    }
 </style>
 <body>
     <div class="container">
-        <div onmouseover="main()" onmouseout="hide()" class="sidebar">
-            <i class="fa-solid fa-bars"></i>
+        <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
+            <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
             <div id="barList" class="sidebar-list">
                 <a href="/dashboard"><div onmouseover="setColor7()" onmouseout="unsetColor7()" class="my-list">
                     <i id="color7" class="fa-solid fa-table-columns"></i>
@@ -455,13 +532,65 @@
     </div>
     <script>
         function main(){
-            document.getElementById("barList").style.display = "block";
-            document.getElementById("account-list").style.display = "block";
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "block";
+                document.getElementById("account-list").style.display = "block";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "300px";
+                sidebar.style.backgroundColor = "#f9f9f9";
+                sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+            }
         }
         function hide(){
-            document.getElementById("barList").style.display = "none";
-            document.getElementById("account-list").style.display = "none";
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "none";
+                document.getElementById("account-list").style.display = "none";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "";
+                sidebar.style.backgroundColor = "";
+                sidebar.style.boxShadow = "";
+            }
         }
+
+        let isDisplayed = false;
+        function toggleDisplay() {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                event.stopPropagation();
+                const barList = document.getElementById("barList");
+                const accountList = document.getElementById("account-list");
+                const sidebar = document.getElementById("sidebar");
+                if(!isDisplayed) {
+                    barList.style.display = "block";
+                    accountList.style.display = "block";
+                    sidebar.style.width = "200px";
+                    sidebar.style.backgroundColor = "#f9f9f9";
+                    sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+                } else {
+                    sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    barList.style.display = "none";
+                    accountList.style.display = "none";
+                    sidebar.style.boxShadow = "";
+                }
+                isDisplayed = !isDisplayed;
+            }
+
+        }
+
+        document.addEventListener("click", function(event) {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                const sidebar = document.getElementById("sidebar");
+                const isClickInsideSidebar = sidebar.contains(event.target);
+
+                if (!isClickInsideSidebar) {sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    sidebar.style.boxShadow = "";
+                    document.getElementById("barList").style.display = "none";
+                    document.getElementById("account-list").style.display = "none";
+                    isDisplayed = false;
+                }
+            }
+        });
     
         function setColor(){
             document.getElementById("color").style.color = "#cfcfcf";

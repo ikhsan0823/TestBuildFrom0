@@ -94,12 +94,21 @@
     }
     .overlay{
         position: absolute;
-        width: 1232px;
+        width: 100vw;
         height: 100vh;
         background: rgba(0, 0, 0, 0.3);
         left: 0;
         top: 0;
         z-index: 50;
+    }
+
+    /*media query*/
+
+    @media screen and (max-device-width: 480px)
+    and (orientation: portrait) {
+        .reset-form{
+            width: 300px;
+        }
     }
 </style>
 <body>
