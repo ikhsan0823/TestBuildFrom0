@@ -6,12 +6,9 @@ const mongoose = require('mongoose');
 const ejs = require('ejs');
 const http = require('http');
 const Redis = require("ioredis");
-const socketIO = require('socket.io');
-const socketIORoutes = require('./routes/socketIO.js');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("views", __dirname + "/views");
@@ -67,15 +64,7 @@ app.use(session({
     }
 }));
 
-app.use((req, res, next) => {
-    console.log(req.session.message);
-    res.locals.message = req.session.message;
-    delete req.session.message;
-    next();
-});
-
 app.use("", require("./routes/routes.js"));
-socketIORoutes(io);
 
 const PORT = process.env.PORT || 2002;
 server.listen(PORT, () => {

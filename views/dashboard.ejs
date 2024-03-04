@@ -280,17 +280,21 @@
         justify-content: center;
         min-width: 100px;
         max-width: 200px;
-        min-height: 40px;
+        min-height: fit-content;
         width: fit-content;
         height: fit-content;
         background-color: #9b9b9b;
         color: #f9f9f9;
         font-size: 12px;
         font-weight: 600;
-        padding: 3px 10px 3px 10px;
+        padding: 5px 10px 5px 10px;
         border-radius: 10px;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
         overflow-wrap: break-word;
+    }
+    .userstatus{
+        align-self: center;
+        background-color: #cccccc !important;
     }
     li .username-chat{
         width: 100%;
@@ -510,6 +514,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var username = '<%= username %>';
             var greetingMessageElement = document.getElementById('greeting-message');
+            var onlineCount = document.getElementById('online-count');
             var currentTime = new Date().getHours();
     
             if (currentTime >= 5 && currentTime < 12) {
@@ -519,6 +524,7 @@
             } else {
                 greetingMessageElement.innerText = 'Good Evening, ' + username;
             }
+
         });
     
         document.addEventListener('DOMContentLoaded', function (){
@@ -605,12 +611,19 @@
             }
         }   
     </script>
-    /*<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-        /*const socket = io();
         const username = '<%= usernames %>';
 
+        const socket = io('https://socket-io-five-nu.vercel.app',{
+            withCredentials: true,
+            query: {
+                username: username
+            }
+        });
+
+        socket.emit('username', username);
         socket.emit('login', username);
 
         $('form').submit(function() {
@@ -644,17 +657,16 @@
         });
 
         socket.on('userStatus', ({ username, online }) => {
-            $('#messages').append($('<li>').text(`${username} is ${online ? 'online' : 'offline'}`));
+            $('#messages').append($('<li class="userstatus">').text(`${username} is ${online ? 'online' : 'offline'}`));
         });
 
-        socket.on('updateUserCount', (count) => {
-            let sumCount = count + 1;
-            $('#online-count').text(sumCount);
+        socket.on('updateUserCount', (onlineUserCount) => {
+            $('#online-count').text(onlineUserCount);
         });
 
         window.addEventListener('beforeunload', () => {
             socket.emit('logout', username);
-        });*/
+        });
     </script>
 </body>
 </html>

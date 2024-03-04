@@ -4,10 +4,6 @@ const usersSchema = {
     username: String,
     email: String,
     password: String,
-    online: {
-        type: Boolean,
-        default: false,
-    },
     name: {
         type: String,
         default: '',
