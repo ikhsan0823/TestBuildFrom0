@@ -8,7 +8,7 @@ const { Balance, History } = require('../models/money.js');
 const { upload, File } = require('../models/upload.js');
 
 router.get("/", async (req, res) => {
-    if (req.session.user || req.session.clientId) {
+    if (req.session || req.session.clientId) {
         const nameUser = await Users.find({ username: req.session.user })
         const name = nameUser.name;
         const username = name || req.session.user;
@@ -90,7 +90,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/dashboard", async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
+    if (!req.session || !req.session.clientId) {
         res.redirect("/");
         return;
     }
