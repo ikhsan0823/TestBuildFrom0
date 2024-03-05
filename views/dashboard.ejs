@@ -430,6 +430,9 @@
         .list .content-list{
             padding: 30px 0 50px 0;
         }
+        #username-hidden{
+            display: none;
+        }
     }
 </style>
 <body>
@@ -531,7 +534,7 @@
                     <div id="online-count"></div>
                 </div>
                 <div class="main-chat">
-                    <input type="hidden" id="username-hidden" value="<%= usernames %>">
+                    <div id="username-hidden"></div>
                     <ul id="messages"></ul>
                     <form id="form" action="">
                         <input type="text" id="m" autocomplete="off" /><button><i class="fa-solid fa-paper-plane"></i></button>
@@ -651,6 +654,10 @@
             document.getElementById("color7").style.color = "#030303";
         }
         document.addEventListener('DOMContentLoaded', function () {
+            var selfUsername = '<%= usernames %>';
+            var usernameHidden = document.getElementById('username-hidden');
+            usernameHidden.innerText = selfUsername;
+
             var username = '<%= username %>';
             var greetingMessageElement = document.getElementById('greeting-message');
             var onlineCount = document.getElementById('online-count');
@@ -799,7 +806,7 @@
             var yourusername = document.getElementById('username-hidden').innerHTML;
             console.log('username:', yourusername);
             $('#messages').append($('<li class="userstatus">').text(`${username === yourusername ? 'You' : username} is ${online ? 'online' : 'offline'}`));
-            var lastStatusList = $('#messages li .userstatus:last')[0];
+            var lastStatusList = $('#messages .userstatus:last')[0];
             lastStatusList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
         });
 
