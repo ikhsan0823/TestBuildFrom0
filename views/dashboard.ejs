@@ -430,6 +430,10 @@
         .list .content-list{
             padding: 30px 0 50px 0;
         }
+        .username-hidden{
+            display: none;
+            transform: scale(0);
+        }
     }
 </style>
 <body>
@@ -531,7 +535,7 @@
                     <div id="online-count"></div>
                 </div>
                 <div class="main-chat">
-                    <input type="hidden" value="" id="username-hidden">
+                    <div id="username-hidden" class="username-hidden"></div>
                     <ul id="messages"></ul>
                     <form id="form" action="">
                         <input type="text" id="m" autocomplete="off" /><button><i class="fa-solid fa-paper-plane"></i></button>
