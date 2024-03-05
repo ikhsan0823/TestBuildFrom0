@@ -7,6 +7,15 @@ const { Daily } = require('../models/dailies.js');
 const { Balance, History } = require('../models/money.js');
 const { upload, File } = require('../models/upload.js');
 
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user && req.session.clientId) {
+        next();
+    } else {
+        res.redirect("/");
+        return;
+    }
+}
+
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
         const nameUser = await Users.find({ username: req.session.user })
@@ -100,7 +109,7 @@ router.get("/dashboard", async (req, res) => {
     }      
 });
 
-router.get("/daily", async (req, res) => {
+router.get("/daily", isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         res.redirect("/");
         return;
@@ -108,7 +117,7 @@ router.get("/daily", async (req, res) => {
     res.render('daily')
 });
 
-router.post("/dailytask", async (req, res) => {
+router.post("/dailytask", isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         return res.redirect("/");
     }
@@ -130,7 +139,7 @@ router.post("/dailytask", async (req, res) => {
     } 
 });
 
-router.get("/carddaily", async (req, res) => {
+router.get("/carddaily", isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         res.redirect("/");
         return;
@@ -195,7 +204,7 @@ router.post('/upload', upload.single('myfile'), async (req, res) => {
     };
 });
 
-router.get("/money", async (req, res) => {
+router.get("/money", isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         res.redirect("/");
         return;
@@ -203,7 +212,7 @@ router.get("/money", async (req, res) => {
     res.render('money');
 });
 
-router.get('/getBalance', async (req, res) => {
+router.get('/getBalance', isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         res.redirect("/");
         return;
@@ -222,7 +231,7 @@ router.get('/getBalance', async (req, res) => {
     }
 });
 
-router.post('/updateBalance', async (req, res) => {
+router.post('/updateBalance', isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         res.redirect("/");
         return;
@@ -236,7 +245,7 @@ router.post('/updateBalance', async (req, res) => {
     }
 });
 
-router.post("/history", async (req, res) => {
+router.post("/history", isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         return res.redirect("/");
     }
@@ -262,7 +271,7 @@ router.post("/history", async (req, res) => {
     } 
 });
 
-router.delete("/history/delete", async (req, res) => {
+router.delete("/history/delete", isAuthenticated, async (req, res) => {
     const username = req.session.user;
     try {
         const deleteHistory = await History.deleteMany({ username: username });
@@ -278,7 +287,7 @@ router.delete("/history/delete", async (req, res) => {
     }
 });
 
-router.get("/gethistory", async (req, res) => {
+router.get("/gethistory", isAuthenticated, async (req, res) => {
     if (!req.session.user || !req.session.clientId) {
         res.redirect("/");
         return;
@@ -302,7 +311,7 @@ router.get("/gethistory", async (req, res) => {
     }
 });
 
-router.get("/setting", async (req, res) => {
+router.get("/setting", isAuthenticated, async (req, res) => {
     try {
         if (!req.session.user || !req.session.clientId) {
             res.redirect("/");
