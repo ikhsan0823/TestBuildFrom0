@@ -531,6 +531,7 @@
                     <div id="online-count"></div>
                 </div>
                 <div class="main-chat">
+                    <input type="hidden" id="username-hidden" value="<%= usernames %>">
                     <ul id="messages"></ul>
                     <form id="form" action="">
                         <input type="text" id="m" autocomplete="off" /><button><i class="fa-solid fa-paper-plane"></i></button>
@@ -795,7 +796,10 @@
         });
 
         socket.on('userStatus', ({ username, online }) => {
-            $('#messages').append($('<li class="userstatus">').text(`${username} is ${online ? 'online' : 'offline'}`));
+            var yourusername = document.getElementById('username-hidden').innerHTML;
+            $('#messages').append($('<li class="userstatus">').text(`${username === yourusername ? 'You' : username} is ${online ? 'online' : 'offline'}`));
+            var lastStatusList = $('#messages li .userstatus:last')[0];
+            lastStatusList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
         });
 
         socket.on('updateUserCount', (onlineUserCount) => {

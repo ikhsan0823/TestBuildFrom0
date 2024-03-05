@@ -18,10 +18,10 @@ const isAuthenticated = (req, res, next) => {
 
 router.get("/", async (req, res) => {
     if (req.session.user || req.session.clientId) {
-        const nameUser = await Users.find({ username: req.session.user })
-        const name = nameUser.name;
-        const username = name || req.session.user;
-        res.render("dashboard", { username: username});
+        const nameUser = await Users.findOne({ username: req.session.user })
+        if (nameUser) {
+            res.render("dashboard", { username: nameUser.name || req.session.user, usernames: req.session.user });
+        }
         return;
     }
     res.render('index');
