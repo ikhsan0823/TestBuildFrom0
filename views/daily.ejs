@@ -20,6 +20,7 @@
     }
     .container{
         height: 100vh;
+        width: 100vw;
         display: flex;
     }
     .container section{
@@ -27,7 +28,7 @@
     }
     .overlay{
         position: absolute;
-        width: 1232px;
+        width: 100vw;
         height: 100vh;
         background: rgba(0, 0, 0, 0.3);
         pointer-events: none;
@@ -46,7 +47,7 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(25%, 10%);
+        transform: translate(20%, 10%);
         width: 900px;
         height: 500px;
         color: #b9b9b9;
@@ -289,18 +290,13 @@
         flex-direction: column;
         align-items: flex-start;
         width: 75px;
-        height: 100vh;
+        height: 100vw;
         padding: 20px 20px 20px 25px;
         color: #030303;
     }
     .sidebar a{
         text-decoration: none;
         color: #030303;
-    }
-    .sidebar:hover{
-        align-items: flex-start;
-        width: 300px;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
     }
     .sidebar i{
         display: flex;
@@ -526,9 +522,166 @@
         border: solid 3px #030303;
         color: #030303;
     }
+
+    /*media query*/
+
+    @media screen and (min-width: 1024px) {
+        
+    }
+    @media screen and (min-device-width: 768px)
+    and (max-device-width: 1024px) {
+        .sidebar{
+            position: fixed;
+            z-index: 1;
+            background-color: #f9f9f9;
+        }
+        .content{
+            width: 100%;
+            height: 100vh;
+            padding: 0px 100px 20px 150px;
+        }
+        .uncompleted-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(20%, 10%);
+            width: 600px;
+        }
+        .uncompleted-item-content .card{
+            min-width: calc(100% / 2 - 50px);
+        }
+        .finish-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(90%, 35%);
+        }
+        .create-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(80%, 35%);
+        }
+        .daylist .card{
+            min-width: calc(100% / 2 - 50px);
+        }
+    }
+    @media screen and (max-device-width: 480px)
+    and (orientation: portrait) {
+        .headershape{
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 100;
+        }
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: transparent;
+        }
+        .content .header{
+            max-width: 100%;
+        }
+        .uncompleted-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(5%, 20%);
+            width: 280px;
+            height: 380px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+        }
+        
+        .uncompleted-item-content .card{
+            min-width: none;
+            max-width: none;
+            width: 240px;
+            margin-right: 0;
+        }
+        section.active .overlay,
+        section.true .overlay,
+        section.false .overlay {
+            z-index: 400;
+        }
+        section.false .uncompleted-item {
+            z-index: 450;
+        }
+        section.true .finish-item {
+            z-index: 500;
+        }
+        section.active .create-item{
+            z-index: 500;
+        }
+        .content{
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 10px 20px 10px;
+        }
+        .finish-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(5%, 20%);
+        }
+        .create-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(5%, 20%);
+        }
+        .daylist{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 10px 10px 10px;
+        }
+        .daylist .card{
+            width: 350px;
+            max-width: none;
+            min-width: none;
+            margin-right: 0px;
+        }
+    }
+    @media screen and (max-device-width: 640px)
+    and (orientation: landscape) {
+        .sidebar{
+            position: fixed;
+            z-index: 1;
+            background-color: #f9f9f9;
+        }
+        .uncompleted-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(10%, 10%);
+            width: 550px;
+        }
+        .uncompleted-item-content .card{
+            min-width: calc(100% / 2 - 50px);
+        }
+        .content{
+            width: 100%;
+            height: 100vh;
+            padding: 0px 10px 20px 50px;
+        }
+        .finish-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(60%, 35%);
+        }
+        .create-item{
+            left: 50%;
+            top: 50%;
+            transform: translate(60%, 35%);
+        }
+        .daylist .card{
+            min-width: calc(100% / 2 - 50px);
+        }
+    }
 </style>
 <body>
     <div class="container">
+        <div class="headershape"></div>
         <section>
             <div class="uncompleted-item">
                 <div>Uncompleted Task</div>
@@ -589,8 +742,8 @@
             </div>
             <span class="overlay"></span>
         </section>
-        <div onmouseover="main()" onmouseout="hide()" class="sidebar">
-            <i class="fa-solid fa-bars"></i>
+        <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
+            <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
             <div id="barList" class="sidebar-list">
                 <a href="/dashboard"><div onmouseover="setColor7()" onmouseout="unsetColor7()" class="my-list">
                     <i id="color7" class="fa-solid fa-table-columns"></i>
@@ -651,13 +804,65 @@
     <script>
         //Toggle the display of elements
         function main(){
-            document.getElementById("barList").style.display = "block";
-            document.getElementById("account-list").style.display = "block";
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "block";
+                document.getElementById("account-list").style.display = "block";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "300px";
+                sidebar.style.backgroundColor = "#f9f9f9";
+                sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+            }
         }
         function hide(){
-            document.getElementById("barList").style.display = "none";
-            document.getElementById("account-list").style.display = "none";
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "none";
+                document.getElementById("account-list").style.display = "none";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "";
+                sidebar.style.backgroundColor = "";
+                sidebar.style.boxShadow = "";
+            }
         }
+
+        let isDisplayed = false;
+        function toggleDisplay() {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                event.stopPropagation();
+                const barList = document.getElementById("barList");
+                const accountList = document.getElementById("account-list");
+                const sidebar = document.getElementById("sidebar");
+                if(!isDisplayed) {
+                    barList.style.display = "block";
+                    accountList.style.display = "block";
+                    sidebar.style.width = "200px";
+                    sidebar.style.backgroundColor = "#f9f9f9";
+                    sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+                } else {
+                    sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    barList.style.display = "none";
+                    accountList.style.display = "none";
+                    sidebar.style.boxShadow = "";
+                }
+                isDisplayed = !isDisplayed;
+            }
+
+        }
+
+        document.addEventListener("click", function(event) {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                const sidebar = document.getElementById("sidebar");
+                const isClickInsideSidebar = sidebar.contains(event.target);
+
+                if (!isClickInsideSidebar) {sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    sidebar.style.boxShadow = "";
+                    document.getElementById("barList").style.display = "none";
+                    document.getElementById("account-list").style.display = "none";
+                    isDisplayed = false;
+                }
+            }
+        });
     
         //Functions to set and unset color for elements
         function setColor(){
