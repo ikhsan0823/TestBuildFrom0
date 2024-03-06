@@ -3,9 +3,9 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const mongoDBSession = require('connect-mongodb-session')(session);
 const ejs = require('ejs');
 const http = require('http');
-const Redis = require("ioredis");
 
 const app = express();
 const server = http.createServer(app);
@@ -21,48 +21,24 @@ try {
     console.error('MongoDB connection error:', error);
 }
 
-const redisClient = new Redis({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-    password: process.env.REDIS_PASS,
+const store = new mongoDBSession({
+    uri: process.env.DB_URI,
+    collection: "mySession",
 });
 
-redisClient.on('error', (err) => {
-    if (err.name === 'MaxRetriesPerRequestError') {
-      return;
-    }
-
-    if (err.code === 'ECONNRESET') {
-        console.log('Redis connection is reset!');
-        return;
-    }
-
-    if (err.code === 'ETIMEDOUT') {
-        console.log('Redis connection timed out!');
-        return;
-    }
-
-    if (err.code === 'ENOTFOUND') {
-        console.log("You're not connected!")
-        return;
-    }
-
-    console.error('Redis connection failed:', err);
-  });
-
-app.use(session({
-    store: new (require('express-session').MemoryStore)({
-        client: redisClient,
-    }),
-    secret: process.env.SESSION_SECRET || "default_secret",
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-        secure: false,
-        httpOnly: true,
-        maxAge: 1000 * 60 * 30 * 24
-    }
-}));
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "default_secret",
+        saveUninitialized: false,
+        resave: false,
+        store: store,
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            maxAge: 1000 * 60 * 30 * 24
+        }
+    })
+);
 
 app.use("", require("./routes/routes.js"));
 

@@ -8,7 +8,7 @@ const { Balance, History } = require('../models/money.js');
 const { upload, File } = require('../models/upload.js');
 
 const isAuthenticated = (req, res, next) => {
-    if (req.session.user && req.session.clientId) {
+    if (req.session.isAuth) {
         next();
     } else {
         res.redirect("/");
@@ -17,7 +17,7 @@ const isAuthenticated = (req, res, next) => {
 }
 
 router.get("/", async (req, res) => {
-    if (req.session.user || req.session.clientId) {
+    if (req.session.isAuth) {
         const nameUser = await Users.findOne({ username: req.session.user })
         if (nameUser) {
             res.render("dashboard", { username: nameUser.name || req.session.user, usernames: req.session.user });
@@ -86,8 +86,7 @@ router.post("/login", async (req, res) => {
             res.send(alertScript);
             return;
         }
-        req.session.clientId = 'abc123';
-        req.session.myNum = 5;
+        req.session.isAuth = true;
 
         console.log("Login successfully from " + username + "!");
         req.session.user = username;
@@ -98,11 +97,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/dashboard", async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
+router.get("/dashboard", isAuthenticated, async (req, res) => {
     const nameUser = await Users.findOne({ username: req.session.user })
     if (nameUser) {
         res.render("dashboard", { username: nameUser.name || req.session.user, usernames: req.session.user });
@@ -110,17 +105,10 @@ router.get("/dashboard", async (req, res) => {
 });
 
 router.get("/daily", isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
     res.render('daily')
 });
 
-router.post("/dailytask", isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        return res.redirect("/");
-    }
+router.post("/dailytask", async (req, res) => {
     try {
         let newDaily = new Daily({
             username: req.session.user,
@@ -139,12 +127,7 @@ router.post("/dailytask", isAuthenticated, async (req, res) => {
     } 
 });
 
-router.get("/carddaily", isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
-
+router.get("/carddaily", async (req, res) => {
     try {
         const dailyTasks = await Daily.find({ username: req.session.user });
         const formattedTask = dailyTasks.map(task => ({
@@ -205,18 +188,10 @@ router.post('/upload', upload.single('myfile'), async (req, res) => {
 });
 
 router.get("/money", isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
     res.render('money');
 });
 
-router.get('/getBalance', isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
+router.get('/getBalance', async (req, res) => {
     try {
         const balance = await Balance.findOne({ username: req.session.user });
         if (balance) {
@@ -231,11 +206,7 @@ router.get('/getBalance', isAuthenticated, async (req, res) => {
     }
 });
 
-router.post('/updateBalance', isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
+router.post('/updateBalance', async (req, res) => {
     const newValue = req.body.balance;
     try {
         await Balance.findOneAndUpdate({ username: req.session.user }, { value: newValue }, { upsert: true, new: true });
@@ -245,10 +216,7 @@ router.post('/updateBalance', isAuthenticated, async (req, res) => {
     }
 });
 
-router.post("/history", isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        return res.redirect("/");
-    }
+router.post("/history", async (req, res) => {
     try {
         const currentHistory = await History.find({ username: req.session.user });
         if (currentHistory.length >= 10) {
@@ -271,7 +239,7 @@ router.post("/history", isAuthenticated, async (req, res) => {
     } 
 });
 
-router.delete("/history/delete", isAuthenticated, async (req, res) => {
+router.delete("/history/delete", async (req, res) => {
     const username = req.session.user;
     try {
         const deleteHistory = await History.deleteMany({ username: username });
@@ -287,12 +255,7 @@ router.delete("/history/delete", isAuthenticated, async (req, res) => {
     }
 });
 
-router.get("/gethistory", isAuthenticated, async (req, res) => {
-    if (!req.session.user || !req.session.clientId) {
-        res.redirect("/");
-        return;
-    }
-
+router.get("/gethistory", async (req, res) => {
     try {
         const getHistory = await History.find({ username: req.session.user });
         const formattedHistory = getHistory.map(history => ({
@@ -311,13 +274,8 @@ router.get("/gethistory", isAuthenticated, async (req, res) => {
     }
 });
 
-router.get("/setting", isAuthenticated, async (req, res) => {
+router.get("/setting", async (req, res) => {
     try {
-        if (!req.session.user || !req.session.clientId) {
-            res.redirect("/");
-            return;
-        }
-
         const username = req.session.user;
         const account = await Users.find({ username: username });
         const accountInfo = account.map((users) => ({
