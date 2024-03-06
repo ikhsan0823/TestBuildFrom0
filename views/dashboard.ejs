@@ -804,8 +804,11 @@
 
         socket.on('userStatus', ({ username, online }) => {
             var yourusername = document.getElementById('username-hidden').innerHTML;
-            console.log('username:', yourusername);
-            $('#messages').append($('<li class="userstatus">').text(`${username === yourusername ? 'You' : username} is ${online ? 'online' : 'offline'}`));
+            if (username === yourusername) {
+                $('#messages').append($('<li class="userstatus">').text(`You ${online ? 'join' : 'leave'} the chat`));
+            } else {
+                $('#messages').append($('<li class="userstatus">').text(`${username} ${online ? 'join' : 'leave'} the chat`));
+            }
             var lastStatusList = $('#messages .userstatus:last')[0];
             lastStatusList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
         });
