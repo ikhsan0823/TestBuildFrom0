@@ -6,6 +6,7 @@ const { Users } = require('../models/users.js');
 const { Daily } = require('../models/dailies.js');
 const { Balance, History } = require('../models/money.js');
 const { upload, File } = require('../models/upload.js');
+const { parse } = require('path');
 
 const isAuthenticated = (req, res, next) => {
     if (req.session.isAuth) {
@@ -187,11 +188,7 @@ router.post('/upload', upload.single('myfile'), async (req, res) => {
     };
 });
 
-router.get("/money", isAuthenticated, async (req, res) => {
-    res.render('money');
-});
-
-router.get('/getBalance', async (req, res) => {
+/*router.get('/getBalance', async (req, res) => {
     try {
         const balance = await Balance.findOne({ username: req.session.user });
         if (balance) {
@@ -237,42 +234,7 @@ router.post("/history", async (req, res) => {
         console.error("Error saving daily task:", error);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     } 
-});
-
-router.delete("/history/delete", async (req, res) => {
-    const username = req.session.user;
-    try {
-        const deleteHistory = await History.deleteMany({ username: username });
-
-        if (deleteHistory.deletedCount === 0) {
-            res.status(404).json({ success: false, message: 'History not found' });
-            return;
-        }
-        res.status(200).json({ success: true, message: 'All tasks deleted successfully' });
-    } catch (error) {
-        console.error("Error deleting history:", error);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
-    }
-});
-
-router.get("/gethistory", async (req, res) => {
-    try {
-        const getHistory = await History.find({ username: req.session.user });
-        const formattedHistory = getHistory.map(history => ({
-            username: history.username,
-            formattedDate: history.formattedDate,
-            formattedTime: history.formattedTime,
-            type: history.type,
-            amount: history.amount
-        }));
-        
-        res.setHeader('Content-Type', 'application/json');
-        res.json({ getHistory: formattedHistory });
-    } catch (error) {
-        console.error("Error retrieving daily tasks:", error);
-        res.status(500).send("Internal Server Error");
-    }
-});
+});*/
 
 router.get("/setting", async (req, res) => {
     try {
@@ -385,6 +347,135 @@ router.post("/logout", async (req, res) => {
             res.json({ success: true, message: "Logout successful" });
         }
     });
+});
+
+router.get("/money", isAuthenticated, async (req, res) => {
+    const balance = await Balance.findOne({ username: req.session.user });
+    const value = balance.value;
+    res.render('money', {usernames: req.session.user, value: value});
+});
+
+router.post("/addvalue", async (req, res) => {
+    const { value, formattedDate, formattedTime, type, amount } = req.body;
+    const balance = await Balance.findOne({ username: req.session.user });
+    const values = balance.value;
+    const balanceTotal = value + values;
+    try {
+        const currentHistory = await History.find({ username: req.session.user });
+            if (currentHistory.length >= 10) {
+                const oldestHistory = currentHistory.shift();
+                await History.findByIdAndDelete(oldestHistory._id);
+            };
+        let newHistory = new History({
+            username: req.session.user,
+            formattedDate: formattedDate,
+            formattedTime: formattedTime,
+            type: type,
+            amount: amount
+        })
+        await newHistory.save();
+        const update = await Balance.findOneAndUpdate({ username: req.session.user }, { value: balanceTotal }, { upsert: true, new: true });
+        if (update) {
+            const data = update.value;
+            res.json(data);
+        }       
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred while updating the balance!' });
+    }
+});
+
+router.post("/minvalue", async (req, res) => {
+    const { value, formattedDate, formattedTime, type, amount } = req.body;
+    const balance = await Balance.findOne({ username: req.session.user });
+    const values = balance.value;
+    const balanceTotal = values - value;
+    try {
+        const currentHistory = await History.find({ username: req.session.user });
+            if (currentHistory.length >= 10) {
+                const oldestHistory = currentHistory.shift();
+                await History.findByIdAndDelete(oldestHistory._id);
+            };
+        let newHistory = new History({
+            username: req.session.user,
+            formattedDate: formattedDate,
+            formattedTime: formattedTime,
+            type: type,
+            amount: amount
+        })
+
+        await newHistory.save();
+        const update = await Balance.findOneAndUpdate({ username: req.session.user }, { value: balanceTotal }, { upsert: true, new: true });
+        if (update) {
+            const data = update.value;
+            res.json(data);
+        }       
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred while updating the balance!' });
+    }
+});
+
+router.post("/resetvalue", async (req, res) => {
+    const { value, formattedDate, formattedTime, type } = req.body;
+    try {
+        const currentHistory = await History.find({ username: req.session.user });
+            if (currentHistory.length >= 10) {
+                const oldestHistory = currentHistory.shift();
+                await History.findByIdAndDelete(oldestHistory._id);
+            };
+        let newHistory = new History({
+            username: req.session.user,
+            formattedDate: formattedDate,
+            formattedTime: formattedTime,
+            type: type
+        })
+
+        await newHistory.save();
+        const update = await Balance.findOneAndUpdate({ username: req.session.user }, { value: value }, { upsert: true, new: true });
+        if (update) {
+            const data = update.value;
+            res.json(data);
+        }       
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred while updating the balance!' });
+    }
+});
+
+router.get("/gethistory", async (req, res) => {
+    try {
+        const getHistory = await History.find({ username: req.session.user });
+        const formattedHistory = getHistory.map(history => ({
+            username: history.username,
+            formattedDate: history.formattedDate,
+            formattedTime: history.formattedTime,
+            type: history.type,
+            amount: history.amount
+        }));
+        
+        res.setHeader('Content-Type', 'application/json');
+        res.json({ getHistory: formattedHistory });
+    } catch (error) {
+        console.error("Error retrieving daily tasks:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+router.delete("/history/delete", async (req, res) => {
+    const username = req.session.user;
+    try {
+        const deleteHistory = await History.deleteMany({ username: username });
+
+        if (deleteHistory.deletedCount === 0) {
+            res.status(404).json({ success: false, message: 'History not found' });
+            return;
+        }
+        res.status(200).json({ success: true, message: 'All tasks deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting history:", error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
 });
 
 module.exports = router;
