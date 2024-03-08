@@ -479,6 +479,12 @@
         $(document).ready(function() {
             initialHistory();
 
+            if ($('#history-log .log').length === 0) {
+                $('#history-log').append('<div class="not-found">Data not found</div>');
+            } else {
+                console.log('Length:', $('#history-log').children().length);
+            }
+
             $("#deposit-button").on("click", async function() {
                 var inputValue = $("#deposite").val();
                 var addValue = parseInt(inputValue);
