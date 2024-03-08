@@ -476,14 +476,15 @@
             $('#balance').text(addValue);
         });
 
-        $(document).ready(function() {
-            initialHistory();
-
-            if ($('#history-log .log').length === 0) {
+        if ($('#history-log .log').length === 0) {
                 $('#history-log').append('<div class="not-found">Data not found</div>');
+                console.log('Length:', $('#history-log').children().length);
             } else {
                 console.log('Length:', $('#history-log').children().length);
             }
+
+        $(document).ready(function() {
+            initialHistory();
 
             $("#deposit-button").on("click", async function() {
                 var inputValue = $("#deposite").val();
