@@ -476,7 +476,7 @@
             $('#balance').text(addValue);
         });
 
-        if ($('#history-log .log').length === 0) {
+        if ($('#history-log .log').length <= 1) {
                 $('#history-log').append('<div class="not-found">Data not found</div>');
                 console.log('Length:', $('#history-log').children().length);
             } else {
