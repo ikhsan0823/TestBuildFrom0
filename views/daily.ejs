@@ -37,7 +37,7 @@
     section.active .overlay,
     section.true .overlay,
     section.false .overlay{
-        z-index: 50;
+        z-index: 450;
         pointer-events: auto;
         opacity: 1;
     }
@@ -61,7 +61,7 @@
     section.false .uncompleted-item{
         opacity: 1;
         pointer-events: auto;
-        z-index: 100;
+        z-index: 500;
     }
     .uncompleted-item .uncompleted-item-close-btn{
         display: flex;
@@ -70,7 +70,7 @@
         right: 10px;
         top: 10px;
         cursor: pointer;
-        z-index: 200;
+        z-index: 550;
     }
     .uncompleted-item-close-btn i{
         font-size: 18px;
@@ -118,7 +118,7 @@
         box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
     }
     section.active .create-item{
-        z-index: 100;
+        z-index: 500;
         opacity: 1;
         pointer-events: auto;
     }
@@ -200,7 +200,7 @@
     section.true .finish-item{
         opacity: 1;
         pointer-events: auto;
-        z-index: 100;
+        z-index: 600;
     }
     .finish-item .close-item{
         width: 100%;
@@ -532,7 +532,7 @@
     and (max-device-width: 1024px) {
         .sidebar{
             position: fixed;
-            z-index: 1;
+            z-index: 400;
             background-color: #f9f9f9;
         }
         .content{
@@ -540,11 +540,15 @@
             height: 100vh;
             padding: 0px 100px 20px 150px;
         }
+        .content .header{
+            max-width: 75%;
+        }
         .uncompleted-item{
             left: 50%;
             top: 50%;
             transform: translate(20%, 10%);
             width: 600px;
+            z-index: 500;
         }
         .uncompleted-item-content .card{
             min-width: calc(100% / 2 - 50px);
@@ -571,11 +575,11 @@
             width: 100vw;
             height: 70px;
             background-color: #f9f9f9;
-            z-index: 100;
+            z-index: 350;
         }
         .sidebar{
             position: fixed;
-            z-index: 200;
+            z-index: 400;
             background-color: transparent;
         }
         .content .header{
@@ -603,13 +607,13 @@
         section.active .overlay,
         section.true .overlay,
         section.false .overlay {
-            z-index: 400;
-        }
-        section.false .uncompleted-item {
             z-index: 450;
         }
-        section.true .finish-item {
+        section.false .uncompleted-item {
             z-index: 500;
+        }
+        section.true .finish-item {
+            z-index: 600;
         }
         section.active .create-item{
             z-index: 500;
@@ -647,7 +651,7 @@
     and (orientation: landscape) {
         .sidebar{
             position: fixed;
-            z-index: 1;
+            z-index: 450;
             background-color: #f9f9f9;
         }
         .uncompleted-item{

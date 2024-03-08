@@ -140,6 +140,17 @@
     }
     .account-setting .content-account{
         display: flex;
+        flex-direction: column;
+    }
+    .content-account .account-name,
+    .content-account .account-username,
+    .content-account .account-email,
+    .content-account .account-birth,
+    .content-account .account-gender,
+    .content-account .account-phone{
+        display: flex;
+        height: 50px;
+        align-items: center;
     }
     .content-account .title-account{
         display: flex;
@@ -149,6 +160,7 @@
         font-weight: 500;
         color: #030303;
         width: 30%;
+        min-width: 150px;
     }
     .content-account .desc-account{
         display: flex;
@@ -158,6 +170,7 @@
         font-weight: 600;
         color: #030303;
         width: 70%;
+        word-break: break-all;
     }
     .content-container .edit-account{
         display: flex;
@@ -193,7 +206,7 @@
     }
     section.active .overlay,
     section.actives .overlay{
-        z-index: 50;
+        z-index: 250;
         pointer-events: auto;
         opacity: 1;
     }
@@ -214,7 +227,7 @@
     }
     section.active .edit-form,
     section.actives .reset-form{
-        z-index: 100;
+        z-index: 300;
         opacity: 1;
         pointer-events: auto;
     }
@@ -288,8 +301,8 @@
     .reset-form form #get-token-btn{
         margin-bottom: 10px;
     }
-    .gender,
-    .name{
+    .account-gender,
+    .account-name{
         text-transform: capitalize;
     }
 
@@ -321,7 +334,7 @@
             width: 100vw;
             height: 70px;
             background-color: transparent;
-            z-index: 200;
+            z-index: 150;
         }
         .sidebar{
             position: fixed;
@@ -426,24 +439,32 @@
                         <div>Profile</div>
                     </div>
                     <div class="content-account">
-                        <div class="title-account">
-                            <div>Name</div>
-                            <div>Username</div>
-                            <div>Email</div>
-                            <div>Date of Birth</div>
-                            <div>Gender</div>
-                            <div>Phone Number</div>
-                        </div>
-                        <div class="desc-account">
-                            <% users.forEach(function(user) { %>
-                                <div class="name"><%= user.name ? user.name : '-' %></div>
-                                <div><%= username %></div>
-                                <div><%= user.email ? user.email : '-' %></div>
-                                <div><%= user.birth ? user.birth : '-' %></div>
-                                <div class="gender"><%= user.gender ? user.gender : '-' %></div>
-                                <div><%= user.phoneNum ? user.phoneNum : '-' %></div>
-                            <% }); %>
-                        </div>                        
+                        <% users.forEach(function(user) { %>
+                            <div class="account-name">
+                                <div class="title-account">Name</div>
+                                <div class="desc-account"><%= user.name ? user.name : '-' %></div>
+                            </div>
+                            <div class="account-username">
+                                <div class="title-account">Username</div>
+                                <div class="desc-account"><%= username %></div>
+                            </div>
+                            <div class="account-email">
+                                <div class="title-account">Email</div>
+                                <div class="desc-account"><%= user.email ? user.email : '-' %></div>
+                            </div>
+                            <div class="account-birth">
+                                <div class="title-account">Date of Birth</div>
+                                <div class="desc-account"><%= user.birth ? user.birth : '-' %></div>
+                            </div>
+                            <div class="account-gender">
+                                <div class="title-account">Gender</div>
+                                <div class="desc-account"><%= user.gender ? user.gender : '-' %></div>
+                            </div>
+                            <div class="account-phone">
+                                <div class="title-account">Phone Number</div>
+                                <div class="desc-account"><%= user.phoneNum ? user.phoneNum : '-' %></div>
+                            </div>
+                        <% }); %>                        
                     </div>
                     <section>
                         <div class="edit-form">
