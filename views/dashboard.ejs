@@ -804,7 +804,7 @@
 
         socket.on('userStatus', ({ username, online }) => {
             var yourusername = document.getElementById('username-hidden').innerHTML;
-            if (username === 'undefined') {
+            if (!username) {
                 return;
             }
             if (username === yourusername) {
