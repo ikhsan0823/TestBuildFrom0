@@ -804,6 +804,9 @@
 
         socket.on('userStatus', ({ username, online }) => {
             var yourusername = document.getElementById('username-hidden').innerHTML;
+            if (username === 'undefined') {
+                return;
+            }
             if (username === yourusername) {
                 $('#messages').append($('<li class="userstatus">').text(`You ${online ? 'join' : 'leave'} the chat`));
             } else {
