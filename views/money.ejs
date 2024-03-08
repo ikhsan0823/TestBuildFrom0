@@ -36,11 +36,6 @@
     .sidebar a{
         color: #030303;
     }
-    .sidebar:hover{
-        align-items: flex-start;
-        width: 300px;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
-    }
     .sidebar i{
         display: flex;
         align-items: center;
@@ -248,10 +243,8 @@
         box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
     }
     .content-container #trash-can{
-        position: absolute;
-        right: 160px;
+        align-self: flex-end;
         color: #030303;
-        bottom: 440px;
         scale: 1;
         cursor: pointer;
     }
@@ -264,12 +257,12 @@
         align-items: center;
         color: #b9b9b9;
         margin-bottom: 15px;
-        padding: 0px 10px 5px 0px;
+        padding: 0px 0px 5px 0px;
         font-size: 18px;
         font-weight: 600;
     }
     .header-history i{
-        margin-right: 5px;
+        margin-right: 10px;
     }
     .history-log{
         width: 100%;
@@ -301,11 +294,135 @@
     .date-container .time-log{
         font-size: 12px;
     }
+
+    /*media query*/
+
+    @media screen and (min-width: 1024px) {
+        
+    }
+    @media screen and (min-device-width: 768px)
+    and (max-device-width: 1024px) {
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: transparent;
+        }
+        .content{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100vh;
+            padding: 0px 20px 20px 100px;
+        }
+        .content-container .card-container{
+            display: flex;
+            flex-wrap: wrap;
+            width: 60%;
+        }
+        .content-container .history-container{
+            width: 40%;
+        }
+        .history-container .header-history{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #b9b9b9;
+            margin-bottom: 15px;
+            padding: 0px 0px 5px 0px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .card-container .card{
+            width: 75%;
+            margin-bottom: 20px;
+            margin-right: 0;
+        }
+        .header-history-text{
+            text-align: center;
+            width: 50%;  
+        }
+    }
+    @media screen and (max-device-width: 480px)
+    and (orientation: portrait) {
+        .headershape{
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 200;
+        }
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: transparent;
+        }
+        .content{
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 10px 20px 10px;
+        }
+        .content-container .card-container{
+            display: flex;
+            flex-wrap: wrap;
+            width: 60%;
+        }
+        .content-container .history-container{
+            width: 40%;
+        }
+        .card-container .card{
+            width: 100%;
+            margin-bottom: 20px;
+            margin-right: 0;
+        }
+        .content .header{
+            max-width: 100%;
+        }
+        .header-history-text{
+            text-align: center;
+            width: 100%;  
+            font-size: 15px;
+        }
+        .history-container .header-history{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    @media screen and (max-device-width: 640px)
+    and (orientation: landscape) {
+        .sidebar{
+            position: fixed;
+            z-index: 200;
+            background-color: #f9f9f9;
+        }
+        .content{
+            width: 100vw;
+            height: 100vh;
+            padding: 0px 10px 20px 100px;
+        }
+        .content-container .card-container{
+            display: flex;
+            flex-wrap: wrap;
+            width: 60%;
+        }
+        .content-container .history-container{
+            width: 40%;
+        }
+        .card-container .card{
+            width: 75%;
+            margin-bottom: 20px;
+            margin-right: 0;
+        }
+    }
 </style>
 <body>
     <div class="container">
-        <div onmouseover="main()" onmouseout="hide()" class="sidebar">
-            <i class="fa-solid fa-bars"></i>
+        <div class="headershape"></div>
+        <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
+            <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
             <div id="barList" class="sidebar-list">
                 <a href="/dashboard"><div onmouseover="setColor7()" onmouseout="unsetColor7()" class="my-list">
                     <i id="color7" class="fa-solid fa-table-columns"></i>
@@ -387,12 +504,12 @@
                     </div>
                 </div>
                 <div class="history-container">
-                    <div id="trash-can">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </div>
                     <div class="header-history">
                         <i class="fa-solid fa-clock-rotate-left"></i>
                         <div class="header-history-text">Transaction History</div>
+                        <div id="trash-can">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </div>
                     </div>
                     <div id="history-log" class="history-log">
                     </div>
@@ -403,13 +520,65 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         function main(){
-            document.getElementById("barList").style.display = "block";
-            document.getElementById("account-list").style.display = "block";
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "block";
+                document.getElementById("account-list").style.display = "block";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "300px";
+                sidebar.style.backgroundColor = "#f9f9f9";
+                sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+            }
         }
         function hide(){
-            document.getElementById("barList").style.display = "none";
-            document.getElementById("account-list").style.display = "none";
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "none";
+                document.getElementById("account-list").style.display = "none";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "";
+                sidebar.style.backgroundColor = "";
+                sidebar.style.boxShadow = "";
+            }
         }
+
+        let isDisplayed = false;
+        function toggleDisplay() {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                event.stopPropagation();
+                const barList = document.getElementById("barList");
+                const accountList = document.getElementById("account-list");
+                const sidebar = document.getElementById("sidebar");
+                if(!isDisplayed) {
+                    barList.style.display = "block";
+                    accountList.style.display = "block";
+                    sidebar.style.width = "200px";
+                    sidebar.style.backgroundColor = "#f9f9f9";
+                    sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+                } else {
+                    sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    barList.style.display = "none";
+                    accountList.style.display = "none";
+                    sidebar.style.boxShadow = "";
+                }
+                isDisplayed = !isDisplayed;
+            }
+
+        }
+
+        document.addEventListener("click", function(event) {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                const sidebar = document.getElementById("sidebar");
+                const isClickInsideSidebar = sidebar.contains(event.target);
+
+                if (!isClickInsideSidebar) {sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    sidebar.style.boxShadow = "";
+                    document.getElementById("barList").style.display = "none";
+                    document.getElementById("account-list").style.display = "none";
+                    isDisplayed = false;
+                }
+            }
+        });
     
         function setColor(){
             document.getElementById("color").style.color = "#cfcfcf";
