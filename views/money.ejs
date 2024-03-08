@@ -75,6 +75,10 @@
         color: #cfcfcf;
         background-color: #030303;
     }
+    .sidebar-list #active-sidebar{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
     .sidebar .sidebar-account{
         display: none;
         position: relative;
@@ -439,7 +443,7 @@
                     <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
                     <div>My Monthly</div>
                 </div>
-                <a href="/money"><div onmouseover="setColor3()" onmouseout="unsetColor3()" class="my-list">
+                <a href="/money"><div class="my-list" id="active-sidebar">
                     <i id="color3" id="color" class="fa-solid fa-wallet"></i>
                     <div>My Money</div>
                 </div></a>
@@ -597,12 +601,7 @@
         function unsetColor2(){
             document.getElementById("color2").style.color = "#030303";
         }
-        function setColor3(){
-            document.getElementById("color3").style.color = "#cfcfcf";
-        }
-        function unsetColor3(){
-            document.getElementById("color3").style.color = "#030303";
-        }
+        document.getElementById("color3").style.color = "#cfcfcf";
         function setColor4(){
             document.getElementById("color4").style.color = "#cfcfcf";
         }

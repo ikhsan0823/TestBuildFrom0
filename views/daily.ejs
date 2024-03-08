@@ -338,6 +338,10 @@
         color: #cfcfcf;
         background-color: #030303;
     }
+    .sidebar-list #active-sidebar{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
     .sidebar .sidebar-account{
         display: none;
         position: relative;
@@ -753,7 +757,7 @@
                     <i id="color7" class="fa-solid fa-table-columns"></i>
                     <div>Dashboard</div>
                 </div></a>
-                <a href="/daily"><div onmouseover="setColor()" onmouseout="unsetColor()" class="my-list">
+                <a href="/daily"><div class="my-list" id="active-sidebar">
                     <i id="color" class="fa-solid fa-calendar-day"></i>
                     <div>My Daily</div>
                 </div></a>
@@ -869,12 +873,7 @@
         });
     
         //Functions to set and unset color for elements
-        function setColor(){
-            document.getElementById("color").style.color = "#cfcfcf";
-        }
-        function unsetColor(){
-            document.getElementById("color").style.color = "#030303";
-        }
+        document.getElementById("color").style.color = "#cfcfcf";
         function setColor1(){
             document.getElementById("color1").style.color = "#cfcfcf";
         }

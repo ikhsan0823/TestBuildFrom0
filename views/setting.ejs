@@ -99,6 +99,10 @@
         color: #cfcfcf;
         background-color: #030303;
     }
+    .sidebar-account #active-sidebar{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
     .content{
         display: flex;
         flex-direction: column;
@@ -416,7 +420,7 @@
                 </div>
             </div>
             <div id="account-list" class="sidebar-account">
-                <a href="/setting"><div onmouseover="setColor5()" onmouseout="unsetColor5()" class="my-list">
+                <a href="/setting"><div class="my-list" id="active-sidebar">
                     <i id="color5" id="color" class="fa-solid fa-gear"></i>
                     <div>Setting</div>
                 </div></a>
@@ -629,12 +633,7 @@
         function unsetColor4(){
             document.getElementById("color4").style.color = "#030303";
         }
-        function setColor5(){
-            document.getElementById("color5").style.color = "#cfcfcf";
-        }
-        function unsetColor5(){
-            document.getElementById("color5").style.color = "#030303";
-        }
+        document.getElementById("color5").style.color = "#cfcfcf";
         function setColor6(){
             document.getElementById("color6").style.color = "#cfcfcf";
         }
