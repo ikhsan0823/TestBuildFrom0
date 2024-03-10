@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const mongoDBSession = require('connect-mongodb-session')(session);
 const ejs = require('ejs');
 const http = require('http');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
