@@ -106,18 +106,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var selfUsername = '<%= usernames %>';
     var usernameHidden = document.getElementById('username-hidden');
     usernameHidden.innerText = selfUsername;
-
-    var username = '<%= username %>';
     var greetingMessageElement = document.getElementById('greeting-message');
     var onlineCount = document.getElementById('online-count');
     var currentTime = new Date().getHours();
 
     if (currentTime >= 5 && currentTime < 12) {
-        greetingMessageElement.innerText = 'Good Morning, ' + username;
+        greetingMessageElement.innerText = 'Good Morning, ' + usernames;
     } else if (currentTime >= 12 && currentTime < 18) {
-        greetingMessageElement.innerText = 'Good Afternoon, ' + username;
+        greetingMessageElement.innerText = 'Good Afternoon, ' + usernames;
     } else {
-        greetingMessageElement.innerText = 'Good Evening, ' + username;
+        greetingMessageElement.innerText = 'Good Evening, ' + usernames;
     }
 
 });
@@ -205,8 +203,6 @@ function confirmLogout() {
         window.location.href = "/dashboard";
     }
 }
-
-const username = '<%= usernames %>';
 
         const socket = io('https://freckle-peaceful-singularity.glitch.me',{
             withCredentials: true,
