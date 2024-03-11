@@ -19,10 +19,7 @@ const isAuthenticated = (req, res, next) => {
 
 router.get("/", async (req, res) => {
     if (req.session.isAuth) {
-        const nameUser = await Users.findOne({ username: req.session.user })
-        if (nameUser) {
-            res.render("dashboard", { username: nameUser.name || req.session.user, usernames: req.session.user });
-        }
+        res.render("dashboard");
         return;
     }
     res.render('index');
@@ -99,10 +96,14 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/dashboard", isAuthenticated, async (req, res) => {
+    res.render("dashboard");    
+});
+
+router.get("/getUsername", isAuthenticated, async (req, res) => {
     const nameUser = await Users.findOne({ username: req.session.user })
     if (nameUser) {
-        res.render("dashboard", { username: nameUser.name || req.session.user, usernames: req.session.user });
-    }      
+        res.json({ usernames: nameUser.name || req.session.user, username: req.session.user });
+    }
 });
 
 router.get("/daily", isAuthenticated, async (req, res) => {
@@ -350,10 +351,14 @@ router.post("/logout", async (req, res) => {
 });
 
 router.get("/money", isAuthenticated, async (req, res) => {
+    res.render('money');
+});
+
+router.get("/getValue", isAuthenticated, async (req, res) => {
     const balance = await Balance.findOne({ username: req.session.user });
     const value = balance.value;
-    res.render('money', {usernames: req.session.user, value: value});
-});
+    res.json({ usernames: req.session.user, value: value });
+})
 
 router.post("/addvalue", async (req, res) => {
     const { value, formattedDate, formattedTime, type, amount } = req.body;

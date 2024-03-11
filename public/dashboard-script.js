@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 function main(){
     if (window.matchMedia("(min-width: 1023px)").matches) {
         document.getElementById("barList").style.display = "block";
@@ -102,23 +104,30 @@ function unsetColor6(){
     document.getElementById("color6").style.color = "#030303";
 }
 document.getElementById("color7").style.color = "#cfcfcf";
+
 document.addEventListener('DOMContentLoaded', function () {
     var selfUsername = '<%= usernames %>';
     var usernameHidden = document.getElementById('username-hidden');
     usernameHidden.innerText = selfUsername;
-
-    var usernames = '<%= username %>';
     var greetingMessageElement = document.getElementById('greeting-message');
     var onlineCount = document.getElementById('online-count');
     var currentTime = new Date().getHours();
 
-    if (currentTime >= 5 && currentTime < 12) {
-        greetingMessageElement.innerText = 'Good Morning, ' + usernames;
-    } else if (currentTime >= 12 && currentTime < 18) {
-        greetingMessageElement.innerText = 'Good Afternoon, ' + usernames;
-    } else {
-        greetingMessageElement.innerText = 'Good Evening, ' + usernames;
-    }
+    fetch('/getUsername')
+    .then(response => response.json())
+    .then(data => {
+        var usernames = data.usernames;
+        if (currentTime >= 5 && currentTime < 12) {
+            greetingMessageElement.innerText = 'Good Morning, ' + usernames;
+        } else if (currentTime >= 12 && currentTime < 18) {
+            greetingMessageElement.innerText = 'Good Afternoon, ' + usernames;
+        } else {
+            greetingMessageElement.innerText = 'Good Evening, ' + usernames;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    })
 
 });
 
@@ -206,8 +215,12 @@ function confirmLogout() {
     }
 }
 
-const username = '<%= usernames %>';
 
+fetch('/getUsername')
+    .then(response => response.json())
+    .then(data => {
+        var username = data.username;
+        const username = '<%= usernames %>';
         const socket = io('https://freckle-peaceful-singularity.glitch.me',{
             withCredentials: true,
             query: {
@@ -223,8 +236,7 @@ const username = '<%= usernames %>';
             if (inputValue.trim() === "") {
                 return false;
             }
-
-            socket.emit('chat', { message: inputValue, username: username });
+        socket.emit('chat', { message: inputValue, username: username });
             $('#m').val('');
             return false;
         });
@@ -240,14 +252,13 @@ const username = '<%= usernames %>';
             var component1 = $('<div class="username-chat">').text(chatUser);
             var component2 = $('<div class="chat-text">').text(chatText);
             var component3 = $('<div class="chat-time">').text(chatTimeHours + ':' + (chatTimeMinutes < 10 ? '0' : '') + chatTimeMinutes);
-            
+                    
             listChat.append(component1, component2, component3);
             $('#messages').append(listChat);
 
             var lastChatList = $('#messages li:last')[0];
             lastChatList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
         });
-
         socket.on('userStatus', ({ username, online }) => {
             var yourusername = document.getElementById('username-hidden').innerHTML;
             if (!username) {
@@ -261,11 +272,13 @@ const username = '<%= usernames %>';
             var lastStatusList = $('#messages .userstatus:last')[0];
             lastStatusList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
         });
-
         socket.on('updateUserCount', (onlineUserCount) => {
             $('#online-count').text(onlineUserCount);
         });
-
         window.addEventListener('beforeunload', () => {
             socket.emit('logout', username);
         });
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    })
