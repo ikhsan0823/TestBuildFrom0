@@ -106,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var selfUsername = '<%= usernames %>';
     var usernameHidden = document.getElementById('username-hidden');
     usernameHidden.innerText = selfUsername;
+
+    var usernames = '<%= username %>';
     var greetingMessageElement = document.getElementById('greeting-message');
     var onlineCount = document.getElementById('online-count');
     var currentTime = new Date().getHours();
@@ -203,6 +205,8 @@ function confirmLogout() {
         window.location.href = "/dashboard";
     }
 }
+
+const username = '<%= usernames %>';
 
         const socket = io('https://freckle-peaceful-singularity.glitch.me',{
             withCredentials: true,
