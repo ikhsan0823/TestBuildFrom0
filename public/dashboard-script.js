@@ -220,7 +220,6 @@ fetch('/getUsername')
     .then(response => response.json())
     .then(data => {
         var username = data.username;
-        const username = '<%= usernames %>';
         const socket = io('https://freckle-peaceful-singularity.glitch.me',{
             withCredentials: true,
             query: {
