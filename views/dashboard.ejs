@@ -1,827 +1,924 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Self Manage Dashboard</title>
-    <link rel="icon" href="/R.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<style>
-    *{
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        font-family: sans-serif;
-        text-decoration: none;
+    <link rel="icon" href="/R.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+      text-decoration: none;
     }
-    body{
-        background-color: #f9f9f9;
+    body {
+      background-color: #f9f9f9;
     }
-    .container{
-        height: 100vh;
-        display: flex;
+    .container {
+      height: 100vh;
+      display: flex;
     }
-    .sidebar{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 75px;
-        height: 100vh;
-        padding: 20px 20px 20px 25px;
-        color: #030303;
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 75px;
+      height: 100vh;
+      padding: 20px 20px 20px 25px;
+      color: #030303;
     }
-    .sidebar a{
-        color: #030303;
+    .sidebar a {
+      color: #030303;
     }
-    .sidebar i{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #030303;
-        font-size: 22px;
-        cursor: pointer;
-        width: 35px;
-        height: 35px;
-        border: solid 2px #030303;
-        border-radius: 50%;
+    .sidebar i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #030303;
+      font-size: 22px;
+      cursor: pointer;
+      width: 35px;
+      height: 35px;
+      border: solid 2px #030303;
+      border-radius: 50%;
     }
-    .sidebar .sidebar-list{
-        display: none;
-        position: relative;
-        margin-top: 25px;
-        line-height: 45px;
-        width: 100%;
-        border-bottom: solid 1px #d8d8d8;
+    .sidebar .sidebar-list {
+      display: none;
+      position: relative;
+      margin-top: 25px;
+      line-height: 45px;
+      width: 100%;
+      border-bottom: solid 1px #d8d8d8;
     }
-    .sidebar .sidebar-list .my-list i{
-        font-size: 15px;
-        margin-right: 10px;
-        border: none;
-        color: #030303;
+    .sidebar .sidebar-list .my-list i {
+      font-size: 15px;
+      margin-right: 10px;
+      border: none;
+      color: #030303;
     }
-    .sidebar .sidebar-list .my-list{
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        cursor: pointer;
-        width: 100%;
-        margin-bottom: 5px;
-        border-radius: 8px;
+    .sidebar .sidebar-list .my-list {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 5px;
+      border-radius: 8px;
     }
-    .sidebar-list .my-list:hover{
-        color: #cfcfcf;
-        background-color: #030303;
+    .sidebar-list .my-list:hover {
+      color: #cfcfcf;
+      background-color: #030303;
     }
-    .sidebar-list #active-sidebar{
-        color: #cfcfcf;
-        background-color: #030303;
+    .sidebar-list #active-sidebar {
+      color: #cfcfcf;
+      background-color: #030303;
     }
-    .sidebar .sidebar-account{
-        display: none;
-        position: relative;
-        margin-top: 25px;
-        line-height: 45px;
-        width: 100%;
+    .sidebar .sidebar-account {
+      display: none;
+      position: relative;
+      margin-top: 25px;
+      line-height: 45px;
+      width: 100%;
     }
-    .sidebar .sidebar-account .my-list i{
-        font-size: 15px;
-        margin-right: 10px;
-        border: none;
-        color: #030303;
+    .sidebar .sidebar-account .my-list i {
+      font-size: 15px;
+      margin-right: 10px;
+      border: none;
+      color: #030303;
     }
-    .sidebar .sidebar-account .my-list{
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        cursor: pointer;
-        width: 100%;
-        margin-bottom: 5px;
-        border-radius: 8px;
+    .sidebar .sidebar-account .my-list {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 5px;
+      border-radius: 8px;
     }
-    .sidebar-account .my-list:hover{
-        color: #cfcfcf;
-        background-color: #030303;
+    .sidebar-account .my-list:hover {
+      color: #cfcfcf;
+      background-color: #030303;
     }
-    .dashboard{
-        display: flex;
-        flex-direction: column;
-        padding: 0px 150px 0px 150px;
-        width: 100%;
-        height: 100vh;
+    .dashboard {
+      display: flex;
+      flex-direction: column;
+      padding: 0px 150px 0px 150px;
+      width: 100%;
+      height: 100vh;
     }
-    .dashboard .header{
-        display: flex;
-        position: relative;
-        width: 100%;
-        height: 200px;
+    .dashboard .header {
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: 200px;
     }
-    .header .greeting{
-        display: flex;
-        flex-direction: column;
-        width: 80%;
-        height: 100%;
-        justify-content: center;
-        font-size: 30px;
-        font-weight: 700;
-        line-height: 36px;
+    .header .greeting {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      height: 100%;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 36px;
     }
-    .greeting .greeting-text{
-        color: #030303;
+    .greeting .greeting-text {
+      color: #030303;
     }
-    .greeting .motivation-text{
-        color: #d8d8d8;
+    .greeting .motivation-text {
+      color: #d8d8d8;
     }
-    .header .calendar{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 20%;
-        height: 100%;
+    .header .calendar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 20%;
+      height: 100%;
     }
-    .calendar .calendar-day{
-        color: #9b9b9b;
-        font-size: 18px;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-bottom: -5px;
+    .calendar .calendar-day {
+      color: #9b9b9b;
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: -5px;
     }
-    .calendar .calendar-date{
-        color: #030303;
-        font-size: 42px;
-        font-weight: 700;
-        line-height: 45px;
-        margin-bottom: -5px;
+    .calendar .calendar-date {
+      color: #030303;
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 45px;
+      margin-bottom: -5px;
     }
-    .calendar .calendar-month{
-        color: #d8d8d8;
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 1.2;
+    .calendar .calendar-month {
+      color: #d8d8d8;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.2;
     }
-    .dashboard .list{
-        position: relative;
-        width: 100%;
-        height: 100%;
+    .dashboard .list {
+      position: relative;
+      width: 100%;
+      height: 100%;
     }
-    .list .header-list{
-        color: #030303;
-        font-size: 20px;
-        font-weight: 600;
-        padding: 15px 25px 15px 25px;
-        max-width: 100%;
-        margin-top: 20px;
-        border-radius: 10rem;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    .list .header-list {
+      color: #030303;
+      font-size: 20px;
+      font-weight: 600;
+      padding: 15px 25px 15px 25px;
+      max-width: 100%;
+      margin-top: 20px;
+      border-radius: 10rem;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
     }
-    .list .content-list{
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 100%;
-        gap: 20px 20px;
-        padding: 30px 0 0 20px;
+    .list .content-list {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 100%;
+      gap: 20px 20px;
+      padding: 30px 0 0 20px;
     }
     .content-list .list-card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #030303;
-        font-size: 18px;
-        font-weight: 600;
-        height: 150px;
-        width: calc(100% / 3 - 20px);
-        padding: 20px 15px 20px 15px;
-        border-radius: 20px;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
-        cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #030303;
+      font-size: 18px;
+      font-weight: 600;
+      height: 150px;
+      width: calc(100% / 3 - 20px);
+      padding: 20px 15px 20px 15px;
+      border-radius: 20px;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
     }
-    .content-list .list-card:hover{
-        scale: 1.05;
+    .content-list .list-card:hover {
+      scale: 1.05;
     }
-    .list-card i{
-        font-size: 30px;
-        margin-bottom: 5px;
+    .list-card i {
+      font-size: 30px;
+      margin-bottom: 5px;
     }
-    .chat-container .button-chat{
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        right: 3%;
-        bottom: 5%;
-        background-color: #9b9b9b;
-        color: #f9f9f9;
-        width: 100px;
-        padding: 10px 15px 10px 15px;
-        border-radius: 25px;
-        font-weight: 700;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    .chat-container .button-chat {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 3%;
+      bottom: 5%;
+      background-color: #9b9b9b;
+      color: #f9f9f9;
+      width: 100px;
+      padding: 10px 15px 10px 15px;
+      border-radius: 25px;
+      font-weight: 700;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
     }
-    .chat-container .button-chat:hover{
-        background-color: #cfcfcf;
+    .chat-container .button-chat:hover {
+      background-color: #cfcfcf;
     }
-    .button-chat i{
-        margin-right: 10px;
+    .button-chat i {
+      margin-right: 10px;
     }
-    .live-chat{
-        opacity: 0;
-        pointer-events: none;
-        position: absolute;
-        right: 3%;
-        bottom: 5%;
-        width: 350px;
-        background-color: #9b9b9b;
-        color: #030303;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
-        border-radius: 8px;
-        padding: 10px 10px 10px 10px;
+    .live-chat {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 3%;
+      bottom: 5%;
+      width: 350px;
+      background-color: #9b9b9b;
+      color: #030303;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      padding: 10px 10px 10px 10px;
     }
-    section.livechat-active .live-chat{
-        opacity: 1;
-        pointer-events: auto;
+    section.livechat-active .live-chat {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .live-chat .header-chat{
-        display: flex;
-        justify-content: space-between;
-        color: #f9f9f9;
-        width: 100%;
-        font-weight: 700;
+    .live-chat .header-chat {
+      display: flex;
+      justify-content: space-between;
+      color: #f9f9f9;
+      width: 100%;
+      font-weight: 700;
     }
-    .header-chat i{
-        cursor: pointer;
+    .header-chat i {
+      cursor: pointer;
     }
-    .live-chat .main-chat{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin-top: 20px;
-        width: 100%;
-        height: 350px;
-        border-radius: 8px;
-        padding: 10px 10px 10px 10px;
-        background-color: #d8d8d8;
+    .live-chat .main-chat {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 20px;
+      width: 100%;
+      height: 350px;
+      border-radius: 8px;
+      padding: 10px 10px 10px 10px;
+      background-color: #d8d8d8;
     }
-    .main-chat #messages{
-        display: flex;
-        flex-direction: column;
-        list-style-type: none;
-        max-height: 300px;
-        overflow: auto;
-        scrollbar-width: thin;
-        scrollbar-color: transparent transparent;
+    .main-chat #messages {
+      display: flex;
+      flex-direction: column;
+      list-style-type: none;
+      max-height: 300px;
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
     }
-    #messages li{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-width: 100px;
-        max-width: 200px;
-        min-height: fit-content;
-        width: fit-content;
-        height: fit-content;
-        background-color: #9b9b9b;
-        color: #f9f9f9;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 5px 10px 5px 10px;
-        border-radius: 10px;
-        margin-bottom: 8px;
-        overflow-wrap: break-word;
+    #messages li {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 100px;
+      max-width: 200px;
+      min-height: fit-content;
+      width: fit-content;
+      height: fit-content;
+      background-color: #9b9b9b;
+      color: #f9f9f9;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px 5px 10px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      overflow-wrap: break-word;
     }
-    .userstatus{
-        align-self: center;
-        background-color: #cccccc !important;
+    .userstatus {
+      align-self: center;
+      background-color: #cccccc !important;
     }
-    li .username-chat{
-        width: 100%;
-        text-align: left;
-        font-size: 10px;
-        font-weight: 500;
+    li .username-chat {
+      width: 100%;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 500;
     }
-    li .chat-text{
-        width: 100%;
-        text-align: left;
-        font-size: 12px;
-        font-weight: 600;
+    li .chat-text {
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
     }
-    li .chat-time{
-        width: 100%;
-        text-align: right;
-        font-size: 8px;
-        font-weight: 400;
+    li .chat-time {
+      width: 100%;
+      text-align: right;
+      font-size: 8px;
+      font-weight: 400;
     }
-    .main-chat form{
-        width: 100%;
-        height: 35px;
+    .main-chat form {
+      width: 100%;
+      height: 35px;
     }
-    .main-chat form input{
-        width: 82%;
-        height: 100%;
-        border-radius: 8px;
-        border: none;
-        margin-right: 3%;
-        padding: 10px 10px 10px 10px;
-        outline: none;
+    .main-chat form input {
+      width: 82%;
+      height: 100%;
+      border-radius: 8px;
+      border: none;
+      margin-right: 3%;
+      padding: 10px 10px 10px 10px;
+      outline: none;
     }
-    .main-chat form button{
-        width: 15%;
-        height: 100%;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
+    .main-chat form button {
+      width: 15%;
+      height: 100%;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
     }
 
-    .live-chat .user-online{
-        display: flex;
-        align-items: center;
-        margin-top: 5px;
-        font-size: 12px;
-        color: #f9f9f9;
-        font-weight: 600;
+    .live-chat .user-online {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+      font-size: 12px;
+      color: #f9f9f9;
+      font-weight: 600;
     }
-    .user-online i{
-        margin-right: 5px;
+    .user-online i {
+      margin-right: 5px;
     }
-    .main-chat .username-hidden{
-        display: none;
+    .main-chat .username-hidden {
+      display: none;
     }
 
     /*media query*/
 
-    @media screen and (min-device-width: 768px)
-    and (max-device-width: 1024px) {
-        .sidebar{
-            position: fixed;
-            z-index: 300;
-            background-color: #f9f9f9;
-        }
-        .content-list .list-card {
-            width: calc(100% / 2 - 20px);
-        }
-        .chat-container .button-chat{
-            position: fixed;
-        }
-        .live-chat{
-            width: 320px;
-            z-index: 200;
-            position: fixed;
-        }
-        .list .content-list{
-            padding: 30px 0 50px 0;
-        }
-        
+    @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      .sidebar {
+        position: fixed;
+        z-index: 300;
+        background-color: #f9f9f9;
+      }
+      .content-list .list-card {
+        width: calc(100% / 2 - 20px);
+      }
+      .chat-container .button-chat {
+        position: fixed;
+      }
+      .live-chat {
+        width: 320px;
+        z-index: 200;
+        position: fixed;
+      }
+      .list .content-list {
+        padding: 30px 0 50px 0;
+      }
     }
-    @media screen and (max-device-width: 480px)
-    and (orientation: portrait) {
-        .headershape{
-            position: fixed;
-            top: 0;
-            width: 100vw;
-            height: 70px;
-            background-color: #f9f9f9;
-            z-index: 200;
-        }
-        .sidebar{
-            position: fixed;
-            z-index: 300;
-            background-color: transparent;
-        }
-        .dashboard{
-            padding: 75px 20px 30px 20px;
-            height: 100%;
-        }
-        .header .greeting{
-            font-size: 23px;
-            line-height: 30px;
-        }
-        .content-list .list-card {
-            width: 100%;
-            padding: 20px 15px 20px 15px;
-        }
-        .list .content-list{
-            padding: 30px 0 50px 0;
-        }
-        .chat-container .button-chat{
-            position: fixed;
-        }
-        .live-chat{
-            position: fixed;
-            width: 320px;
-            z-index: 250;
-        }
+    @media screen and (max-device-width: 480px) and (orientation: portrait) {
+      .headershape {
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        height: 70px;
+        background-color: #f9f9f9;
+        z-index: 200;
+      }
+      .sidebar {
+        position: fixed;
+        z-index: 300;
+        background-color: transparent;
+      }
+      .dashboard {
+        padding: 75px 20px 30px 20px;
+        height: 100%;
+      }
+      .header .greeting {
+        font-size: 23px;
+        line-height: 30px;
+      }
+      .content-list .list-card {
+        width: 100%;
+        padding: 20px 15px 20px 15px;
+      }
+      .list .content-list {
+        padding: 30px 0 50px 0;
+      }
+      .chat-container .button-chat {
+        position: fixed;
+      }
+      .live-chat {
+        position: fixed;
+        width: 320px;
+        z-index: 250;
+      }
     }
-    @media screen and (max-device-width: 640px)
-    and (orientation: landscape) {
-        .sidebar{
-            position: fixed;
-            z-index: 300;
-            background-color: #f9f9f9;
-        }
-        .dashboard{
-            padding: 0px 50px 0px 100px;
-        }
-        .content-list .list-card {
-            width: calc(100% / 2 - 20px);
-        }
-        .chat-container .button-chat{
-            position: fixed;
-        }
-        .live-chat{
-            width: 320px;
-            z-index: 200;
-            position: fixed;
-        }
-        .list .content-list{
-            padding: 30px 0 50px 0;
-        }
+    @media screen and (max-device-width: 640px) and (orientation: landscape) {
+      .sidebar {
+        position: fixed;
+        z-index: 300;
+        background-color: #f9f9f9;
+      }
+      .dashboard {
+        padding: 0px 50px 0px 100px;
+      }
+      .content-list .list-card {
+        width: calc(100% / 2 - 20px);
+      }
+      .chat-container .button-chat {
+        position: fixed;
+      }
+      .live-chat {
+        width: 320px;
+        z-index: 200;
+        position: fixed;
+      }
+      .list .content-list {
+        padding: 30px 0 50px 0;
+      }
     }
-</style>
-<body>
+  </style>
+  <body>
     <div class="container">
-        <div class="headershape"></div>
-        <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
-            <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
-            <div id="barList" class="sidebar-list">
-                <a href="/dashboard"><div class="my-list" id="active-sidebar">
-                    <i id="color7" class="fa-solid fa-table-columns"></i>
-                    <div>Dashboard</div>
-                </div></a>
-                <a href="/daily"><div onmouseover="setColor()" onmouseout="unsetColor()" class="my-list">
-                    <i id="color" class="fa-solid fa-calendar-day"></i>
-                    <div>My Daily</div>
-                </div></a>
-                <a href="#"><div onmouseover="setColor1()" onmouseout="unsetColor1()" class="my-list">
-                    <i id="color1" id="color" class="fa-solid fa-calendar-week"></i>
-                    <div>My Weekly</div>
-                </div></a>
-                <div onmouseover="setColor2()" onmouseout="unsetColor2()" class="my-list">
-                    <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
-                    <div>My Monthly</div>
-                </div>
-                <a href="/money"><div onmouseover="setColor3()" onmouseout="unsetColor3()" class="my-list">
-                    <i id="color3" id="color" class="fa-solid fa-wallet"></i>
-                    <div>My Money</div>
-                </div></a>
-                <div onmouseover="setColor4()" onmouseout="unsetColor4()" class="my-list">
-                    <i id="color4" id="color" class="fa-solid fa-gift"></i>
-                    <div>My Reward</div>
-                </div>
-            </div>
-            <div id="account-list" class="sidebar-account">
-                <a href="/setting"><div onmouseover="setColor5()" onmouseout="unsetColor5()" class="my-list">
-                    <i id="color5" id="color" class="fa-solid fa-gear"></i>
-                    <div>Setting</div>
-                </div></a>
-                <div onclick="confirmLogout()" onmouseover="setColor6()" onmouseout="unsetColor6()" class="my-list">
-                    <i id="color6" id="color" class="fa-solid fa-right-from-bracket"></i>
-                    <div>Logout</div>
-                </div>
-            </div>
+      <div class="headershape"></div>
+      <div
+        onmouseover="main()"
+        onmouseout="hide()"
+        class="sidebar"
+        id="sidebar"
+      >
+        <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
+        <div id="barList" class="sidebar-list">
+          <a href="/dashboard"
+            ><div class="my-list" id="active-sidebar">
+              <i id="color7" class="fa-solid fa-table-columns"></i>
+              <div>Dashboard</div>
+            </div></a
+          >
+          <a href="/daily"
+            ><div
+              onmouseover="setColor()"
+              onmouseout="unsetColor()"
+              class="my-list"
+            >
+              <i id="color" class="fa-solid fa-calendar-day"></i>
+              <div>My Daily</div>
+            </div></a
+          >
+          <a href="#"
+            ><div
+              onmouseover="setColor1()"
+              onmouseout="unsetColor1()"
+              class="my-list"
+            >
+              <i id="color1" id="color" class="fa-solid fa-calendar-week"></i>
+              <div>My Weekly</div>
+            </div></a
+          >
+          <div
+            onmouseover="setColor2()"
+            onmouseout="unsetColor2()"
+            class="my-list"
+          >
+            <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
+            <div>My Monthly</div>
+          </div>
+          <a href="/money"
+            ><div
+              onmouseover="setColor3()"
+              onmouseout="unsetColor3()"
+              class="my-list"
+            >
+              <i id="color3" id="color" class="fa-solid fa-wallet"></i>
+              <div>My Money</div>
+            </div></a
+          >
+          <div
+            onmouseover="setColor4()"
+            onmouseout="unsetColor4()"
+            class="my-list"
+          >
+            <i id="color4" id="color" class="fa-solid fa-gift"></i>
+            <div>My Reward</div>
+          </div>
         </div>
-        <div class="dashboard">
-            <div class="header">
-                <div class="greeting">
-                    <div id="greeting-message" class="greeting-text"></div>
-                    <div id="motivation-text" class="motivation-text"></div>
-                </div>
-                <div class="calendar">
-                    <div id="day" class="calendar-day"></div>
-                    <div id="date" class="calendar-date"></div>
-                    <div id="month" class="calendar-month"></div>
-                </div>
-            </div>
-            <div class="list">
-                <div class="header-list">
-                    <div>Dashboard</div>
-                </div>
-                <div class="content-list">
-                    <div onclick="myDaily()" class="list-card">
-                        <i class="fa-solid fa-calendar-day"></i>
-                        <div>My Daily</div>
-                    </div>
-                    <div class="list-card">
-                        <i class="fa-solid fa-calendar-week"></i>
-                        <div>My Weekly</div>
-                    </div>
-                    <div class="list-card">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <div>My Monthly</div>
-                    </div>
-                    <div onclick="myMoney()" class="list-card">
-                        <i class="fa-solid fa-wallet"></i>
-                        <div>My Money</div>
-                    </div>
-                    <div class="list-card">
-                        <i class="fa-solid fa-gift"></i>
-                        <div>My Reward</div>
-                    </div>
-                </div>
-            </div>
+        <div id="account-list" class="sidebar-account">
+          <a href="/setting"
+            ><div
+              onmouseover="setColor5()"
+              onmouseout="unsetColor5()"
+              class="my-list"
+            >
+              <i id="color5" id="color" class="fa-solid fa-gear"></i>
+              <div>Setting</div>
+            </div></a
+          >
+          <div
+            onclick="confirmLogout()"
+            onmouseover="setColor6()"
+            onmouseout="unsetColor6()"
+            class="my-list"
+          >
+            <i
+              id="color6"
+              id="color"
+              class="fa-solid fa-right-from-bracket"
+            ></i>
+            <div>Logout</div>
+          </div>
         </div>
+      </div>
+      <div class="dashboard">
+        <div class="header">
+          <div class="greeting">
+            <div id="greeting-message" class="greeting-text"></div>
+            <div id="motivation-text" class="motivation-text"></div>
+          </div>
+          <div class="calendar">
+            <div id="day" class="calendar-day"></div>
+            <div id="date" class="calendar-date"></div>
+            <div id="month" class="calendar-month"></div>
+          </div>
+        </div>
+        <div class="list">
+          <div class="header-list">
+            <div>Dashboard</div>
+          </div>
+          <div class="content-list">
+            <div onclick="myDaily()" class="list-card">
+              <i class="fa-solid fa-calendar-day"></i>
+              <div>My Daily</div>
+            </div>
+            <div class="list-card">
+              <i class="fa-solid fa-calendar-week"></i>
+              <div>My Weekly</div>
+            </div>
+            <div class="list-card">
+              <i class="fa-solid fa-calendar-days"></i>
+              <div>My Monthly</div>
+            </div>
+            <div onclick="myMoney()" class="list-card">
+              <i class="fa-solid fa-wallet"></i>
+              <div>My Money</div>
+            </div>
+            <div class="list-card">
+              <i class="fa-solid fa-gift"></i>
+              <div>My Reward</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="chat-container">
-        <div class="button-chat">
-            <i class="fa-brands fa-rocketchat"></i>
-            <div>Chat</div>
+      <div class="button-chat">
+        <i class="fa-brands fa-rocketchat"></i>
+        <div>Chat</div>
+      </div>
+      <section>
+        <div class="live-chat">
+          <div class="header-chat">
+            <div>Live Chat</div>
+            <i id="close-chat" class="fa-solid fa-xmark"></i>
+          </div>
+          <div class="user-online">
+            <i class="fa-solid fa-user"></i>
+            <div id="online-count"></div>
+          </div>
+          <div class="main-chat">
+            <div id="username-hidden" class="username-hidden"></div>
+            <ul id="messages"></ul>
+            <form id="form" action="">
+              <input type="text" id="m" autocomplete="off" /><button>
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
         </div>
-        <section>
-            <div class="live-chat">
-                <div class="header-chat">
-                    <div>Live Chat</div>
-                    <i id="close-chat" class="fa-solid fa-xmark"></i>
-                </div>
-                <div class="user-online">
-                    <i class="fa-solid fa-user"></i>
-                    <div id="online-count"></div>
-                </div>
-                <div class="main-chat">
-                    <div id="username-hidden" class="username-hidden"></div>
-                    <ul id="messages"></ul>
-                    <form id="form" action="">
-                        <input type="text" id="m" autocomplete="off" /><button><i class="fa-solid fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-        </section>
+      </section>
     </div>
     <script>
-        function main(){
-            if (window.matchMedia("(min-width: 1023px)").matches) {
-                document.getElementById("barList").style.display = "block";
-                document.getElementById("account-list").style.display = "block";
-                const sidebar = document.getElementById("sidebar");
-                sidebar.style.width = "300px";
-                sidebar.style.backgroundColor = "#f9f9f9";
-                sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
-            }
+      function main() {
+        if (window.matchMedia("(min-width: 1023px)").matches) {
+          document.getElementById("barList").style.display = "block";
+          document.getElementById("account-list").style.display = "block";
+          const sidebar = document.getElementById("sidebar");
+          sidebar.style.width = "300px";
+          sidebar.style.backgroundColor = "#f9f9f9";
+          sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
         }
-        function hide(){
-            if (window.matchMedia("(min-width: 1023px)").matches) {
-                document.getElementById("barList").style.display = "none";
-                document.getElementById("account-list").style.display = "none";
-                const sidebar = document.getElementById("sidebar");
-                sidebar.style.width = "";
-                sidebar.style.backgroundColor = "";
-                sidebar.style.boxShadow = "";
-            }
+      }
+      function hide() {
+        if (window.matchMedia("(min-width: 1023px)").matches) {
+          document.getElementById("barList").style.display = "none";
+          document.getElementById("account-list").style.display = "none";
+          const sidebar = document.getElementById("sidebar");
+          sidebar.style.width = "";
+          sidebar.style.backgroundColor = "";
+          sidebar.style.boxShadow = "";
         }
+      }
 
-        let isDisplayed = false;
-        function toggleDisplay() {
-            if (window.matchMedia("(max-width: 1023px)").matches) {
-                event.stopPropagation();
-                const barList = document.getElementById("barList");
-                const accountList = document.getElementById("account-list");
-                const sidebar = document.getElementById("sidebar");
-                if(!isDisplayed) {
-                    barList.style.display = "block";
-                    accountList.style.display = "block";
-                    sidebar.style.width = "200px";
-                    sidebar.style.backgroundColor = "#f9f9f9";
-                    sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
-                } else {
-                    sidebar.style.width = "";
-                    sidebar.style.backgroundColor = "";
-                    barList.style.display = "none";
-                    accountList.style.display = "none";
-                    sidebar.style.boxShadow = "";
-                }
-                isDisplayed = !isDisplayed;
-            }
+      let isDisplayed = false;
+      function toggleDisplay() {
+        if (window.matchMedia("(max-width: 1023px)").matches) {
+          event.stopPropagation();
+          const barList = document.getElementById("barList");
+          const accountList = document.getElementById("account-list");
+          const sidebar = document.getElementById("sidebar");
+          if (!isDisplayed) {
+            barList.style.display = "block";
+            accountList.style.display = "block";
+            sidebar.style.width = "200px";
+            sidebar.style.backgroundColor = "#f9f9f9";
+            sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+          } else {
+            sidebar.style.width = "";
+            sidebar.style.backgroundColor = "";
+            barList.style.display = "none";
+            accountList.style.display = "none";
+            sidebar.style.boxShadow = "";
+          }
+          isDisplayed = !isDisplayed;
+        }
+      }
 
-        }
+      document.addEventListener("click", function (event) {
+        if (window.matchMedia("(max-width: 1023px)").matches) {
+          const sidebar = document.getElementById("sidebar");
+          const isClickInsideSidebar = sidebar.contains(event.target);
 
-        document.addEventListener("click", function(event) {
-            if (window.matchMedia("(max-width: 1023px)").matches) {
-                const sidebar = document.getElementById("sidebar");
-                const isClickInsideSidebar = sidebar.contains(event.target);
+          if (!isClickInsideSidebar) {
+            sidebar.style.width = "";
+            sidebar.style.backgroundColor = "";
+            sidebar.style.boxShadow = "";
+            document.getElementById("barList").style.display = "none";
+            document.getElementById("account-list").style.display = "none";
+            isDisplayed = false;
+          }
+        }
+      });
 
-                if (!isClickInsideSidebar) {sidebar.style.width = "";
-                    sidebar.style.backgroundColor = "";
-                    sidebar.style.boxShadow = "";
-                    document.getElementById("barList").style.display = "none";
-                    document.getElementById("account-list").style.display = "none";
-                    isDisplayed = false;
-                }
-            }
-        });
-    
-        function setColor(){
-            document.getElementById("color").style.color = "#cfcfcf";
-        }
-        function unsetColor(){
-            document.getElementById("color").style.color = "#030303";
-        }
-        function setColor1(){
-            document.getElementById("color1").style.color = "#cfcfcf";
-        }
-        function unsetColor1(){
-            document.getElementById("color1").style.color = "#030303";
-        }
-        function setColor2(){
-            document.getElementById("color2").style.color = "#cfcfcf";
-        }
-        function unsetColor2(){
-            document.getElementById("color2").style.color = "#030303";
-        }
-        function setColor3(){
-            document.getElementById("color3").style.color = "#cfcfcf";
-        }
-        function unsetColor3(){
-            document.getElementById("color3").style.color = "#030303";
-        }
-        function setColor4(){
-            document.getElementById("color4").style.color = "#cfcfcf";
-        }
-        function unsetColor4(){
-            document.getElementById("color4").style.color = "#030303";
-        }
-        function setColor5(){
-            document.getElementById("color5").style.color = "#cfcfcf";
-        }
-        function unsetColor5(){
-            document.getElementById("color5").style.color = "#030303";
-        }
-        function setColor6(){
-            document.getElementById("color6").style.color = "#cfcfcf";
-        }
-        function unsetColor6(){
-            document.getElementById("color6").style.color = "#030303";
-        }
-        document.getElementById("color7").style.color = "#cfcfcf";
-        document.addEventListener('DOMContentLoaded', function () {
-            var selfUsername = '<%= usernames %>';
-            var usernameHidden = document.getElementById('username-hidden');
-            usernameHidden.innerText = selfUsername;
+      function setColor() {
+        document.getElementById("color").style.color = "#cfcfcf";
+      }
+      function unsetColor() {
+        document.getElementById("color").style.color = "#030303";
+      }
+      function setColor1() {
+        document.getElementById("color1").style.color = "#cfcfcf";
+      }
+      function unsetColor1() {
+        document.getElementById("color1").style.color = "#030303";
+      }
+      function setColor2() {
+        document.getElementById("color2").style.color = "#cfcfcf";
+      }
+      function unsetColor2() {
+        document.getElementById("color2").style.color = "#030303";
+      }
+      function setColor3() {
+        document.getElementById("color3").style.color = "#cfcfcf";
+      }
+      function unsetColor3() {
+        document.getElementById("color3").style.color = "#030303";
+      }
+      function setColor4() {
+        document.getElementById("color4").style.color = "#cfcfcf";
+      }
+      function unsetColor4() {
+        document.getElementById("color4").style.color = "#030303";
+      }
+      function setColor5() {
+        document.getElementById("color5").style.color = "#cfcfcf";
+      }
+      function unsetColor5() {
+        document.getElementById("color5").style.color = "#030303";
+      }
+      function setColor6() {
+        document.getElementById("color6").style.color = "#cfcfcf";
+      }
+      function unsetColor6() {
+        document.getElementById("color6").style.color = "#030303";
+      }
+      document.getElementById("color7").style.color = "#cfcfcf";
+      document.addEventListener("DOMContentLoaded", function () {
+        var selfUsername = "<%= usernames %>";
+        var usernameHidden = document.getElementById("username-hidden");
+        usernameHidden.innerText = selfUsername;
 
-            var username = '<%= username %>';
-            var greetingMessageElement = document.getElementById('greeting-message');
-            var onlineCount = document.getElementById('online-count');
-            var currentTime = new Date().getHours();
-    
-            if (currentTime >= 5 && currentTime < 12) {
-                greetingMessageElement.innerText = 'Good Morning, ' + username;
-            } else if (currentTime >= 12 && currentTime < 18) {
-                greetingMessageElement.innerText = 'Good Afternoon, ' + username;
-            } else {
-                greetingMessageElement.innerText = 'Good Evening, ' + username;
-            }
+        var username = "<%= username %>";
+        var greetingMessageElement =
+          document.getElementById("greeting-message");
+        var onlineCount = document.getElementById("online-count");
+        var currentTime = new Date().getHours();
 
-        });
-    
-        document.addEventListener('DOMContentLoaded', function (){
-            var motivationText = [
-                "What's on your agenda for today?",
-                "Any plans on your schedule today?",
-                "What do you have lined up for today?",
-                "How are you spending your day today?",
-                "Any specific plans for today?",
-                "What's your plan of action for today?",
-                "What's in store for you today?",
-                "Any activities or tasks planned for today?",
-                "How are you occupying yourself today?",
-                "What are your plans for the day ahead?",
-                "Seize the day!",
-                "Embrace challenges boldly.",
-                "Pursue your passions.",
-                "Achieve your goals.",
-                "Stay focused, achieve.",
-                "Strive for greatness.",
-                "Unleash your potential.",
-                "Inspire with action.",
-                "Conquer your fears.",
-                "Make every moment count."
-            ];
-            var randomMotivation = motivationText[Math.floor(Math.random() * motivationText.length)];
-            document.getElementById('motivation-text').innerText = randomMotivation;
-        });
-    
-        document.addEventListener('DOMContentLoaded', function (){
-            var myDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            var myMonth = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'Desember'];
-            var currentDay = new Date().getDay();
-            var currentDate = new Date().getDate();
-            var currentMonth = new Date().getMonth();
-            var currentMyDay = myDay[currentDay];
-            var currentMyMonth = myMonth[currentMonth];
-            document.getElementById('day').innerText = currentMyDay;
-            document.getElementById('date').innerText = currentDate;
-            document.getElementById('month').innerText = currentMyMonth;
-        });
-    
-        function myDaily() {
-            window.location.href = '/daily';
+        if (currentTime >= 5 && currentTime < 12) {
+          greetingMessageElement.innerText = "Good Morning, " + username;
+        } else if (currentTime >= 12 && currentTime < 18) {
+          greetingMessageElement.innerText = "Good Afternoon, " + username;
+        } else {
+          greetingMessageElement.innerText = "Good Evening, " + username;
         }
-    
-        function myMoney() {
-            window.location.href = '/money';
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var motivationText = [
+          "What's on your agenda for today?",
+          "Any plans on your schedule today?",
+          "What do you have lined up for today?",
+          "How are you spending your day today?",
+          "Any specific plans for today?",
+          "What's your plan of action for today?",
+          "What's in store for you today?",
+          "Any activities or tasks planned for today?",
+          "How are you occupying yourself today?",
+          "What are your plans for the day ahead?",
+          "Seize the day!",
+          "Embrace challenges boldly.",
+          "Pursue your passions.",
+          "Achieve your goals.",
+          "Stay focused, achieve.",
+          "Strive for greatness.",
+          "Unleash your potential.",
+          "Inspire with action.",
+          "Conquer your fears.",
+          "Make every moment count.",
+        ];
+        var randomMotivation =
+          motivationText[Math.floor(Math.random() * motivationText.length)];
+        document.getElementById("motivation-text").innerText = randomMotivation;
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var myDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        var myMonth = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "Desember",
+        ];
+        var currentDay = new Date().getDay();
+        var currentDate = new Date().getDate();
+        var currentMonth = new Date().getMonth();
+        var currentMyDay = myDay[currentDay];
+        var currentMyMonth = myMonth[currentMonth];
+        document.getElementById("day").innerText = currentMyDay;
+        document.getElementById("date").innerText = currentDate;
+        document.getElementById("month").innerText = currentMyMonth;
+      });
+
+      function myDaily() {
+        window.location.href = "/daily";
+      }
+
+      function myMoney() {
+        window.location.href = "/money";
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const buttonChat = document.querySelector(".button-chat");
+        const closeChat = document.getElementById("close-chat");
+        const liveChat = document.querySelector("section");
+
+        buttonChat.addEventListener("click", () =>
+          liveChat.classList.add("livechat-active")
+        );
+        closeChat.addEventListener("click", () =>
+          liveChat.classList.remove("livechat-active")
+        );
+      });
+
+      function confirmLogout() {
+        const logoutConfirmed = window.confirm(
+          "Are you sure you want to logout?"
+        );
+        if (logoutConfirmed) {
+          fetch("/logout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({}),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                window.location.href = "/";
+              } else {
+                alert("Logout failed!");
+              }
+            })
+            .catch((error) => {
+              console.error("Error during logout:", error);
+              alert("Logout failed");
+            });
+        } else {
+          window.location.href = "/dashboard";
         }
-    
-        document.addEventListener('DOMContentLoaded', function () {
-            const buttonChat = document.querySelector(".button-chat");
-            const closeChat = document.getElementById("close-chat");
-            const liveChat = document.querySelector("section");
-    
-            buttonChat.addEventListener("click", () => liveChat.classList.add("livechat-active"));
-            closeChat.addEventListener("click", () => liveChat.classList.remove("livechat-active"));
-        });
-    
-        function confirmLogout() {
-            const logoutConfirmed = window.confirm("Are you sure you want to logout?");
-            if (logoutConfirmed) {
-                fetch("/logout", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({}),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = "/";
-                    } else {
-                        alert("Logout failed!");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error during logout:", error);
-                    alert("Logout failed");
-                });
-            } else {
-                window.location.href = "/dashboard";
-            }
-        }   
+      }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <script>
-        const username = '<%= usernames %>';
+      const username = "<%= usernames %>";
 
-        const socket = io('https://freckle-peaceful-singularity.glitch.me',{
-            withCredentials: true,
-            query: {
-                username: username
-            }
+      const socket = io("https://freckle-peaceful-singularity.glitch.me", {
+        withCredentials: true,
+        query: {
+          username: username,
+        },
+      });
+
+      socket.emit("username", username);
+      socket.emit("login", username);
+
+      $("form").submit(function () {
+        var inputValue = $("#m").val();
+        if (inputValue.trim() === "") {
+          return false;
+        }
+
+        socket.emit("chat", { message: inputValue, username: username });
+        $("#m").val("");
+        return false;
+      });
+
+      socket.on("chat", function (data) {
+        var chatUser = data.username;
+        var chatText = data.message;
+        var now = new Date();
+        var chatTimeHours = now.getHours();
+        var chatTimeMinutes = now.getMinutes();
+
+        var listChat = $("<li>");
+        var component1 = $('<div class="username-chat">').text(chatUser);
+        var component2 = $('<div class="chat-text">').text(chatText);
+        var component3 = $('<div class="chat-time">').text(
+          chatTimeHours +
+            ":" +
+            (chatTimeMinutes < 10 ? "0" : "") +
+            chatTimeMinutes
+        );
+
+        listChat.append(component1, component2, component3);
+        $("#messages").append(listChat);
+
+        var lastChatList = $("#messages li:last")[0];
+        lastChatList.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
         });
+      });
 
-        socket.emit('username', username);
-        socket.emit('login', username);
-
-        $('form').submit(function() {
-            var inputValue = $('#m').val();
-            if (inputValue.trim() === "") {
-                return false;
-            }
-
-            socket.emit('chat', { message: inputValue, username: username });
-            $('#m').val('');
-            return false;
+      socket.on("userStatus", ({ username, online }) => {
+        var yourusername = document.getElementById("username-hidden").innerHTML;
+        if (!username) {
+          return;
+        }
+        if (username === yourusername) {
+          $("#messages").append(
+            $('<li class="userstatus">').text(
+              `You ${online ? "join" : "leave"} the chat`
+            )
+          );
+        } else {
+          $("#messages").append(
+            $('<li class="userstatus">').text(
+              `${username} ${online ? "join" : "leave"} the chat`
+            )
+          );
+        }
+        var lastStatusList = $("#messages .userstatus:last")[0];
+        lastStatusList.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
         });
+      });
 
-        socket.on('chat', function(data) {
-            var chatUser = data.username;
-            var chatText = data.message;
-            var now = new Date();
-            var chatTimeHours = now.getHours();
-            var chatTimeMinutes = now.getMinutes();
+      socket.on("updateUserCount", (onlineUserCount) => {
+        $("#online-count").text(onlineUserCount);
+      });
 
-            var listChat = $('<li>');
-            var component1 = $('<div class="username-chat">').text(chatUser);
-            var component2 = $('<div class="chat-text">').text(chatText);
-            var component3 = $('<div class="chat-time">').text(chatTimeHours + ':' + (chatTimeMinutes < 10 ? '0' : '') + chatTimeMinutes);
-            
-            listChat.append(component1, component2, component3);
-            $('#messages').append(listChat);
-
-            var lastChatList = $('#messages li:last')[0];
-            lastChatList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
-        });
-
-        socket.on('userStatus', ({ username, online }) => {
-            var yourusername = document.getElementById('username-hidden').innerHTML;
-            if (!username) {
-                return;
-            }
-            if (username === yourusername) {
-                $('#messages').append($('<li class="userstatus">').text(`You ${online ? 'join' : 'leave'} the chat`));
-            } else {
-                $('#messages').append($('<li class="userstatus">').text(`${username} ${online ? 'join' : 'leave'} the chat`));
-            }
-            var lastStatusList = $('#messages .userstatus:last')[0];
-            lastStatusList.scrollIntoView({ behavior:"smooth", block:"end", inline:"nearest" });
-        });
-
-        socket.on('updateUserCount', (onlineUserCount) => {
-            $('#online-count').text(onlineUserCount);
-        });
-
-        window.addEventListener('beforeunload', () => {
-            socket.emit('logout', username);
-        });
+      window.addEventListener("beforeunload", () => {
+        socket.emit("logout", username);
+      });
     </script>
-</body>
+  </body>
 </html>

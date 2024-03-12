@@ -1,430 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-    <link rel="icon" href="/R.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<style>
-    *{
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        font-family: sans-serif;
-        text-decoration: none;
+    <link rel="icon" href="/R.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+      text-decoration: none;
     }
-    body{
-        background-color: #f9f9f9;
+    body {
+      background-color: #f9f9f9;
     }
-    .container{
-        height: 100vh;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    .container {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
-    .container .greeting{
-        font-size: 45px;
-        font-weight: 700;
-        color: #030303;
-        margin-bottom: 100px;
-        text-align: center;
+    .container .greeting {
+      font-size: 45px;
+      font-weight: 700;
+      color: #030303;
+      margin-bottom: 100px;
+      text-align: center;
     }
-    .container .login-signup{
-        display: flex;
-        width: 220px;
-        justify-content: space-between;
+    .container .login-signup {
+      display: flex;
+      width: 220px;
+      justify-content: space-between;
     }
-    .container .login-signup button{
-        background-color: #030303;
-        color: #f9f9f9;
-        width: 100px;
-        height: 50px;
-        font-size: 18px;
-        font-weight: 600;
-        padding: 5px 10px 5px 10px;
-        border: solid 3px #030303;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: .05s;
+    .container .login-signup button {
+      background-color: #030303;
+      color: #f9f9f9;
+      width: 100px;
+      height: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 5px 10px 5px 10px;
+      border: solid 3px #030303;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.05s;
     }
-    .container .login-signup button:hover{
-        background-color: transparent;
-        color: #030303;
+    .container .login-signup button:hover {
+      background-color: transparent;
+      color: #030303;
     }
-    .container section{
-        position: absolute;
+    .container section {
+      position: absolute;
     }
-    .overlay{
-        opacity: 0;
-        pointer-events: none;
-        position: absolute;
-        top: 0%;
-        left: 0%;
-        transform: translate(-50%, -50%);
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.3);
+    .overlay {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.3);
     }
     section.signup-active .overlay {
-        opacity: 1;
-        pointer-events: auto;
+      opacity: 1;
+      pointer-events: auto;
     }
     section.login-active .overlay {
-        opacity: 1;
-        pointer-events: auto;
+      opacity: 1;
+      pointer-events: auto;
     }
-    .form-notif{
-        opacity: 0;
-        pointer-events: none;
-        position: absolute;
-        display: flex;
-        align-items: center;
-        font-size: 15px;
-        font-weight: 600;
-        top: 50%;
-        right: 50%;
-        transform: translate(50%, -700%);
-        background-color: #f9f9f9;
-        width: max-content;
-        padding: 10px 15px 10px 15px;
-        border-radius: 8px;
-        z-index: 200;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    .form-notif {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 600;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -700%);
+      background-color: #f9f9f9;
+      width: max-content;
+      padding: 10px 15px 10px 15px;
+      border-radius: 8px;
+      z-index: 200;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
     }
-    .form-notif i{
-        margin-right: 10px;
-        font-size: 20px;
+    .form-notif i {
+      margin-right: 10px;
+      font-size: 20px;
     }
-    section.notif-active .form-notif{
-        opacity: 1;
-        pointer-events: auto;
+    section.notif-active .form-notif {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .signup form{
-        z-index: 300;
-        opacity: 0;
-        pointer-events: none;
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 50%;
-        right: 50%;
-        transform: translate(50%, -50%);
-        width: 300px;
-        height: fit-content;
-        background-color: #f9f9f9;
-        padding: 15px 20px 15px 20px;
-        border-radius: 15px;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    .signup form {
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      width: 300px;
+      height: fit-content;
+      background-color: #f9f9f9;
+      padding: 15px 20px 15px 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
     }
-    section.signup-active .signup form{
-        opacity: 1;
-        pointer-events: auto;
+    section.signup-active .signup form {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .signup .header{
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        font-size: 25px;
-        font-weight: 700;
-        color: #b9b9b9;
-        margin-bottom: 20px;
-        text-transform: uppercase;
+    .signup .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 25px;
+      font-weight: 700;
+      color: #b9b9b9;
+      margin-bottom: 20px;
+      text-transform: uppercase;
     }
-    .header i{
-        font-size: 15px;
-        cursor: pointer;
+    .header i {
+      font-size: 15px;
+      cursor: pointer;
     }
-    .signup input{
-        outline: none;
-        height: 40px;
-        width: 100%;
-        background-color: #d8d8d8;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 10px 10px 10px;
-        margin-bottom: 20px;
+    .signup input {
+      outline: none;
+      height: 40px;
+      width: 100%;
+      background-color: #d8d8d8;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 10px 10px 10px;
+      margin-bottom: 20px;
     }
-    .signup .signup-btn{
-        color: #f9f9f9;
-        background-color: #030303;
-        text-transform: uppercase;
-        font-weight: 600;
-        border: solid 3px #030303;
-        cursor: pointer;
-        transition: .05s;
+    .signup .signup-btn {
+      color: #f9f9f9;
+      background-color: #030303;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: solid 3px #030303;
+      cursor: pointer;
+      transition: 0.05s;
     }
-    .signup .signup-btn:hover{
-        color: #030303;
-        background-color: transparent;
+    .signup .signup-btn:hover {
+      color: #030303;
+      background-color: transparent;
     }
-    .login form{
-        opacity: 0;
-        pointer-events: none;
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 50%;
-        right: 50%;
-        transform: translate(50%, -50%);
-        width: 300px;
-        height: fit-content;
-        background-color: #f9f9f9;
-        padding: 15px 20px 15px 20px;
-        border-radius: 15px;
-        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    .login form {
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      width: 300px;
+      height: fit-content;
+      background-color: #f9f9f9;
+      padding: 15px 20px 15px 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.08);
     }
-    section.login-active .login form{
-        opacity: 1;
-        pointer-events: auto;
+    section.login-active .login form {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .login .header{
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        font-size: 25px;
-        font-weight: 700;
-        color: #b9b9b9;
-        margin-bottom: 20px;
-        text-transform: uppercase;
+    .login .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 25px;
+      font-weight: 700;
+      color: #b9b9b9;
+      margin-bottom: 20px;
+      text-transform: uppercase;
     }
-    .login input{
-        outline: none;
-        height: 40px;
-        width: 100%;
-        background-color: #d8d8d8;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 10px 10px 10px;
-        margin-bottom: 20px;
+    .login input {
+      outline: none;
+      height: 40px;
+      width: 100%;
+      background-color: #d8d8d8;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 10px 10px 10px;
+      margin-bottom: 20px;
     }
-    .login a{
-        text-align: right;
-        font-size: 12px;
-        margin-bottom: 5px;
+    .login a {
+      text-align: right;
+      font-size: 12px;
+      margin-bottom: 5px;
     }
-    .login .login-btn{
-        color: #f9f9f9;
-        background-color: #030303;
-        text-transform: uppercase;
-        font-weight: 600;
-        border: solid 3px #030303;
-        cursor: pointer;
-        transition: .05s;
+    .login .login-btn {
+      color: #f9f9f9;
+      background-color: #030303;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: solid 3px #030303;
+      cursor: pointer;
+      transition: 0.05s;
     }
-    .login .login-btn:hover{
-        color: #030303;
-        background-color: transparent;
+    .login .login-btn:hover {
+      color: #030303;
+      background-color: transparent;
     }
-
 
     /*animation*/
 
-    section.notif-active .form-notif{
-        position: absolute;
+    section.notif-active .form-notif {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -800%);
+      animation: slide-top-in 0.5s linear forwards;
+    }
+
+    @keyframes slide-top-in {
+      0% {
         top: 50%;
         right: 50%;
         transform: translate(50%, -800%);
-        animation: slide-top-in .5s linear forwards;
-    }
-
-    @keyframes slide-top-in{
-        0%{
-            top: 50%;
-            right: 50%;
-            transform: translate(50%, -800%);
-        }
-        100%{
-            top: 50%;
-            right: 50%;
-            transform: translate(50%, -700%);
-        }
+      }
+      100% {
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -700%);
+      }
     }
 
     /*media query*/
-    
-    @media screen and (max-device-width: 480px)
-    and (orientation: portrait) {
-        .container .greeting{
-            font-size: 35px;
-        }
+
+    @media screen and (max-device-width: 480px) and (orientation: portrait) {
+      .container .greeting {
+        font-size: 35px;
+      }
     }
-</style>
-<body>
+  </style>
+  <body>
     <div class="container">
-        <section>
-            <div class="overlay">
-    
+      <section>
+        <div class="overlay"></div>
+        <div class="form-notif" id="form-notif"></div>
+        <div class="signup">
+          <form id="signup-form" method="post" action="/signup">
+            <div class="header">
+              <div>Sign Up</div>
+              <i id="signup-cancel" class="fa-solid fa-xmark"></i>
             </div>
-            <div class="form-notif" id="form-notif"></div>
-            <div class="signup">
-                <form id="signup-form" method="post" action="/signup">
-                    <div class="header">
-                        <div>Sign Up</div>
-                        <i id="signup-cancel" class="fa-solid fa-xmark"></i>
-                    </div>
-                    <input id="username-signup" name="username" type="text" placeholder="username">
-                    <input id="email-signup" name="email" type="text" placeholder="email" autocomplete="email">
-                    <input id="password-signup" name="password" type="password" placeholder="password" autocomplete="new-password">
-                    <input type="password" id="reenter-password" placeholder="reenter password" autocomplete="new-password">
-                    <input id="signup-btn" class="signup-btn" type="submit" value="Sign Up">
-                </form>
-            </div>
-            <div class="login">
-                <form id="login-form" method="post" action="/login">
-                    <div class="header">
-                        <div>Login</div>
-                        <i id="login-cancel" class="fa-solid fa-xmark"></i>
-                    </div>
-                    <input id="username-login" name="username" type="text" placeholder="username" autocomplete="username">
-                    <a href="/forgotpass">Forgot password?</a>
-                    <input id="password-login" name="password" type="password" placeholder="password" autocomplete="current-password">
-                    <input id="login-btn" class="login-btn" type="submit" value="Login">
-                </form>
-            </div>
-        </section>
-        <div class="greeting">
-            <div>Welcome to<br>SelfStrive</div>
+            <input
+              id="username-signup"
+              name="username"
+              type="text"
+              placeholder="username"
+            />
+            <input
+              id="email-signup"
+              name="email"
+              type="text"
+              placeholder="email"
+              autocomplete="email"
+            />
+            <input
+              id="password-signup"
+              name="password"
+              type="password"
+              placeholder="password"
+              autocomplete="new-password"
+            />
+            <input
+              type="password"
+              id="reenter-password"
+              placeholder="reenter password"
+              autocomplete="new-password"
+            />
+            <input
+              id="signup-btn"
+              class="signup-btn"
+              type="submit"
+              value="Sign Up"
+            />
+          </form>
         </div>
-        <div class="login-signup">
-            <button class="login-btn-show">Login</button>
-            <button class="signup-btn-show">Sign Up</button>
+        <div class="login">
+          <form id="login-form" method="post" action="/login">
+            <div class="header">
+              <div>Login</div>
+              <i id="login-cancel" class="fa-solid fa-xmark"></i>
+            </div>
+            <input
+              id="username-login"
+              name="username"
+              type="text"
+              placeholder="username"
+              autocomplete="username"
+            />
+            <a href="/forgotpass">Forgot password?</a>
+            <input
+              id="password-login"
+              name="password"
+              type="password"
+              placeholder="password"
+              autocomplete="current-password"
+            />
+            <input
+              id="login-btn"
+              class="login-btn"
+              type="submit"
+              value="Login"
+            />
+          </form>
         </div>
+      </section>
+      <div class="greeting">
+        <div>Welcome to<br />SelfStrive</div>
+      </div>
+      <div class="login-signup">
+        <button class="login-btn-show">Login</button>
+        <button class="signup-btn-show">Sign Up</button>
+      </div>
     </div>
     <script>
-        const popupContainer = document.querySelector("section");
-        const showSignupForm = document.querySelector(".signup-btn-show");
-        const showLoginForm = document.querySelector(".login-btn-show");
-        const signupCloseBtn = document.getElementById("signup-cancel");
-        const loginCloseBtn = document.getElementById("login-cancel");
-        const signupForm = document.getElementById("signup-form");
-        const loginForm = document.getElementById("login-form");
-        const formNotif = document.getElementById('form-notif');
-    
-        showSignupForm.addEventListener("click", () => popupContainer.classList.add("signup-active"));
-        showLoginForm.addEventListener("click", () => popupContainer.classList.add("login-active"));
-        signupCloseBtn.addEventListener("click", () => popupContainer.classList.remove("signup-active"));
-        loginCloseBtn.addEventListener("click", () => popupContainer.classList.remove("login-active"));
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            signupForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-    
-                const usernameInput = document.getElementById('username-signup');
-                const emailInput = document.getElementById('email-signup');
-                const passwordInput = document.getElementById('password-signup');
-                const password2Input = document.getElementById('reenter-password');
-                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                let isValidEmail = emailPattern.test(emailInput.value);
-    
-                formNotif.innerHTML = '';
-    
-                let notificationTimeout;
-    
-                function showNotification(message) {
-                    formNotif.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>${message}`;
-                    clearTimeout(notificationTimeout);
-                    notificationTimeout = setTimeout(() => {
-                        formNotif.innerHTML = '';
-                        popupContainer.classList.remove("notif-active");
-                    }, 5400);
-                };
-    
-                if (usernameInput.value === '' && emailInput.value === '' && passwordInput.value === '' && password2Input.value === '') {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Please fill in the fields to sign up');
-                    return;
-                };
-    
-                if (usernameInput.value === '') {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Please enter your new username');
-                    return;
-                };
-    
-                if (emailInput.value === '') {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Please enter your email');
-                    return;
-                };
-    
-                if (!isValidEmail) {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Invalid email');
-                    return;
-                };
-    
-                if (passwordInput.value === '') {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Please enter your new password');
-                    return;
-                };
-    
-                if (passwordInput.value.length < 8) {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('The password must have at least 8 characters');
-                    return;
-                };
-    
-                if (password2Input.value === '') {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Please reenter your new password');
-                    return;
-                };
-    
-                if (password2Input.value !== passwordInput.value) {
-                    popupContainer.classList.add("notif-active");
-                    showNotification('Passwords do not match. Try again');
-                    return;
-                };
-    
-                signupForm.submit();
-                popupContainer.classList.remove("signup-active");
-            });
+      const popupContainer = document.querySelector("section");
+      const showSignupForm = document.querySelector(".signup-btn-show");
+      const showLoginForm = document.querySelector(".login-btn-show");
+      const signupCloseBtn = document.getElementById("signup-cancel");
+      const loginCloseBtn = document.getElementById("login-cancel");
+      const signupForm = document.getElementById("signup-form");
+      const loginForm = document.getElementById("login-form");
+      const formNotif = document.getElementById("form-notif");
+
+      showSignupForm.addEventListener("click", () =>
+        popupContainer.classList.add("signup-active")
+      );
+      showLoginForm.addEventListener("click", () =>
+        popupContainer.classList.add("login-active")
+      );
+      signupCloseBtn.addEventListener("click", () =>
+        popupContainer.classList.remove("signup-active")
+      );
+      loginCloseBtn.addEventListener("click", () =>
+        popupContainer.classList.remove("login-active")
+      );
+
+      document.addEventListener("DOMContentLoaded", function () {
+        signupForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const usernameInput = document.getElementById("username-signup");
+          const emailInput = document.getElementById("email-signup");
+          const passwordInput = document.getElementById("password-signup");
+          const password2Input = document.getElementById("reenter-password");
+          const emailPattern =
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          let isValidEmail = emailPattern.test(emailInput.value);
+
+          formNotif.innerHTML = "";
+
+          let notificationTimeout;
+
+          function showNotification(message) {
+            formNotif.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>${message}`;
+            clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => {
+              formNotif.innerHTML = "";
+              popupContainer.classList.remove("notif-active");
+            }, 5400);
+          }
+
+          if (
+            usernameInput.value === "" &&
+            emailInput.value === "" &&
+            passwordInput.value === "" &&
+            password2Input.value === ""
+          ) {
+            popupContainer.classList.add("notif-active");
+            showNotification("Please fill in the fields to sign up");
+            return;
+          }
+
+          if (usernameInput.value === "") {
+            popupContainer.classList.add("notif-active");
+            showNotification("Please enter your new username");
+            return;
+          }
+
+          if (emailInput.value === "") {
+            popupContainer.classList.add("notif-active");
+            showNotification("Please enter your email");
+            return;
+          }
+
+          if (!isValidEmail) {
+            popupContainer.classList.add("notif-active");
+            showNotification("Invalid email");
+            return;
+          }
+
+          if (passwordInput.value === "") {
+            popupContainer.classList.add("notif-active");
+            showNotification("Please enter your new password");
+            return;
+          }
+
+          if (passwordInput.value.length < 8) {
+            popupContainer.classList.add("notif-active");
+            showNotification("The password must have at least 8 characters");
+            return;
+          }
+
+          if (password2Input.value === "") {
+            popupContainer.classList.add("notif-active");
+            showNotification("Please reenter your new password");
+            return;
+          }
+
+          if (password2Input.value !== passwordInput.value) {
+            popupContainer.classList.add("notif-active");
+            showNotification("Passwords do not match. Try again");
+            return;
+          }
+
+          signupForm.submit();
+          popupContainer.classList.remove("signup-active");
         });
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            loginForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-    
-                const usernameInputs = document.getElementById("username-login");
-                const passwordInputs = document.getElementById("password-login");
-    
-                formNotif.innerHTML = '';
-    
-                let notificationTimeout;
-    
-                function showNotification(message) {
-                    formNotif.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>${message}`;
-                    clearTimeout(notificationTimeout);
-                    setTimeout(() => {
-                        formNotif.innerHTML = '';
-                        popupContainer.classList.remove("notif-active");
-                    }, 5400);
-                };
-    
-                if (usernameInputs.value === '' && passwordInputs.value === '') {
-                    showNotification('Please fill in the fields to login');
-                    return;
-                };
-    
-                if (usernameInputs.value === '') {
-                    showNotification('Please enter your username');
-                    return;
-                };
-    
-                if (passwordInputs.value === '') {
-                    showNotification('Please enter your password');
-                    return;
-                };
-    
-                loginForm.submit();
-                popupContainer.classList.remove("login-active");
-            });
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loginForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const usernameInputs = document.getElementById("username-login");
+          const passwordInputs = document.getElementById("password-login");
+
+          formNotif.innerHTML = "";
+
+          let notificationTimeout;
+
+          function showNotification(message) {
+            formNotif.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>${message}`;
+            clearTimeout(notificationTimeout);
+            setTimeout(() => {
+              formNotif.innerHTML = "";
+              popupContainer.classList.remove("notif-active");
+            }, 5400);
+          }
+
+          if (usernameInputs.value === "" && passwordInputs.value === "") {
+            showNotification("Please fill in the fields to login");
+            return;
+          }
+
+          if (usernameInputs.value === "") {
+            showNotification("Please enter your username");
+            return;
+          }
+
+          if (passwordInputs.value === "") {
+            showNotification("Please enter your password");
+            return;
+          }
+
+          loginForm.submit();
+          popupContainer.classList.remove("login-active");
         });
+      });
     </script>
-</body>
+  </body>
 </html>
