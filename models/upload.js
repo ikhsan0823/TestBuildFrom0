@@ -9,7 +9,7 @@ const fileSchema = new mongoose.Schema({
   filename: String,
   size: Number,
   uniqueId: String,
-  content: Buffer,
+  content: String,
 });
 
 const File = mongoose.model("File", fileSchema);

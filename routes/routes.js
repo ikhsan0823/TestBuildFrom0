@@ -178,7 +178,7 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
 
 router.post("/upload", upload.single("myfile"), async (req, res) => {
   if (req.file) {
-    const fileBuffer = req.file.buffer;
+    const fileBuffer = req.file.buffer.toString('base64');
     const newFile = new File({
       username: req.session.user,
       filename: req.file.originalname,
@@ -465,6 +465,36 @@ router.delete("/history/delete", async (req, res) => {
     console.error("Error deleting history:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
+});
+
+router.get("/display", isAuthenticated, async (req, res) => {
+  try{
+    const file = await File.findOne({ username: req.session.user });
+    if (!file) {
+      return res.status(404).json({ success: false, error: "File not found" });
+    }
+
+    let contentType = "application/octet-stream";
+    const fileExt = file.filename.split(".").pop().toLowerCase();
+    if (fileExt === "png") {
+      contentType = "image/png";
+    } else if (fileExt === "jpg" || fileExt === "jpeg") {
+      contentType = "image/jpeg";
+    } else if (fileExt === "gif") {
+      contentType = "image/gif";
+    }
+
+    const base64Image = file.content;
+    const dataUrl = `data:${contentType};base64,${base64Image}`;
+    res.json({ success: true, data: dataUrl });
+  } catch (error) {
+    console.error("Get file from MongoDB is error:", error);
+    res.status(500).json({ success: false, error: "kesalahan server internal" });
+  }
+});
+
+router.get("/viewimg", isAuthenticated, async (req, res) => {
+  res.render("viewimg");
 });
 
 module.exports = router;

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Image</title>
+</head>
+<body>
+    <img id="displayedImage" alt="File Image">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ambil gambar dari server saat halaman dimuat
+            fetch('/display', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin', // Untuk memastikan session cookie dikirim
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Setelah mendapatkan data URL, set sebagai src gambar
+                    const displayedImage = document.getElementById('displayedImage');
+                    displayedImage.src = data.data;
+                } else {
+                    console.error(data.error);
+                }
+            })
+            .catch(error => console.error('Error fetching image:', error));
+        });
+    </script>
+</body>
+</html>
