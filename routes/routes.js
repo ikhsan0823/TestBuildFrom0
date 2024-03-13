@@ -469,24 +469,27 @@ router.delete("/history/delete", async (req, res) => {
 
 router.get("/display", isAuthenticated, async (req, res) => {
   try{
-    const file = await File.findOne({ username: req.session.user });
-    if (!file) {
+    const files = await File.find({ username: req.session.user });
+    if (files.length === 0) {
       return res.status(404).json({ success: false, error: "File not found" });
     }
 
-    let contentType = "application/octet-stream";
-    const fileExt = file.filename.split(".").pop().toLowerCase();
-    if (fileExt === "png") {
-      contentType = "image/png";
-    } else if (fileExt === "jpg" || fileExt === "jpeg") {
-      contentType = "image/jpeg";
-    } else if (fileExt === "gif") {
-      contentType = "image/gif";
-    }
+    const dataUrls = files.map(file => {
+      let contentType = "application/octet-stream";
+      const fileExt = file.filename.split(".").pop().toLowerCase();
+      if (fileExt === "png") {
+        contentType = "image/png";
+      } else if (fileExt === "jpg" || fileExt === "jpeg") {
+        contentType = "image/jpeg";
+      } else if (fileExt === "gif") {
+        contentType = "image/gif";
+      }
 
-    const base64Image = file.content;
-    const dataUrl = `data:${contentType};base64,${base64Image}`;
-    res.json({ success: true, data: dataUrl });
+      const base64Image = file.content;
+      return `data:${contentType};base64,${base64Image}`;
+    })
+    
+    res.json({ success: true, data: dataUrls });
   } catch (error) {
     console.error("Get file from MongoDB is error:", error);
     res.status(500).json({ success: false, error: "kesalahan server internal" });

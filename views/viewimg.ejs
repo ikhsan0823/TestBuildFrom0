@@ -6,7 +6,7 @@
     <title>Show Image</title>
 </head>
 <body>
-    <img id="displayedImage" alt="File Image">
+    <div id="imageContainer"></div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Ambil gambar dari server saat halaman dimuat
@@ -21,8 +21,13 @@
             .then(data => {
                 if (data.success) {
                     // Setelah mendapatkan data URL, set sebagai src gambar
-                    const displayedImage = document.getElementById('displayedImage');
-                    displayedImage.src = data.data;
+                    const imageContainer = document.getElementById('imageContainer');
+                    data.data.forEach(dataUrl => {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = dataUrl;
+                        imgElement.alt = 'File Image';
+                        imageContainer.appendChild(imgElement);
+                    })
                 } else {
                     console.error(data.error);
                 }
