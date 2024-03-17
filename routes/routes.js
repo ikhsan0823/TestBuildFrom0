@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   if (req.session.isAuth) {
     const nameUser = await Users.findOne({ username: req.session.user });
     if (nameUser) {
-      res.redirect("/dashboard", {
+      res.render("/dashboard", {
         username: nameUser.name || req.session.user,
         usernames: req.session.user,
       });
