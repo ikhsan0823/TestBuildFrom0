@@ -458,6 +458,12 @@
               <div>Dashboard</div>
             </div></a
           >
+          <a href="/cycle"
+            ><div onmouseover="setColor8()" onmouseout="unsetColor8()" class="my-list">
+            <i id="color8" class="fa-solid fa-arrows-spin"></i>
+            <div>My Cycle</div>
+          </div></a
+          >
           <a href="/daily"
             ><div
               onmouseover="setColor()"
@@ -704,6 +710,12 @@
         document.getElementById("color6").style.color = "#030303";
       }
       document.getElementById("color7").style.color = "#cfcfcf";
+      function setColor8(){
+          document.getElementById("color8").style.color = "#cfcfcf";
+      }
+      function unsetColor8(){
+        document.getElementById("color8").style.color = "#030303";
+      }
       document.addEventListener("DOMContentLoaded", function () {
         var selfUsername = "<%= usernames %>";
         var usernameHidden = document.getElementById("username-hidden");

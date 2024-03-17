@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   if (req.session.isAuth) {
     const nameUser = await Users.findOne({ username: req.session.user });
     if (nameUser) {
-      res.render("dashboard", {
+      res.redirect("/dashboard", {
         username: nameUser.name || req.session.user,
         usernames: req.session.user,
       });
@@ -498,6 +498,10 @@ router.get("/display", isAuthenticated, async (req, res) => {
 
 router.get("/viewimg", isAuthenticated, async (req, res) => {
   res.render("viewimg");
+});
+
+router.get("/cycle", isAuthenticated, async (req, res) => {
+  res.render("cycle");
 });
 
 module.exports = router;
