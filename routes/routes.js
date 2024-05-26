@@ -287,6 +287,35 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
+router.post("/change-email", async (req, res) => {
+  try {
+    const { firstEmail } = req.body;
+    const user = await Users.findOne({ email: firstEmail });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const resetToken = generateToken();
+    user.resetToken = resetToken;
+    await user.save();
+
+    const mailOptions = {
+      from: "thisistips919@gmail.com",
+      to: firstEmail,
+      subject: "My SelfManage Account Email Change",
+      text: `Your token is ${resetToken}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Token sending to email" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Error sending email" });
+  }
+})
+
 router.post("/reset-password", async (req, res) => {
   try {
     const { token, newPassword } = req.body;
