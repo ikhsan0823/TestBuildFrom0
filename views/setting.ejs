@@ -484,10 +484,10 @@
                                 <div>
                                     <label for="email">Email</label>
                                     <div>
-                                        <input type="email" value="<%= user.email %>">
-                                        <button id="get-token-btn" type="button" onclick="sendResetEmail()">Get Token</button>
+                                        <input type="email" id="first-email" value="<%= user.email %>" readonly>
+                                        <button id="get-token-btn" type="button" onclick="sendResetCode()">Get Token</button>
                                     </div>
-                                    <input type="email" id="email" name="email" value="<%= user.email %>">
+                                    <input type="email" id="email" name="email">
                                 </div>
                                 <div>
                                     <label for="birth">Date of Birth (dd/mm/yyyy)</label>
