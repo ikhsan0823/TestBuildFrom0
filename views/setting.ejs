@@ -483,6 +483,10 @@
                                 </div>
                                 <div>
                                     <label for="email">Email</label>
+                                    <div>
+                                        <input type="email" value="<%= user.email %>">
+                                        <button id="get-token-btn" type="button" onclick="sendResetEmail()">Get Token</button>
+                                    </div>
                                     <input type="email" id="email" name="email" value="<%= user.email %>">
                                 </div>
                                 <div>
