@@ -487,7 +487,11 @@
                                         <input type="email" id="first-email" value="<%= user.email %>" readonly>
                                         <button id="get-token-btn" type="button" onclick="sendResetCode()">Get Token</button>
                                     </div>
-                                    <input type="email" id="email" name="email">
+                                    <div>
+                                        <input type="text" id="email-token">
+                                        <button id="token-check-btn" type="button" onclick="tokenCheck()">Check</button>
+                                        <input type="email" id="email" name="email">
+                                    </div>
                                 </div>
                                 <div>
                                     <label for="birth">Date of Birth (dd/mm/yyyy)</label>
