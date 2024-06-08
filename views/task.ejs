@@ -163,29 +163,6 @@
     .show-createitem i{
         font-size: 18px;
     }
-    .header-right .uncompleted{
-        display: flex;
-        color: #b9b9b9;
-        font-size: 15px;
-        font-weight: 600;
-        justify-content: space-around;
-        align-items: center;
-        border-radius: 8px;
-        margin-right: 10px;
-        background-color: #d8d8d8;
-        padding: 2px 5px 2px 5px;
-        cursor: pointer;
-        transition: .05s;
-    }
-    .uncompleted:hover{
-        color: #d8d8d8;
-        background-color: #b9b9b9;
-    }
-    .uncompleted i{
-        font-size: 18px;
-        color: #030303;
-        padding: 0;
-    }
     .option-bar{
         display: flex;
         justify-content: flex-start;
@@ -222,7 +199,7 @@
     }
     .daylist .sub-title{
         display: flex;
-        height: 35px;
+        height: 45px;
         width: 100%;
         padding: 10px 15px 10px 15px;
         background-color: #d8d8d8
@@ -378,10 +355,6 @@
                     <div>My Daily</div>
                 </div>
                 <div class="header-right">
-                    <div onclick="uncompletedShow()" class="uncompleted">
-                        <i class="fa-solid fa-square-xmark"></i>
-                        <div id="uncompleted-count"></div>
-                    </div>
                     <button class="show-createitem">
                         <i class="fa-solid fa-square-plus"></i>
                     </button>
