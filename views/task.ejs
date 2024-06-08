@@ -7,10 +7,239 @@
     <link rel="icon" href="/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        text-decoration: none;
+    }
+    body{
+        background-color: #f9f9f9;
+    }
+    .container{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+    }
+    .sidebar{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 75px;
+        height: 100vh;
+        padding: 20px 20px 20px 25px;
+        color: #030303;
+    }
+    .sidebar a{
+        text-decoration: none;
+        color: #030303;
+    }
+    .sidebar i{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #030303;
+        font-size: 22px;
+        cursor: pointer;
+        width: 35px;
+        height: 35px;
+        border: solid 2px #030303;
+        border-radius: 50%;
+    }
+    .sidebar .sidebar-list{
+        display: none;
+        position: relative;
+        margin-top: 25px;
+        line-height: 45px;
+        width: 100%;
+        border-bottom: solid 1px #d8d8d8;
+    }
+    .sidebar .sidebar-list .my-list i{
+        font-size: 15px;
+        margin-right: 10px;
+        border: none;
+        color: #030303;
+    }
+    .sidebar .sidebar-list .my-list{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 8px;
+        transition: .05s;
+    }
+    .sidebar-list .my-list:hover{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .sidebar-list #active-sidebar{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .sidebar .sidebar-account{
+        display: none;
+        position: relative;
+        margin-top: 25px;
+        line-height: 45px;
+        width: 100%;
+    }
+    .sidebar .sidebar-account .my-list i{
+        font-size: 15px;
+        margin-right: 10px;
+        border: none;
+        color: #030303;
+    }
+    .sidebar .sidebar-account .my-list{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 8px;
+        transition: .05s;
+    }
+    .sidebar-account .my-list:hover{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        padding: 0px 150px 20px 150px;
+    }
+    .content .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 25px 15px 25px;
+        max-width: 50%;
+        margin-top: 20px;
+        border-radius: 10rem;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        height: 50px;
+    }
+    .content .header i{
+        margin-right: 10px;
+    }
+    .header .header-left{
+        display: flex;
+        color: #030303;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .header .header-right{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .header-right i{
+        cursor: pointer;
+        padding: 5px 5px 5px 5px;
+        border-radius: 50%;
+        transition: .05s;
+    }
+    .header-right i:hover{
+        background-color: #b9b9b9;
+    }
+    .header-right .show-createitem{
+        width: 25px;
+        border: none;
+        background-color: transparent;
+    }
+    .show-createitem i{
+        font-size: 18px;
+    }
+    .header-right .uncompleted{
+        display: flex;
+        color: #b9b9b9;
+        font-size: 15px;
+        font-weight: 600;
+        justify-content: space-around;
+        align-items: center;
+        border-radius: 8px;
+        margin-right: 10px;
+        background-color: #d8d8d8;
+        padding: 2px 5px 2px 5px;
+        cursor: pointer;
+        transition: .05s;
+    }
+    .uncompleted:hover{
+        color: #d8d8d8;
+        background-color: #b9b9b9;
+    }
+    .uncompleted i{
+        font-size: 18px;
+        color: #030303;
+        padding: 0;
+    }
+
+    @media screen and (min-width: 1024px) {
+        
+    }
+    @media screen and (min-device-width: 768px)
+    and (max-device-width: 1024px) {
+        .sidebar{
+            position: fixed;
+            z-index: 400;
+            background-color: #f9f9f9;
+        }
+        .content{
+            width: 100%;
+            height: 100vh;
+            padding: 0px 100px 20px 150px;
+        }
+        .content .header{
+            max-width: 75%;
+        }
+    }
+    @media screen and (max-device-width: 480px)
+    and (orientation: portrait) {
+        .headershape{
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 350;
+        }
+        .sidebar{
+            position: fixed;
+            z-index: 400;
+            background-color: transparent;
+        }
+        .content .header{
+            max-width: 100%;
+        }
+        .content{
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 10px 20px 10px;
+        }
+    }
+    @media screen and (max-device-width: 640px)
+    and (orientation: landscape) {
+        .sidebar{
+            position: fixed;
+            z-index: 450;
+            background-color: #f9f9f9;
+        }
+        .content{
+            width: 100%;
+            height: 100vh;
+            padding: 0px 10px 20px 50px;
+        }
+    }
+</style>
 <body>
     <div class="container">
         <div class="headershape">
-
         </div>
     </div>
     <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
