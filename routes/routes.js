@@ -533,4 +533,8 @@ router.get("/cycle", isAuthenticated, async (req, res) => {
   res.render("cycle");
 });
 
+router.get("/task", isAuthenticated, async (req, res) => {
+  res.render("/task");
+})
+
 module.exports = router;
