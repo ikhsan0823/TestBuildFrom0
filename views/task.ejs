@@ -224,6 +224,31 @@
     }
     .sub-title .left-tab{
         display: flex;
+        width: 90%;
+    }
+    .left-tab .date-tab{
+        display: flex;
+        width: 33%;
+        justify-content: center;
+        align-items: center;
+    }
+    .left-tab .task-tab{
+        display: flex;
+        width: 33%;
+        justify-content: center;
+        align-items: center;
+    }
+    .left-tab .progress-tab{
+        display: flex;
+        width: 33%;
+        justify-content: center;
+        align-items: center;
+    }
+    .sub-title .right-tab{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
     }
 
     /*media query*/
@@ -357,13 +382,13 @@
             </div>
             <div id="daylist" class="daylist">
                 <div class="sub-title">
+                    <div class="left-tab">
+                        <div class="date-tab">Date</div>
+                        <div class="task-tab">Task</div>
+                        <div class="progress-tab">Progress</div>
+                    </div>
                     <div class="right-tab">
                         <div>Detail</div>
-                    </div>
-                    <div class="left-tab">
-                        <div>Date</div>
-                        <div>Task</div>
-                        <div>Progress</div>
                     </div>
                 </div>
                 <div class="content-daylist">
