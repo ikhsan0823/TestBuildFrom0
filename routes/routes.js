@@ -534,7 +534,7 @@ router.get("/cycle", isAuthenticated, async (req, res) => {
 });
 
 router.get("/task", isAuthenticated, async (req, res) => {
-  res.render("/task");
+  res.render("task");
 })
 
 module.exports = router;
