@@ -706,83 +706,6 @@
             form.reset();
         }
 
-        const popupContainer = document.querySelector("section");
-        const overlay = document.querySelector(".overlay");
-        const showCreateItem = document.querySelector(".show-createitem");
-        const closeBtn = document.querySelector(".close-btn");
-        const submitBtn = document.querySelector(".btn");
-
-        showCreateItem.addEventListener("click", () => popupContainer.classList.add("active"));
-        closeBtn.addEventListener("click", () => {
-            resetForm();
-            popupContainer.classList.remove("active");
-        });
-
-        document.getElementById('cardForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const form = document.getElementById('cardForm');
-            const formData = new FormData(form);
-
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
-            const date = document.getElementById('task-date').value;
-            const time = document.getElementById('task-time').value;
-            const uploadPhoto = formData.get('upload-photo') ? true : false;
-
-            function generateRandomId() {
-                const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-                const getRandomLetter = () => alphabet[Math.floor(Math.random() * alphabet.length)];
-                const getRandomNumber = () => Math.floor(Math.random() * 10);
-                const randomId = getRandomNumber() + getRandomLetter() + getRandomLetter();
-                return randomId;
-            }
-
-            const uniqueId = generateRandomId();
-
-            sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId);
-            resetForm();
-            popupContainer.classList.remove("active");
-        })
-
-        async function sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday) {
-            try {
-                const response = await fetch('/dailytask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        title: title,
-                        description: description,
-                        date: date,
-                        time: time,
-                        uploadPhoto: uploadPhoto,
-                        uniqueId: uniqueId,
-                    }),
-                });
-    
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    const data = await response.json();
-                    console.log('Server response:', data);
-                } else {
-                    console.error('Unexpected response type:', contentType);
-                }
-            } catch (error) {
-                console.error('Error sending data to server:', error);
-    
-                if (error instanceof TypeError || error.name === 'TypeError') {
-                    console.error('Network error. Unable to fetch data from the server.');
-                } else if (error instanceof SyntaxError || error.name === 'SyntaxError') {
-                    console.error('Error parsing JSON from the server response.');
-                } else {
-                    console.error('Other error:', error);
-                }
-            }
-        }
-
-        // Fetch data from the backend
         async function fetchDailyTasks() {
             try {
                 const response = await fetch("/dailytasks");
@@ -852,8 +775,84 @@
             });
         }
 
-        // Call this function when your page loads
         fetchDailyTasks();
+
+        const popupContainer = document.querySelector("section");
+        const overlay = document.querySelector(".overlay");
+        const showCreateItem = document.querySelector(".show-createitem");
+        const closeBtn = document.querySelector(".close-btn");
+        const submitBtn = document.querySelector(".btn");
+
+        showCreateItem.addEventListener("click", () => popupContainer.classList.add("active"));
+        closeBtn.addEventListener("click", () => {
+            resetForm();
+            popupContainer.classList.remove("active");
+        });
+
+        document.getElementById('cardForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('cardForm');
+            const formData = new FormData(form);
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('task-date').value;
+            const time = document.getElementById('task-time').value;
+            const uploadPhoto = formData.get('upload-photo') ? true : false;
+
+            function generateRandomId() {
+                const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+                const getRandomLetter = () => alphabet[Math.floor(Math.random() * alphabet.length)];
+                const getRandomNumber = () => Math.floor(Math.random() * 10);
+                const randomId = getRandomNumber() + getRandomLetter() + getRandomLetter();
+                return randomId;
+            }
+
+            const uniqueId = generateRandomId();
+
+            sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId);
+            resetForm();
+            fetchDailyTasks();
+            popupContainer.classList.remove("active");
+        })
+
+        async function sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday) {
+            try {
+                const response = await fetch('/dailytask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        date: date,
+                        time: time,
+                        uploadPhoto: uploadPhoto,
+                        uniqueId: uniqueId,
+                    }),
+                });
+    
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('Server response:', data);
+                } else {
+                    console.error('Unexpected response type:', contentType);
+                }
+            } catch (error) {
+                console.error('Error sending data to server:', error);
+    
+                if (error instanceof TypeError || error.name === 'TypeError') {
+                    console.error('Network error. Unable to fetch data from the server.');
+                } else if (error instanceof SyntaxError || error.name === 'SyntaxError') {
+                    console.error('Error parsing JSON from the server response.');
+                } else {
+                    console.error('Other error:', error);
+                }
+            }
+        }
 
         function confirmLogout() {
             const logoutConfirmed = window.confirm("Are you sure you want to logout?");
