@@ -309,6 +309,24 @@
 <body>
     <div class="container">
         <div class="headershape"></div>
+        <section>
+            <div class="create-item">
+                <div>Create Task</div>
+                <form class="create-form" id="cardForm" method="post" action="/dailyTask" enctype="multipart/form-data">
+                    <label for="title">Title</label><br>
+                    <input id="title" name="title" type="text" required><br>
+                    <label for="description">Description</label><br>
+                    <input class="description" name="description" id="description" type="text"><br>
+                    <label for="task-date">Date</label><br>
+                    <input type="date" name="date" id="task-date" required><br>
+                    <label for="upload-photo">Do you want to upload a photo as proof?</label>
+                    <input type="checkbox" name="upload-photo" id="upload-photo"><br>
+                    <input class="btn" type="submit" value="Submit">
+                </form>
+                <button class="close-btn">Cancel</button>
+            </div>
+            <span class="overlay"></span>
+        </section>
         <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
             <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
             <div id="barList" class="sidebar-list">
@@ -488,6 +506,74 @@
         function unsetColor7(){
             document.getElementById("color7").style.color = "#030303";
         }
+
+        document.getElementById('cardForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('cardForm');
+            const formData = new FormData(form);
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('task-date').value;
+            const uploadPhoto = formData.get('upload-photo') ? true : false;
+
+            function generateRandomId() {
+                const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+                const getRandomLetter = () => alphabet[Math.floor(Math.random() * alphabet.length)];
+                const getRandomNumber = () => Math.floor(Math.random() * 10);
+                const randomId = getRandomNumber() + getRandomLetter() + getRandomLetter();
+                return randomId;
+            }
+
+            const uniqueId = generateRandomId();
+            const d = new Date(date);
+
+            function getDayName(date) {
+                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const dayIndex = date.getDay();
+                return daysOfWeek[dayIndex];
+            }
+
+            const nameday = getDayName(d);
+
+            formData.append('uniqueId', uniqueId);
+            formData.append('nameday', nameday);
+
+            sendDailyTaskToServer(formData);
+        })
+
+        async function sendDailyTaskToServer(formData) {
+            try {
+                const response = await fetch('/dailytask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: formData,
+                });
+    
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('Server response:', data);
+                } else {
+                    console.error('Unexpected response type:', contentType);
+                }
+            } catch (error) {
+                console.error('Error sending data to server:', error);
+    
+                if (error instanceof TypeError || error.name === 'TypeError') {
+                    console.error('Network error. Unable to fetch data from the server.');
+                } else if (error instanceof SyntaxError || error.name === 'SyntaxError') {
+                    console.error('Error parsing JSON from the server response.');
+                } else {
+                    console.error('Other error:', error);
+                }
+            }
+        }
+
+
     
         function confirmLogout() {
             const logoutConfirmed = window.confirm("Are you sure you want to logout?");

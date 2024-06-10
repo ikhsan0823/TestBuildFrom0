@@ -118,14 +118,17 @@ router.get("/daily", isAuthenticated, async (req, res) => {
 });
 
 router.post("/dailytask", async (req, res) => {
+  const { title, description, date, uniqueId, nameday } = req.body;
+  const uploadPhoto = req.body['upload-photo'] ? true : false;
   try {
     let newDaily = new Daily({
       username: req.session.user,
-      title: req.body.title,
-      description: req.body.description,
-      date: req.body.date,
-      uniqueId: req.body.uniqueId,
-      nameday: req.body.nameday,
+      title,
+      description,
+      date,
+      uniqueId,
+      nameday,
+      uploadPhoto
     });
 
     await newDaily.save();

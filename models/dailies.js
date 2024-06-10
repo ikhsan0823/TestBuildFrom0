@@ -7,6 +7,10 @@ const dailySchema = {
   date: Date,
   uniqueId: String,
   nameday: String,
+  uploadPhoto: {
+    type: Boolean,
+    default: false
+  }
 };
 
 const Daily = mongoose.model("Daily", dailySchema);
