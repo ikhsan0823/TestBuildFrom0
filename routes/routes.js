@@ -149,8 +149,7 @@ router.get("/dailytasks", async (req, res) => {
       { $group: { 
           _id: "$date",
           count: { $sum: 1 },
-          tasks: { $push: "$$ROOT" },
-          nameday: "$nameday",
+          tasks: { $push: "$$ROOT" }
       }},
       { $sort: { _id: 1 } } // Sort by date ascending
     ]);
