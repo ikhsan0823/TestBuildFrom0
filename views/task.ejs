@@ -585,12 +585,10 @@
                         <div>Detail</div>
                     </div>
                 </div>
-                <div class="content-daylist-container">
+                <div class="content-daylist-container" id="daylist-container">
                     <div class="content-daylist">
                         <div class="left-content">
-                            <div class="date-content">
-                                <div id="date-container"></div>
-                            </div>
+                            <div class="date-content"></div>
                             <div class="task-content">5</div>
                             <div class="progress-content">0%</div>
                         </div>
@@ -798,26 +796,62 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            fetch("/dailytask")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const dateContainer = document.getElementById("date-container");
-                        dateContainer.innerHTML = '';
+        // Fetch data from the backend
+        async function fetchDailyTasks() {
+            try {
+                const response = await fetch("/dailytasks");
+                const data = await response.json();
+                if (data.success) {
+                displayDailyTasks(data.tasks);
+                } else {
+                console.error("Failed to fetch tasks:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+            }
+        }
 
-                        data.dates.forEach(date => {
-                            const dateDiv = document.createElement("div");
-                            dateDiv.className = "date-content";
-                            dateDiv.textContent = new Date(date).toLocaleDateString();
-                            dateContainer.appendChild(dateDiv);
-                        });
-                    } else {
-                        console.error("Failed to fetch dates:", data.message);
-                    }
-                })
-                .catch(error => console.error("Error fetching dates:", error));
-        });
+        function displayDailyTasks(tasks) {
+            const container = document.getElementById("daylist-container");
+            container.innerHTML = "";
+
+            tasks.forEach(taskGroup => {
+                const taskDate = new Date(taskGroup._id).toLocaleDateString();
+
+                const daylistDiv = document.createElement("div");
+                daylistDiv.className = "content-daylist";
+
+                const leftContentDiv = document.createElement("div");
+                leftContentDiv.className = "left-content";
+
+                const dateContentDiv = document.createElement("div");
+                dateContentDiv.className = "date-content";
+                dateContentDiv.textContent = taskDate;
+
+                const taskContentDiv = document.createElement("div");
+                taskContentDiv.className = "task-content";
+                taskContentDiv.textContent = `${taskGroup.count} tasks`;
+
+                const progressContentDiv = document.createElement("div");
+                progressContentDiv.className = "progress-content";
+                progressContentDiv.innerHTML = "0%";
+
+                leftContentDiv.appendChild(dateContentDiv);
+                leftContentDiv.appendChild(taskContentDiv);
+                leftContentDiv.appendChild(progressContentDiv);
+
+                const rightContentDiv = document.createElement("div");
+                rightContentDiv.className = "right-content";
+                rightContentDiv.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i>';
+
+                daylistDiv.appendChild(leftContentDiv);
+                daylistDiv.appendChild(rightContentDiv);
+                container.appendChild(daylistDiv);
+            });
+        }
+
+        // Call this function when your page loads
+        fetchDailyTasks();
 
         function confirmLogout() {
             const logoutConfirmed = window.confirm("Are you sure you want to logout?");

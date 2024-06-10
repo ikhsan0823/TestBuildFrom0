@@ -141,13 +141,21 @@ router.post("/dailytask", async (req, res) => {
   }
 });
 
-router.get("/dailytask", async (req, res) => {
+router.get("/dailytasks", async (req, res) => {
   try {
     const username = req.session.user;
-    const uniqueDates = await Daily.distinct("date", { username });
-    res.status(200).json({ success: true, dates: uniqueDates });
+    const tasks = await Daily.aggregate([
+      { $match: { username: username } }, // Filter by username
+      { $group: { 
+          _id: "$date", // Group by date
+          count: { $sum: 1 }, // Count tasks per date
+          tasks: { $push: "$$ROOT" } // Store tasks in an array
+      }},
+      { $sort: { _id: 1 } } // Sort by date ascending
+    ]);
+    res.status(200).json({ success: true, tasks });
   } catch (error) {
-    console.error("Error retrieving daily tasks:", error);
+    console.error("Error fetching daily tasks:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
