@@ -284,6 +284,16 @@
         font-size: 14px;
         font-weight: 600;
     }
+    .create-item form .date-time{
+        display: flex;
+        width: 100%;
+    }
+    .create-item form .date-time .date{
+        width: 50%;
+    }
+    .create-item form .date-time .time{
+        width: 50%;
+    }
     .create-item form .input-proof{
         display: flex;
         justify-content: space-between;
@@ -433,10 +443,16 @@
                     <input id="title" name="title" type="text" required><br>
                     <label for="description">Description</label><br>
                     <input class="description" name="description" id="description" type="text"><br>
-                    <label for="task-date">Date</label><br>
-                    <input type="date" name="date" id="task-date" required><br>
-                    <label for="task-time">Time</label><br>
-                    <input type="time" name="time" id="task-time" required><br>
+                    <div class="date-time">
+                        <div class="date">
+                            <label for="task-date">Date</label><br>
+                            <input type="date" name="date" id="task-date" required><br>
+                        </div>
+                        <div class="time">
+                            <label for="task-time">Time</label><br>
+                            <input type="time" name="time" id="task-time" required><br>
+                        </div>
+                    </div>
                     <div class="input-proof">
                         <label for="upload-photo">Do you want to upload a photo as proof?</label><br>
                         <input type="checkbox" name="upload-photo" id="upload-photo"><br>
