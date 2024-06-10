@@ -838,11 +838,11 @@
 
                 const dateContentDiv = document.createElement("div");
                 dateContentDiv.className = "date-content";
-                dateContentDiv.textContent = `${taskGroup.nameday}, ${taskDate}`;
+                dateContentDiv.textContent = taskDate;
 
                 const taskContentDiv = document.createElement("div");
                 taskContentDiv.className = "task-content";
-                taskContentDiv.textContent = `${taskGroup.count} tasks`;
+                taskContentDiv.textContent = taskGroup.count;
 
                 const progressContentDiv = document.createElement("div");
                 progressContentDiv.className = "progress-content";
