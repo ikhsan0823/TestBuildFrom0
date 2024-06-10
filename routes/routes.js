@@ -557,7 +557,7 @@ router.get("/cycle", isAuthenticated, async (req, res) => {
 });
 
 router.get("/allmydaily", isAuthenticated, async (req, res) => {
-  res.render("allmydayly");
+  res.render("allmydaily");
 })
 
 module.exports = router;
