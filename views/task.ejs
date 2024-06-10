@@ -657,7 +657,9 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: formData,
+                    body: JSON.stringify({
+                        formData,
+                    }),
                 });
     
                 const contentType = response.headers.get('content-type');
