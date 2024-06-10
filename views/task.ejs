@@ -284,6 +284,11 @@
         font-size: 14px;
         font-weight: 600;
     }
+    .create-item form .all-btn{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
     .create-item form input.btn{
         align-self: flex-end;
         display: flex;
@@ -418,9 +423,11 @@
                     <input type="date" name="date" id="task-date" required><br>
                     <label for="upload-photo">Do you want to upload a photo as proof?</label>
                     <input type="checkbox" name="upload-photo" id="upload-photo"><br>
-                    <input class="btn" type="submit" value="Submit">
+                    <div class="all-btn">
+                        <input class="btn" type="submit" value="Submit">
+                        <button class="close-btn">Cancel</button>
+                    </div>
                 </form>
-                <button class="close-btn">Cancel</button>
             </div>
             <span class="overlay"></span>
         </section>
