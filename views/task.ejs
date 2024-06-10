@@ -248,9 +248,9 @@
         top: 50%;
         transform: translate(-50%, -50%);
         width: 300px;
-        color: #b9b9b9;
+        color: #030303;
         background-color: #f9f9f9;
-        font-size: 25px;
+        font-size: 18px;
         font-weight: 600;
         border-radius: 15px;
         padding: 15px 15px 15px 15px;
@@ -264,7 +264,7 @@
     .create-item form{
         display: flex;
         flex-direction: column;
-        margin-top: 20px;
+        margin-top: 15px;
         font-size: 15px;
         font-weight: 600;
     }
@@ -283,6 +283,14 @@
         border: none;
         font-size: 14px;
         font-weight: 600;
+    }
+    .create-item form .input-proof{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .create-item form .input-proof label{
+        text-align: left;
     }
     .create-item form .all-btn{
         display: flex;
@@ -416,8 +424,10 @@
                     <input class="description" name="description" id="description" type="text"><br>
                     <label for="task-date">Date</label><br>
                     <input type="date" name="date" id="task-date" required><br>
-                    <label for="upload-photo">Do you want to upload a photo as proof?</label>
-                    <input type="checkbox" name="upload-photo" id="upload-photo"><br>
+                    <div class="input-proof">
+                        <label for="upload-photo">Do you want to upload a photo as proof?</label><br>
+                        <input type="checkbox" name="upload-photo" id="upload-photo"><br>
+                    </div>
                     <div class="all-btn">
                         <button class="close-btn">Cancel</button>
                         <input class="btn" type="submit" value="Submit">
