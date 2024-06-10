@@ -409,7 +409,7 @@
         <section>
             <div class="create-item">
                 <div>Create Task</div>
-                <form class="create-form" id="cardForm" method="post" action="/dailyTask" enctype="multipart/form-data">
+                <form class="create-form" id="cardForm" method="post" action="#">
                     <label for="title">Title</label><br>
                     <input id="title" name="title" type="text" required><br>
                     <label for="description">Description</label><br>
@@ -644,13 +644,10 @@
 
             const nameday = getDayName(d);
 
-            formData.append('uniqueId', uniqueId);
-            formData.append('nameday', nameday);
-
-            sendDailyTaskToServer(formData);
+            sendDailyTaskToServer(title, description, date, uploadPhoto, uniqueId, nameday);
         })
 
-        async function sendDailyTaskToServer(formData) {
+        async function sendDailyTaskToServer(title, description, date, uploadPhoto, uniqueId, nameday) {
             try {
                 const response = await fetch('/dailytask', {
                     method: 'POST',
@@ -658,7 +655,12 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        formData,
+                        title: title,
+                        description: description,
+                        date: date,
+                        uploadPhoto: uploadPhoto,
+                        uniqueId: uniqueId,
+                        nameday: nameday,
                     }),
                 });
     
