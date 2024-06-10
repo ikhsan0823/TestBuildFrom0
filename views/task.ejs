@@ -586,14 +586,6 @@
                     </div>
                 </div>
                 <div class="content-daylist-container" id="daylist-container">
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content"></div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -743,17 +735,8 @@
             }
 
             const uniqueId = generateRandomId();
-            const d = new Date(date);
 
-            function getDayName(date) {
-                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const dayIndex = date.getDay();
-                return daysOfWeek[dayIndex];
-            }
-
-            const nameday = getDayName(d);
-
-            sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday);
+            sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId);
             resetForm();
             popupContainer.classList.remove("active");
         })
@@ -772,7 +755,6 @@
                         time: time,
                         uploadPhoto: uploadPhoto,
                         uniqueId: uniqueId,
-                        nameday: nameday,
                     }),
                 });
     

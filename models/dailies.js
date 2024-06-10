@@ -7,7 +7,6 @@ const dailySchema = {
   date: Date,
   time: String,
   uniqueId: String,
-  nameday: String,
   uploadPhoto: {
     type: Boolean,
     default: false

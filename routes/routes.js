@@ -118,7 +118,7 @@ router.get("/daily", isAuthenticated, async (req, res) => {
 });
 
 router.post("/dailytask", async (req, res) => {
-  const { title, description, date, time, uploadPhoto, uniqueId, nameday } = req.body;
+  const { title, description, date, time, uploadPhoto, uniqueId} = req.body;
   try {
     let newDaily = new Daily({
       username: req.session.user,
@@ -127,7 +127,6 @@ router.post("/dailytask", async (req, res) => {
       date,
       time,
       uniqueId,
-      nameday,
       uploadPhoto,
     });
 
@@ -151,7 +150,7 @@ router.get("/dailytasks", async (req, res) => {
           count: { $sum: 1 },
           tasks: { $push: "$$ROOT" }
       }},
-      { $sort: { _id: 1 } } // Sort by date ascending
+      { $sort: { _id: 1 } }
     ]);
     res.status(200).json({ success: true, tasks });
   } catch (error) {
