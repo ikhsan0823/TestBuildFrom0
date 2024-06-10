@@ -556,8 +556,8 @@ router.get("/cycle", isAuthenticated, async (req, res) => {
   res.render("cycle");
 });
 
-router.get("/task", isAuthenticated, async (req, res) => {
-  res.render("task");
+router.get("/allmydaily", isAuthenticated, async (req, res) => {
+  res.render("allmydayly");
 })
 
 module.exports = router;
