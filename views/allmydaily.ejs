@@ -294,6 +294,9 @@
         font-size: 15px;
         font-weight: 600;
     }
+    .content-daylist .right-content i{
+        cursor: pointer;
+    }
     .create-item{
         opacity: 0;
         pointer-events: none;
@@ -805,9 +808,8 @@
                 leftContentDiv.appendChild(progressContentDiv);
 
                 const rightContentDiv = document.createElement("div");
-                rightContentDiv.onclick = "detailTaskShow()";
                 rightContentDiv.className = "right-content";
-                rightContentDiv.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i>';
+                rightContentDiv.innerHTML = '<div onclick="detailTaskShow()"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>';
 
                 daylistDiv.appendChild(leftContentDiv);
                 daylistDiv.appendChild(rightContentDiv);
