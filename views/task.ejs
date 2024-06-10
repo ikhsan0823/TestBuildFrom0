@@ -811,12 +811,21 @@
             }
         }
 
+        async function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear();
+            return `${day} ${month} ${year}`;
+        }
+
         function displayDailyTasks(tasks) {
             const container = document.getElementById("daylist-container");
             container.innerHTML = "";
 
             tasks.forEach(taskGroup => {
-                const taskDate = new Date(taskGroup._id).toLocaleDateString();
+                const taskDate = formatDate(taskGroup._id);
 
                 const daylistDiv = document.createElement("div");
                 daylistDiv.className = "content-daylist";
