@@ -128,6 +128,7 @@ router.post("/dailytask", async (req, res) => {
       time,
       uniqueId,
       uploadPhoto,
+      complete: false,
     });
 
     await newDaily.save();
