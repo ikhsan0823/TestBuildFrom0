@@ -811,7 +811,9 @@
 
             tasks.forEach(taskGroup => {
                 const taskDate = formatDate(taskGroup._id);
-                const taskProgress = (taskGroup.completedCount / taskGroup.count) * 100;
+                const taskProgress = (taskGroup.completeCount / taskGroup.count) * 100;
+                console.log("jumlah:", taskGroup.count);
+                console.log("true:", taskGroup.completeCount)
 
 
                 const daylistDiv = document.createElement("div");
