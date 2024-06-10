@@ -237,9 +237,50 @@
         width: 10%;
         color: #030303;
         font-size: 15px;
-        font-weight: 600
+        font-weight: 600;
     }
-
+    .daylist .content-daylist{
+        display: flex;
+        height: 45px;
+        width: 100%;
+        padding: 10px 15px 10px 15px;
+        background-color: #f9f9f9;
+    }
+    .content-daylist .left-content{
+        display: flex;
+        width: 90%;
+        justify-content: space-around;
+        color: #030303;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .left-content .date-content{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .left-content .task-content{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .left-content .progress-content{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .content-daylist .right-content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        color: #030303;
+        font-size: 15px;
+        font-weight: 600;
+    }
     .create-item{
         opacity: 0;
         pointer-events: none;
@@ -536,7 +577,12 @@
                     </div>
                 </div>
                 <div class="content-daylist">
-
+                    <div class="left-content">
+                        <div class="date-content">Monday, 10 Sep 2024</div>
+                        <div class="task-content">5</div>
+                        <div class="progress-content">0%</div>
+                    </div>
+                    <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
                 </div>
             </div>
         </div>
