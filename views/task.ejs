@@ -825,6 +825,7 @@
             container.innerHTML = "";
 
             tasks.forEach(taskGroup => {
+                console.log(taskGroup._id);
                 const taskDate = formatDate(taskGroup._id);
 
                 const daylistDiv = document.createElement("div");
