@@ -805,6 +805,7 @@
                 leftContentDiv.appendChild(progressContentDiv);
 
                 const rightContentDiv = document.createElement("div");
+                rightContentDiv.onclick = "detailTaskShow()";
                 rightContentDiv.className = "right-content";
                 rightContentDiv.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i>';
 
@@ -827,6 +828,13 @@
             resetForm();
             popupContainer.classList.remove("active");
         });
+
+        function detailTaskShow() {
+            popupContainer.classList.toggle("false");
+        }
+        function myEnterFunction() {
+            popupContainer.classList.remove("false");
+        }
 
         document.getElementById('cardForm').addEventListener('submit', function(event) {
             event.preventDefault();
