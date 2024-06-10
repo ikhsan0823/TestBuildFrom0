@@ -811,6 +811,8 @@
 
             tasks.forEach(taskGroup => {
                 const taskDate = formatDate(taskGroup._id);
+                const taskProgress = (taskGroup.completedCount / taskGroup.count) * 100;
+
 
                 const daylistDiv = document.createElement("div");
                 daylistDiv.className = "content-daylist";
@@ -828,7 +830,7 @@
 
                 const progressContentDiv = document.createElement("div");
                 progressContentDiv.className = "progress-content";
-                progressContentDiv.innerHTML = "0%";
+                progressContentDiv.innerHTML = `${taskProgress}%`;
 
                 leftContentDiv.appendChild(dateContentDiv);
                 leftContentDiv.appendChild(taskContentDiv);
