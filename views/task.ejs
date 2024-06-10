@@ -240,6 +240,103 @@
         font-weight: 600
     }
 
+    .create-item{
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(150%, 25%);
+        width: 300px;
+        color: #b9b9b9;
+        background-color: #f9f9f9;
+        font-size: 25px;
+        font-weight: 600;
+        border-radius: 15px;
+        padding: 15px 15px 15px 15px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    }
+    section.active .create-item{
+        z-index: 500;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .create-item form{
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .create-item form label{
+        margin-bottom: -10px;
+    }
+    .create-item form input{
+        outline: none;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 5px;
+        padding: 5px 10px 5px 10px;
+        border-radius: 8px;
+        background-color: #d8d8d8;
+        color: #030303;
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .create-item form input.btn{
+        align-self: flex-end;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 40px;
+        background-color: #030303;
+        color: #f9f9f9;
+        transition: .05s;
+        cursor: pointer;
+    }
+    .create-item form input.btn:hover{
+        background-color: transparent;
+        border: solid 3px #030303;
+        color: #030303;
+    }
+    .create-item .close-btn{
+        position: absolute;
+        top: 324px;
+        right: 100px;
+        width: 80px;
+        height: 40px;
+        font-weight: 600;
+        background-color: #030303;
+        color: #f9f9f9;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: .05s;
+        cursor: pointer;
+    }
+    .close-btn:hover{
+        background-color: transparent;
+        border: solid 3px #030303;
+        color: #030303;
+    }
+
+    .overlay{
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+        opacity: 0;
+    }
+    section.active .overlay,
+    section.true .overlay,
+    section.false .overlay{
+        z-index: 450;
+        pointer-events: auto;
+        opacity: 1;
+    }
+
     /*media query*/
 
     @media screen and (min-width: 1024px) {
@@ -507,6 +604,16 @@
             document.getElementById("color7").style.color = "#030303";
         }
 
+        const popupContainer = document.querySelector("section");
+        const overlay = document.querySelector(".overlay");
+        const showCreateItem = document.querySelector(".show-createitem");
+        const closeBtn = document.querySelector(".close-btn");
+        const submitBtn = document.querySelector(".btn");
+
+        showCreateItem.addEventListener("click", () => popupContainer.classList.add("active"));
+        closeBtn.addEventListener("click", () => popupContainer.classList.remove("active"));
+        submitBtn.addEventListener("click", () => popupContainer.classList.remove("active"));
+
         document.getElementById('cardForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -573,8 +680,6 @@
             }
         }
 
-
-    
         function confirmLogout() {
             const logoutConfirmed = window.confirm("Are you sure you want to logout?");
             if (logoutConfirmed) {
