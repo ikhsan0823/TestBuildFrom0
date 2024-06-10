@@ -818,7 +818,6 @@
             const months = monthNames[dates.getMonth()];
             const years = dates.getFullYear();
             const fullDate = `${days} ${months} ${years}`;
-            console.log("formatDate function result:", days, months, years);
             return fullDate;
         }
 
@@ -827,7 +826,6 @@
             container.innerHTML = "";
 
             tasks.forEach(taskGroup => {
-                console.log("database date result:",taskGroup._id);
                 const taskDate = formatDate(taskGroup._id);
 
                 const daylistDiv = document.createElement("div");
@@ -838,7 +836,7 @@
 
                 const dateContentDiv = document.createElement("div");
                 dateContentDiv.className = "date-content";
-                dateContentDiv.textContent = taskDate;
+                dateContentDiv.textContent = `${taskGroup.nameday}, ${taskDate}`;
 
                 const taskContentDiv = document.createElement("div");
                 taskContentDiv.className = "task-content";

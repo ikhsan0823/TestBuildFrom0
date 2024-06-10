@@ -145,11 +145,12 @@ router.get("/dailytasks", async (req, res) => {
   try {
     const username = req.session.user;
     const tasks = await Daily.aggregate([
-      { $match: { username: username } }, // Filter by username
+      { $match: { username: username } },
       { $group: { 
-          _id: "$date", // Group by date
-          count: { $sum: 1 }, // Count tasks per date
-          tasks: { $push: "$$ROOT" } // Store tasks in an array
+          _id: "$date",
+          count: { $sum: 1 },
+          tasks: { $push: "$$ROOT" },
+          nameday: "$nameday",
       }},
       { $sort: { _id: 1 } } // Sort by date ascending
     ]);
