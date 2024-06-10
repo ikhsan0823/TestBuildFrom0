@@ -141,6 +141,17 @@ router.post("/dailytask", async (req, res) => {
   }
 });
 
+router.get("/dailytask", async (req, res) => {
+  try {
+    const username = req.session.user;
+    const uniqueDates = await Daily.distinct("date", { username });
+    res.status(200).json({ success: true, dates: uniqueDates });
+  } catch (error) {
+    console.error("Error retrieving daily tasks:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
 router.get("/carddaily", async (req, res) => {
   try {
     const dailyTasks = await Daily.find({ username: req.session.user });

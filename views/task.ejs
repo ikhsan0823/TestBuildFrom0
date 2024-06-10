@@ -588,95 +588,9 @@
                 <div class="content-daylist-container">
                     <div class="content-daylist">
                         <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
-                            <div class="task-content">5</div>
-                            <div class="progress-content">0%</div>
-                        </div>
-                        <div class="right-content"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    </div>
-                    <div class="content-daylist">
-                        <div class="left-content">
-                            <div class="date-content">Monday, 10 Sep 2024</div>
+                            <div class="date-content">
+                                <div id="date-container"></div>
+                            </div>
                             <div class="task-content">5</div>
                             <div class="progress-content">0%</div>
                         </div>
@@ -883,6 +797,27 @@
                 }
             }
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("/dailytask")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const dateContainer = document.getElementById("date-container");
+                        dateContainer.innerHTML = '';
+
+                        data.dates.forEach(date => {
+                            const dateDiv = document.createElement("div");
+                            dateDiv.className = "date-content";
+                            dateDiv.textContent = new Date(date).toLocaleDateString();
+                            dateContainer.appendChild(dateDiv);
+                        });
+                    } else {
+                        console.error("Failed to fetch dates:", data.message);
+                    }
+                })
+                .catch(error => console.error("Error fetching dates:", error));
+        });
 
         function confirmLogout() {
             const logoutConfirmed = window.confirm("Are you sure you want to logout?");
