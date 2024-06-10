@@ -627,6 +627,11 @@
             document.getElementById("color7").style.color = "#030303";
         }
 
+        function resetForm() {
+            const form = document.getElementById('cardForm');
+            form.reset();
+        }
+
         const popupContainer = document.querySelector("section");
         const overlay = document.querySelector(".overlay");
         const showCreateItem = document.querySelector(".show-createitem");
@@ -634,8 +639,10 @@
         const submitBtn = document.querySelector(".btn");
 
         showCreateItem.addEventListener("click", () => popupContainer.classList.add("active"));
-        closeBtn.addEventListener("click", () => popupContainer.classList.remove("active"));
-        submitBtn.addEventListener("click", () => popupContainer.classList.remove("active"));
+        closeBtn.addEventListener("click", () => {
+            resetForm();
+            popupContainer.classList.remove("active");
+        });
 
         document.getElementById('cardForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -668,6 +675,8 @@
             const nameday = getDayName(d);
 
             sendDailyTaskToServer(title, description, date, uploadPhoto, uniqueId, nameday);
+            resetForm();
+            popupContainer.classList.remove("active");
         })
 
         async function sendDailyTaskToServer(title, description, date, uploadPhoto, uniqueId, nameday) {
