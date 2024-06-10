@@ -406,7 +406,40 @@
         border: solid 3px #030303;
         color: #030303;
     }
-
+    .detailtask{
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 900px;
+        height: 500px;
+        color: #030303;
+        background-color: #f9f9f9;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 15px;
+        padding: 15px 15px 65px 15px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    }
+    section.false .detailtask{
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 500;
+    }
+    .detailtask .detailtask-closebtn{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        z-index: 550;
+    }
+    .detailtask-closebtn i{
+        font-size: 18px;
+    }
     .overlay{
         position: absolute;
         width: 100vw;
@@ -520,6 +553,14 @@
                     </div>
                 </form>
             </div>
+            <div class="detailtask">
+                <div class="detailtask-date">Wednesday, 12 Jun 2024</div>
+                <div onclick="myEnterFunction()" class="detailtask-closebtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <div id="detailtask-content" class="detailtask-content">
+                </div>
+            </div>
             <span class="overlay"></span>
         </section>
         <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
@@ -595,7 +636,6 @@
         </div>
     </div>
     <script>
-        //Toggle the display of elements
         function main(){
             if (window.matchMedia("(min-width: 1023px)").matches) {
                 document.getElementById("barList").style.display = "block";
