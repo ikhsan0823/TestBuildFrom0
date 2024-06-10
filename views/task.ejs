@@ -435,6 +435,8 @@
                     <input class="description" name="description" id="description" type="text"><br>
                     <label for="task-date">Date</label><br>
                     <input type="date" name="date" id="task-date" required><br>
+                    <label for="task-time">Time</label><br>
+                    <input type="time" name="time" id="task-time" required><br>
                     <div class="input-proof">
                         <label for="upload-photo">Do you want to upload a photo as proof?</label><br>
                         <input type="checkbox" name="upload-photo" id="upload-photo"><br>
@@ -653,6 +655,7 @@
             const title = document.getElementById('title').value;
             const description = document.getElementById('description').value;
             const date = document.getElementById('task-date').value;
+            const time = document.getElementById('task-time').value;
             const uploadPhoto = formData.get('upload-photo') ? true : false;
 
             function generateRandomId() {
@@ -674,12 +677,12 @@
 
             const nameday = getDayName(d);
 
-            sendDailyTaskToServer(title, description, date, uploadPhoto, uniqueId, nameday);
+            sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday);
             resetForm();
             popupContainer.classList.remove("active");
         })
 
-        async function sendDailyTaskToServer(title, description, date, uploadPhoto, uniqueId, nameday) {
+        async function sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday) {
             try {
                 const response = await fetch('/dailytask', {
                     method: 'POST',
@@ -690,6 +693,7 @@
                         title: title,
                         description: description,
                         date: date,
+                        time: time,
                         uploadPhoto: uploadPhoto,
                         uniqueId: uniqueId,
                         nameday: nameday,

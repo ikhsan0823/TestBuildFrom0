@@ -5,6 +5,7 @@ const dailySchema = {
   title: String,
   description: String,
   date: Date,
+  time: String,
   uniqueId: String,
   nameday: String,
   uploadPhoto: {
