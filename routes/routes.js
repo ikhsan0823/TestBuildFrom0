@@ -183,6 +183,15 @@ router.post('/getdetailtask', async (req, res) => {
   }
 });
 
+router.post("/gettruetask", async (req, res) => {
+  const { uniqueId } = req.body;
+  const task = await Daily.findOne({ uniqueId: uniqueId });
+  task.complete = true;
+
+  await task.save();
+  res.status(200).send({ message: "Task updated successfully", task });
+})
+
 router.get("/carddaily", async (req, res) => {
   try {
     const dailyTasks = await Daily.find({ username: req.session.user });

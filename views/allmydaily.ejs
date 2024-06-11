@@ -490,7 +490,7 @@
 
     .show-checkinfo{
         position: absolute;
-        width: 300px;
+        width: 250px;
         height: 110px;
         left: 50%;
         top: 50%;
@@ -665,8 +665,8 @@
             <div class="show-checkinfo">
                 <div class="check-question">Have you completed this task?</div>
                 <div class="check-btn">
-                    <div class="cancel-checkbtn">Cancel</div>
-                    <div class="ok-checkbtn">Yes</div>
+                    <div onclick="hideComplete()" class="cancel-checkbtn">Cancel</div>
+                    <div onclick="completeTasks(this)" class="ok-checkbtn">Yes</div>
                 </div>
             </div>
             <span class="overlay"></span>
@@ -1006,10 +1006,34 @@
         async function completeShow(element){
             const parentContainer = element.closest('.right-detailtask');
             const uniqueId = parentContainer.id;
+            const checkBtnDiv = document.querySelector(".check-btn");
+            checkBtnDiv.id = uniqueId;
 
-            const showCheckInfo = document.querySelector('.show-checkinfo');
-            showCheckInfo.classList.add("check");
             popupContainer.classList.add("check");
+        }
+
+        async function completeTasks(element){
+            const parentContainer = element.closest('.check-btn');
+            const uniqueId = parentContainer.id;
+            getTrueTask(uniqueId);
+
+            popupContainer.classList.remove("check");
+        }
+
+        async function getTrueTask(uniqueId) {
+            const response = await fetch('/gettruetask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uniqueId: uniqueId,
+                }),
+            });
+        }
+
+        async function hideComplete(){
+            popupContainer.classList.remove("check");
         }
 
         function myEnterFunction() {
