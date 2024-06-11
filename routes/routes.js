@@ -181,14 +181,38 @@ router.post('/getdetailtask', async (req, res) => {
   }
 });
 
-router.post("/gettruetask", async (req, res) => {
+router.post("/completeAndUpload", upload.single("myfile"), async (req, res) => {
   const { uniqueId } = req.body;
-  const task = await Daily.findOne({ uniqueId: uniqueId });
-  task.complete = true;
 
-  await task.save();
-  res.status(200).send({ message: "Task updated successfully", task });
-})
+  try {
+    if (req.file) {
+      const fileBuffer = req.file.buffer.toString('base64');
+
+      const newFile = new File({
+        username: req.session.user,
+        filename: req.file.originalname,
+        size: req.file.size,
+        uniqueId: uniqueId,
+        content: fileBuffer,
+      });
+
+      await newFile.save();
+    }
+
+    const task = await Daily.findOne({ uniqueId: uniqueId });
+    if (!task) {
+      return res.status(404).json({ success: false, error: "Tugas tidak ditemukan" });
+    }
+
+    task.complete = true;
+
+    await task.save();
+    res.status(200).send({ message: "Task updated successfully", task });
+  } catch (error) {
+    console.error("Error handling request:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
 
 router.get("/carddaily", async (req, res) => {
   try {
@@ -209,7 +233,7 @@ router.get("/carddaily", async (req, res) => {
   }
 });
 
-router.delete("/dailytask/:uniqueId", async (req, res) => {
+/*router.delete("/dailytask/:uniqueId", async (req, res) => {
   const uniqueId = req.params.uniqueId;
   try {
     const deleteTask = await Daily.findOneAndDelete({ uniqueId: uniqueId });
@@ -226,7 +250,7 @@ router.delete("/dailytask/:uniqueId", async (req, res) => {
     console.error("Error deleting task:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-});
+});*/
 
 router.post("/upload", upload.single("myfile"), async (req, res) => {
   if (req.file) {

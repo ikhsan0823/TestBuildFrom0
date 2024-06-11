@@ -517,7 +517,7 @@
     }
     .show-checkinfo .upload-photo{
         margin-bottom: 10px;
-        margin-top: 15px;
+        margin-top: 10px;
         font-size: 13px;
         font-weight: 500;
         color: #030303;
@@ -1040,25 +1040,38 @@
         async function completeTasks(element) {
             const parentContainer = element.closest('.check-btn');
             const uniqueId = parentContainer.id;
-            await getTrueTask(uniqueId);
 
-            popupContainer.classList.remove("check");
+            const fileInput = document.querySelector('#myfile');
+            let formData = new FormData();
+            formData.append('uniqueId', uniqueId);
 
-            requestAnimationFrame(() => {
-                window.location.reload();
-            });
-        }
+            if(fileInput) {
+                const file = fileInput.files[0];
+                if (!file) {
+                    alert('Please upload a photo as proof!');
+                    return;
+                }
+                formData.append('myfile', file);
+            }
 
-        async function getTrueTask(uniqueId) {
-            const response = await fetch('/gettruetask', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    uniqueId: uniqueId,
-                }),
-            });
+            try {
+                const response = await fetch('/completeAndUpload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    popupContainer.classList.remove("check");
+                    requestAnimationFrame(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    const errorData = await response.json();
+                    alert('Error: ' + errorData.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
         async function hideComplete(){
