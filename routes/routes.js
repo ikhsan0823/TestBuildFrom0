@@ -199,35 +199,20 @@ router.post("/completeAndUpload", upload.single("myfile"), async (req, res) => {
 
       await newFile.save();
     }
-
+    
     const task = await Daily.findOne({ uniqueId: uniqueId });
     if (!task) {
       return res.status(404).json({ success: false, error: "Tugas tidak ditemukan" });
     }
 
     task.complete = true;
+    task.completedAt = new Date();
 
     await task.save();
     res.status(200).send({ message: "Task updated successfully", task });
   } catch (error) {
     console.error("Error handling request:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
-  }
-});
-
-cron.schedule('* * * * *', async () => {
-  try {
-    const now = new Date();
-    const twentyFourHoursAgo = new Date(now - 5 * 60 * 1000);
-
-    const result = await Daily.deleteMany({
-      complete: true,
-      completedAt: { $lte: twentyFourHoursAgo }
-    });
-
-    console.log(`Deleted ${result.deletedCount} tasks that were completed more than 24 hours ago.`);
-  } catch (error) {
-    console.error("Error running cleanup task:", error);
   }
 });
 

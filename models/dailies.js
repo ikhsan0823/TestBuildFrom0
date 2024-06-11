@@ -14,6 +14,11 @@ const dailySchema = {
   complete: {
     type: Boolean,
     default: false
+  },
+  completedAt: {
+    type: Date,
+    default: null,
+    index: { expires: '5m'},
   }
 };
 
