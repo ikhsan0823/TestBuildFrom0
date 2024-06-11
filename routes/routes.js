@@ -215,10 +215,10 @@ router.post("/completeAndUpload", upload.single("myfile"), async (req, res) => {
   }
 });
 
-cron.schedule('0 * * * *', async () => {
+cron.schedule('* * * * *', async () => {
   try {
     const now = new Date();
-    const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000);
+    const twentyFourHoursAgo = new Date(now - 5 * 60 * 1000);
 
     const result = await Daily.deleteMany({
       complete: true,
