@@ -836,7 +836,7 @@
 
         function detailTaskShow(element) {
             const parentContainer = element.closest('.content-daylist');
-            getDetailTask(parentContainer);
+            const alltask = getDetailTask(parentContainer);
             alltask.forEach(task => {
                 console.log(task.title);
                 console.log(task.description);
