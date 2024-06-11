@@ -222,7 +222,7 @@ cron.schedule('* * * * *', async () => {
 
     const result = await Daily.deleteMany({
       complete: true,
-      completeAt: { $lte: twentyFourHoursAgo }
+      completedAt: { $lte: twentyFourHoursAgo }
     });
 
     console.log(`Deleted ${result.deletedCount} tasks that were completed more than 24 hours ago.`);
