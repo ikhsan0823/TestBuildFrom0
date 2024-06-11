@@ -174,6 +174,8 @@ router.post('/getdetailtask', async (req, res) => {
       username: username
     });
 
+    console.log(tasks);
+
     res.status(200).json(tasks);
   } catch (error) {
       console.error('Error fetching tasks:', error);
