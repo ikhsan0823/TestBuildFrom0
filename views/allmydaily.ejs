@@ -446,7 +446,7 @@
         font-size: 18px;
     }
     .detailtask-content{
-        margin-top: 25px;
+        margin-top: 15px;
         width: 100%;
         height: 100%;
         overflow: auto;
@@ -455,6 +455,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
+        height: 45px;
+        border-bottom: solid #b9b9b9 1px;
+        margin-top: 10px;
     }
     .title-content{
         font-size: 15px;
@@ -897,11 +901,17 @@
                     descriptionDiv.textContent = task.description;
                     centerDetailTaskDiv.appendChild(descriptionDiv);
 
+                    
+                    const completeTask = task.complete;
                     const rightDetailTaskDiv = document.createElement('div');
                     rightDetailTaskDiv.className = 'right-detailtask';
                     const checkDiv = document.createElement('div');
                     checkDiv.className = 'check-task';
-                    checkDiv.innerHTML = '<i class="fa-solid fa-square-check"></i>';
+                    if (completeTask) {
+                        checkDiv.innerHTML = '<i class="fa-solid fa-square-check"></i>';
+                    } else {
+                        checkDiv.innerHTML = '<i class="fa-regular fa-square"></i>';
+                    }
                     rightDetailTaskDiv.appendChild(checkDiv);
 
                     detailTaskContDiv.appendChild(leftDetailTaskDiv);
