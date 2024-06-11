@@ -189,7 +189,7 @@ router.post("/gettruetask", async (req, res) => {
   task.complete = true;
 
   await task.save();
-  res.status(200).send({ message: "Task updated successfully", task });
+  res.render("allmydaily");
 })
 
 router.get("/carddaily", async (req, res) => {
