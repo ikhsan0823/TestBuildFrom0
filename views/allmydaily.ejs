@@ -1008,6 +1008,7 @@
             const parentContainer = element.closest('.right-detailtask');
             const uniqueIdComplete = parentContainer.id;
             const uniqueId = uniqueIdComplete.split("-"[0]);
+            console.log(uniqueId);
             const checkBtnDiv = document.querySelector(".check-btn");
             checkBtnDiv.id = uniqueId;
             const uploadPhoto = uniqueIdComplete.split("-"[1]);
