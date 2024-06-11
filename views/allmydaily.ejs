@@ -563,14 +563,7 @@
                 <div onclick="myEnterFunction()" class="detailtask-closebtn">
                     <i class="fa-solid fa-xmark"></i>
                 </div>
-                <div id="detailtask-content" class="detailtask-content">
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                </div>
+                <div id="detailtask-content" class="detailtask-content"></div>
             </div>
             <span class="overlay"></span>
         </section>
@@ -850,18 +843,48 @@
             const alltask = await getDetailTask(date);
             if (Array.isArray(alltask) && alltask.length > 0) {
                 alltask.forEach(task => {
+                    popupContainer.classList.toggle("false");
+
                     const firstDate = element.closest('.right-content');
                     const dateContentId = firstDate.id;
                     const dateContentReplace = dateContentId.replaceAll('-', ' ');
                     const headerDate = dateContentReplace;
-                    console.log(headerDate)
                     headerDateValue.textContent = headerDate;
-                    console.log(task.title);
-                    console.log(task.description);
-                    console.log(task.date);
-                    console.log(task.time);
+
+                    const detailTaskContentDiv = document.querySelector('.detailtask-content');
+                    const detailTaskContDiv = document.createElement('div');
+                    detailTaskContDiv.className = 'detailtask-container';
+
+                    const leftDetailTaskDiv = document.createElement('div');
+                    leftDetailTaskDiv.className = 'left-detailtask';
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'title-content';
+                    titleDiv.textContent = task.title
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'time-content';
+                    timeDiv.textContent = task.time;
+                    leftDetailTaskDiv.appendChild(titleDiv);
+                    leftDetailTaskDiv.appendChild(timeDiv);
+
+                    const centerDetailTaskDiv = document.createElement('div');
+                    centerDetailTaskDiv.className = 'center-detailtask';
+                    const descriptionDiv = document.createElement('div');
+                    descriptionDiv.className = 'description-content';
+                    descriptionDiv.textContent = task.description;
+                    centerDetailTaskDiv.appendChild(descriptionDiv);
+
+                    const rightDetailTaskDiv = document.createElement('div');
+                    rightDetailTaskDiv.className = 'right-detailtask';
+                    const checkDiv = document.createElement('div');
+                    checkDiv.className = 'check-task';
+                    checkDiv.innerHTML = '<i class="fa-solid fa-square-check"></i>';
+                    rightDetailTaskDiv.appendChild(checkDiv);
+
+                    detailTaskContDiv.appendChild(leftDetailTaskDiv);
+                    detailTaskContDiv.appendChild(centerDetailTaskDiv);
+                    detailTaskContDiv.appendChild(rightDetailTaskDiv);
+                    detailTaskContentDiv.appendChild(detailTaskContDiv);
                 });
-                popupContainer.classList.toggle("false");
             } else {
                 console.log('No tasks found for the selected date.');
             }
