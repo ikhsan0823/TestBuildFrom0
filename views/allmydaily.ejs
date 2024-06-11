@@ -802,8 +802,6 @@
 
                 const dateContentDiv = document.createElement("div");
                 dateContentDiv.className = "date-content";
-                const idDate = taskDate.replaceAll(' ', '-');
-                dateContentDiv.id = idDate;
                 dateContentDiv.textContent = taskDate;
 
                 const taskContentDiv = document.createElement("div");
@@ -820,6 +818,8 @@
 
                 const rightContentDiv = document.createElement("div");
                 rightContentDiv.className = "right-content";
+                const idDate = taskDate.replaceAll(' ', '-');
+                rightContentDiv.id = idDate
                 rightContentDiv.innerHTML = '<div onclick="detailTaskShow(this)"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>';
 
                 daylistDiv.appendChild(leftContentDiv);
@@ -850,7 +850,7 @@
             const alltask = await getDetailTask(date);
             if (Array.isArray(alltask) && alltask.length > 0) {
                 alltask.forEach(task => {
-                    const firstDate = element.closest('.date-content');
+                    const firstDate = element.closest('.right-content');
                     const dateContentId = firstDate.id;
                     const dateContentReplace = dateContentId.replaceAll('-', ' ');
                     const headerDate = dateContentReplace;
