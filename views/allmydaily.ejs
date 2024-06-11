@@ -1028,8 +1028,10 @@
                 const uploadPhotoDiv = document.querySelector('.upload-photo');
                 uploadPhotoDiv.innerHTML = "";
             }
-
-            popupContainer.classList.add("check");
+            popupContainer.classList.remove("false");
+            requestAnimationFrame(() => {
+                popupContainer.classList.add("check");
+            });
         }
 
         async function completeTasks(element) {
@@ -1058,6 +1060,9 @@
 
         async function hideComplete(){
             popupContainer.classList.remove("check");
+            requestAnimationFrame(() => {
+                popupContainer.classList.add("false");
+            });
         }
 
         function myEnterFunction() {
