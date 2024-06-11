@@ -189,7 +189,7 @@ router.post("/gettruetask", async (req, res) => {
   task.complete = true;
 
   await task.save();
-  res.render("allmydaily");
+  res.redirect("allmydaily");
 })
 
 router.get("/carddaily", async (req, res) => {
