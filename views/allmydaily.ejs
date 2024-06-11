@@ -425,7 +425,7 @@
         font-size: 18px;
         font-weight: 600;
         border-radius: 15px;
-        padding: 15px 15px 65px 15px;
+        padding: 15px 15px 15px 15px;
         box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
     }
     section.false .detailtask{
@@ -564,6 +564,12 @@
                     <i class="fa-solid fa-xmark"></i>
                 </div>
                 <div id="detailtask-content" class="detailtask-content">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
                 </div>
             </div>
             <span class="overlay"></span>
@@ -835,11 +841,16 @@
         });
 
         async function detailTaskShow(element) {
+            const headerDateValue = document.querySelector(".detailtask-date");
+            headerDateValue.innerHTML = "";
             const parentContainer = element.closest('.content-daylist');
             const date = parentContainer.id;
             const alltask = await getDetailTask(date);
             if (Array.isArray(alltask) && alltask.length > 0) {
                 alltask.forEach(task => {
+                    const firstDate = element.closest('.date-content');
+                    const headerDate = firstDate.value;
+                    headerDateValue.textContent = headerDate;
                     console.log(task.title);
                     console.log(task.description);
                     console.log(task.date);
