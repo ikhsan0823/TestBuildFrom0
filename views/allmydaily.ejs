@@ -812,7 +812,7 @@
 
                 const rightContentDiv = document.createElement("div");
                 rightContentDiv.className = "right-content";
-                rightContentDiv.innerHTML = '<div onclick="detailTaskShow()"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>';
+                rightContentDiv.innerHTML = `<div onclick="detailTaskShow(${taskGroup._id})"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>`;
 
                 daylistDiv.appendChild(leftContentDiv);
                 daylistDiv.appendChild(rightContentDiv);
@@ -834,7 +834,8 @@
             popupContainer.classList.remove("active");
         });
 
-        function detailTaskShow() {
+        function detailTaskShow(date) {
+            console.log("Container's date is", date);
             popupContainer.classList.toggle("false");
         }
         function myEnterFunction() {
