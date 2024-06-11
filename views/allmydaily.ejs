@@ -849,8 +849,9 @@
             if (Array.isArray(alltask) && alltask.length > 0) {
                 alltask.forEach(task => {
                     const firstDate = element.closest('.date-content');
-                    const headerDate = firstDate.value;
-                    headerDateValue.textContent = headerDate;
+                    //const headerDate = firstDate.value;
+                    console.log(firstDate.value)
+                    //headerDateValue.textContent = headerDate;
                     console.log(task.title);
                     console.log(task.description);
                     console.log(task.date);
