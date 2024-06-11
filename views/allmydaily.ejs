@@ -664,6 +664,7 @@
             </div>
             <div class="show-checkinfo">
                 <div class="check-question">Have you completed this task?</div>
+                <div class="upload-photo"></div>
                 <div class="check-btn">
                     <div onclick="hideComplete()" class="cancel-checkbtn">Cancel</div>
                     <div onclick="completeTasks(this)" class="ok-checkbtn">Yes</div>
@@ -1005,9 +1006,20 @@
 
         async function completeShow(element){
             const parentContainer = element.closest('.right-detailtask');
-            const uniqueId = parentContainer.id;
+            const uniqueIdComplete = parentContainer.id;
+            const uniqueId = uniqueIdComplete.split("-"[0]);
             const checkBtnDiv = document.querySelector(".check-btn");
             checkBtnDiv.id = uniqueId;
+            const uploadPhoto = uniqueIdComplete.split("-"[1]);
+            if (uploadPhoto == "true") {
+                const uploadPhotoDiv = document.querySelector('.upload-photo');
+                const uploadPhotoForm = document.createElement('form');
+                uploadPhotoForm.innerHTML = '<label for="myfile">Select a file:</label><br><input type="file" id="myfile" name="myfile"><br>';
+                uploadPhotoDiv.appendChild(uploadPhotoForm);
+            } else {
+                const uploadPhotoDiv = document.querySelector('.upload-photo');
+                uploadPhotoDiv.innerHTML = "";
+            }
 
             popupContainer.classList.add("check");
         }
