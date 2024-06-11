@@ -1007,11 +1007,11 @@
         async function completeShow(element){
             const parentContainer = element.closest('.right-detailtask');
             const uniqueIdComplete = parentContainer.id;
-            const uniqueId = uniqueIdComplete.split("-"[0]);
+            const uniqueId = uniqueIdComplete.split("-")[0];
             console.log(uniqueId);
             const checkBtnDiv = document.querySelector(".check-btn");
             checkBtnDiv.id = uniqueId;
-            const uploadPhoto = uniqueIdComplete.split("-"[1]);
+            const uploadPhoto = uniqueIdComplete.split("-")[1];
             console.log(uploadPhoto);
             if (uploadPhoto === "true") {
                 const uploadPhotoDiv = document.querySelector('.upload-photo');
