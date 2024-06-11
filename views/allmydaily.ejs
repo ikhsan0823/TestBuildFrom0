@@ -837,14 +837,18 @@
         async function detailTaskShow(element) {
             const parentContainer = element.closest('.content-daylist');
             const date = parentContainer.id;
-            const alltask = getDetailTask(date);
-            alltask.forEach(task => {
-                console.log(task.title);
-                console.log(task.description);
-                console.log(task.date);
-                console.log(task.time);
-            })
-            popupContainer.classList.toggle("false");
+            const alltask = await getDetailTask(date);
+            if (Array.isArray(alltask) && alltask.length > 0) {
+                alltask.forEach(task => {
+                    console.log(task.title);
+                    console.log(task.description);
+                    console.log(task.date);
+                    console.log(task.time);
+                });
+                popupContainer.classList.toggle("false");
+            } else {
+                console.log('No tasks found for the selected date.');
+            }
         }
         function myEnterFunction() {
             popupContainer.classList.remove("false");
@@ -891,9 +895,10 @@
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 const data = await response.json();
-                return data;
+                return Array.isArray(data) ? data : [];
             } else {
                 console.error('Unexpected response type:', contentType);
+                return [];
             }
         }
 
