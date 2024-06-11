@@ -522,6 +522,9 @@
         font-weight: 500;
         color: #030303;
     }
+    .upload-photo form label{
+        margin-bottom: 10px;
+    }
     .show-checkinfo .check-btn{
         display: flex;
         align-items: center;
@@ -1015,11 +1018,9 @@
             const parentContainer = element.closest('.right-detailtask');
             const uniqueIdComplete = parentContainer.id;
             const uniqueId = uniqueIdComplete.split("-")[0];
-            console.log(uniqueId);
             const checkBtnDiv = document.querySelector(".check-btn");
             checkBtnDiv.id = uniqueId;
             const uploadPhoto = uniqueIdComplete.split("-")[1];
-            console.log(uploadPhoto);
             if (uploadPhoto === "true") {
                 const uploadPhotoDiv = document.querySelector('.upload-photo');
                 uploadPhotoDiv.innerHTML = "";
