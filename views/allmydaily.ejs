@@ -516,9 +516,7 @@
         height: 50%;
     }
     .show-checkinfo .upload-photo{
-        margin-bottom: 5px;
-    }
-    .upload-photo label{
+        margin-bottom: 10px;
         font-size: 13px;
         font-weight: 500;
         color: #030303;
@@ -1024,7 +1022,7 @@
             if (uploadPhoto === "true") {
                 const uploadPhotoDiv = document.querySelector('.upload-photo');
                 const uploadPhotoForm = document.createElement('form');
-                uploadPhotoForm.innerHTML = '<label for="myfile">Select a file:</label><br><input type="file" id="myfile" name="myfile"><br>';
+                uploadPhotoForm.innerHTML = '<label for="myfile">Upload a photo as proof</label><br><input type="file" id="myfile" name="myfile"><br>';
                 uploadPhotoDiv.appendChild(uploadPhotoForm);
             } else {
                 const uploadPhotoDiv = document.querySelector('.upload-photo');
