@@ -24,7 +24,7 @@
         display: flex;
     }
     section.active .overlay,
-    section.true .overlay,
+    section.check .overlay,
     section.false .overlay{
         z-index: 450;
         pointer-events: auto;
@@ -472,6 +472,9 @@
         align-items: center;
         width: 10%;
     }
+    .right-detailtask i{
+        cursor: pointer;
+    }
     .title-content{
         font-size: 15px;
         font-weight: 600;
@@ -485,6 +488,62 @@
         font-size: 13px;
         font-weight: 500;
     }
+
+    .show-checkinfo{
+        position: absolute;
+        width: 300px;
+        height: 200px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        pointer-events: none;
+        opacity: 0;
+        padding: 15px 15px 15px 15px;
+    }
+    section.check .show-checkinfo{
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 500;
+    }
+    .show-checkinfo .check-question{
+        color: #030303;
+        text-align: left;
+        font-size: 15px;
+        font-weight: 500;
+        width: 100%;
+        height: 50%;
+    }
+    .show-checkinfo .check-btn{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        height: 50%;
+    }
+    .check-btn .cancel-checkbtn,
+    .check-btn .ok-checkbtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 80px;
+        height: 40px;
+        font-weight: 600;
+        background-color: #030303;
+        color: #f9f9f9;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: .05s;
+        cursor: pointer;
+    }
+    .check-btn .cancel-checkbtn:hover,
+    .check-btn .ok-checkbtn:hover{
+        background-color: transparent;
+        border:  solid 3px #030303;
+        color: #030303;
+    }
     .overlay{
         position: absolute;
         width: 100vw;
@@ -492,13 +551,6 @@
         background: rgba(0, 0, 0, 0.3);
         pointer-events: none;
         opacity: 0;
-    }
-    section.active .overlay,
-    section.true .overlay,
-    section.false .overlay{
-        z-index: 450;
-        pointer-events: auto;
-        opacity: 1;
     }
 
     /*media query*/
@@ -604,6 +656,13 @@
                     <i class="fa-solid fa-xmark"></i>
                 </div>
                 <div id="detailtask-content" class="detailtask-content"></div>
+            </div>
+            <div class="show-checkinfo">
+                <div class="check-question">Have you completed this task?</div>
+                <div class="check-btn">
+                    <div class="cancel-checkbtn">Cancel</div>
+                    <div class="ok-checkbtn">Yes</div>
+                </div>
             </div>
             <span class="overlay"></span>
         </section>
@@ -878,6 +937,14 @@
         async function detailTaskShow(element) {
             const headerDateValue = document.querySelector(".detailtask-date");
             headerDateValue.innerHTML = "";
+            const firstDate = element.closest('.right-content');
+            const dateContentId = firstDate.id;
+            const dateContentReplace = dateContentId.replaceAll('-', ' ');
+            const headerDate = dateContentReplace;
+            headerDateValue.textContent = headerDate;
+
+            popupContainer.classList.toggle("false");
+
             const detailTaskContentDiv = document.querySelector('.detailtask-content');
             detailTaskContentDiv.innerHTML = "";
             const parentContainer = element.closest('.content-daylist');
@@ -885,13 +952,6 @@
             const alltask = await getDetailTask(date);
             if (Array.isArray(alltask) && alltask.length > 0) {
                 alltask.forEach(task => {
-                    popupContainer.classList.toggle("false");
-
-                    const firstDate = element.closest('.right-content');
-                    const dateContentId = firstDate.id;
-                    const dateContentReplace = dateContentId.replaceAll('-', ' ');
-                    const headerDate = dateContentReplace;
-                    headerDateValue.textContent = headerDate;
 
                     const detailTaskContDiv = document.createElement('div');
                     detailTaskContDiv.className = 'detailtask-container';
@@ -918,12 +978,13 @@
                     const completeTask = task.complete;
                     const rightDetailTaskDiv = document.createElement('div');
                     rightDetailTaskDiv.className = 'right-detailtask';
+                    rightDetailTaskDiv.id = task.uniqueId;
                     const checkDiv = document.createElement('div');
                     checkDiv.className = 'check-task';
                     if (completeTask) {
-                        checkDiv.innerHTML = '<i class="fa-solid fa-square-check"></i>';
+                        checkDiv.innerHTML = '<div onclick="completeShow(this)"><i class="fa-solid fa-square-check"></i></div>';
                     } else {
-                        checkDiv.innerHTML = '<i class="fa-regular fa-square"></i>';
+                        checkDiv.innerHTML = '<div onclick="completeShow(this)"><i class="fa-regular fa-square"></i></div>';
                     }
                     rightDetailTaskDiv.appendChild(checkDiv);
 
@@ -936,6 +997,16 @@
                 console.log('No tasks found for the selected date.');
             }
         }
+
+        async function completeShow(element){
+            const parentContainer = element.closest('.right-detailtask');
+            const uniqueId = parentContainer.id;
+
+            const showCheckInfo = document.querySelector('.show-checkinfo');
+            showCheckInfo.classList.add("check");
+            popupContainer.classList.add("check");
+        }
+
         function myEnterFunction() {
             popupContainer.classList.remove("false");
         }
