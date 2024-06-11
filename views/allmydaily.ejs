@@ -1012,12 +1012,16 @@
             popupContainer.classList.add("check");
         }
 
-        async function completeTasks(element){
+        async function completeTasks(element) {
             const parentContainer = element.closest('.check-btn');
             const uniqueId = parentContainer.id;
-            getTrueTask(uniqueId);
+            await getTrueTask(uniqueId);
 
             popupContainer.classList.remove("check");
+            
+            requestAnimationFrame(() => {
+                window.location.reload();
+            });
         }
 
         async function getTrueTask(uniqueId) {

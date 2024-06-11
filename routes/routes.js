@@ -174,8 +174,6 @@ router.post('/getdetailtask', async (req, res) => {
       username: username
     });
 
-    console.log(tasks);
-
     res.status(200).json(tasks);
   } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -189,7 +187,7 @@ router.post("/gettruetask", async (req, res) => {
   task.complete = true;
 
   await task.save();
-  res.redirect("allmydaily");
+  res.status(200).send({ message: "Task updated successfully", task });
 })
 
 router.get("/carddaily", async (req, res) => {
