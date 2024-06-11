@@ -834,9 +834,10 @@
             popupContainer.classList.remove("active");
         });
 
-        function detailTaskShow(element) {
+        async function detailTaskShow(element) {
             const parentContainer = element.closest('.content-daylist');
-            const alltask = getDetailTask(parentContainer);
+            const date = parentContainer.id;
+            const alltask = getDetailTask(date);
             alltask.forEach(task => {
                 console.log(task.title);
                 console.log(task.description);
@@ -877,20 +878,20 @@
             popupContainer.classList.remove("active");
         })
 
-        async function getDetailTask(parentContainer) {
+        async function getDetailTask(date) {
             const response = await fetch('/getdetailtask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    date: parentContainer,
+                    date: date,
                 }),
             });
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 const data = await response.json();
-                console.log('Server response:', data);
+                return data;
             } else {
                 console.error('Unexpected response type:', contentType);
             }

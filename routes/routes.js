@@ -165,13 +165,16 @@ router.post('/getdetailtask', async (req, res) => {
   try {
     const { date } = req.body;
     const username = req.session.user;
+    const parsedDate = new Date(date);
 
-    const alltask = await Daily.find({
-      date: date,
+    const tasks = await Daily.find({
+      date: {
+        $eq: parsedDate
+      },
       username: username
     });
 
-    res.status(200).json(alltask);
+    res.status(200).json(tasks);
   } catch (error) {
       console.error('Error fetching tasks:', error);
       res.status(500).json({ message: 'Internal Server Error' });
