@@ -1011,7 +1011,8 @@
             const checkBtnDiv = document.querySelector(".check-btn");
             checkBtnDiv.id = uniqueId;
             const uploadPhoto = uniqueIdComplete.split("-"[1]);
-            if (uploadPhoto == "true") {
+            console.log(uploadPhoto);
+            if (uploadPhoto === "true") {
                 const uploadPhotoDiv = document.querySelector('.upload-photo');
                 const uploadPhotoForm = document.createElement('form');
                 uploadPhotoForm.innerHTML = '<label for="myfile">Select a file:</label><br><input type="file" id="myfile" name="myfile"><br>';
