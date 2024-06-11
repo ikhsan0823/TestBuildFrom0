@@ -836,7 +836,13 @@
 
         function detailTaskShow(element) {
             const parentContainer = element.closest('.content-daylist');
-            console.log("Container's date is", parentContainer.id);
+            getDetailTask(parentContainer);
+            alltask.forEach(task => {
+                console.log(task.title);
+                console.log(task.description);
+                console.log(task.date);
+                console.log(task.time);
+            })
             popupContainer.classList.toggle("false");
         }
         function myEnterFunction() {
@@ -870,6 +876,25 @@
             fetchDailyTasks();
             popupContainer.classList.remove("active");
         })
+
+        async function getDetailTask(date) {
+            const response = await fetch('/getdetailtask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    date: date,
+                }),
+            });
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                console.log('Server response:', data);
+            } else {
+                console.error('Unexpected response type:', contentType);
+            }
+        }
 
         async function sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday) {
             try {

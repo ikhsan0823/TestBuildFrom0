@@ -161,6 +161,25 @@ router.get("/dailytasks", async (req, res) => {
   }
 });
 
+router.post('/getdetailtask', async (req, res) => {
+  try {
+    const { date } = req.body;
+    const username = req.session.user;
+
+    const parsedDate = new Date(date);
+
+    const alltask = await Daily.find({
+      date: parsedDate,
+      username: username
+    });
+
+    res.status(200).json(alltask);
+  } catch (error) {
+      console.error('Error fetching tasks:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 router.get("/carddaily", async (req, res) => {
   try {
     const dailyTasks = await Daily.find({ username: req.session.user });
