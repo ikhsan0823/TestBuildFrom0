@@ -802,6 +802,8 @@
 
                 const dateContentDiv = document.createElement("div");
                 dateContentDiv.className = "date-content";
+                const idDate = taskDate.replaceAll(' ', '-');
+                dateContentDiv.id = idDate;
                 dateContentDiv.textContent = taskDate;
 
                 const taskContentDiv = document.createElement("div");
