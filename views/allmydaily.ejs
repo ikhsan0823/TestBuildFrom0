@@ -838,6 +838,8 @@
         async function detailTaskShow(element) {
             const headerDateValue = document.querySelector(".detailtask-date");
             headerDateValue.innerHTML = "";
+            const detailTaskContentDiv = document.querySelector('.detailtask-content');
+            detailTaskContentDiv.innerHTML = "";
             const parentContainer = element.closest('.content-daylist');
             const date = parentContainer.id;
             const alltask = await getDetailTask(date);
@@ -851,8 +853,6 @@
                     const headerDate = dateContentReplace;
                     headerDateValue.textContent = headerDate;
 
-                    const detailTaskContentDiv = document.querySelector('.detailtask-content');
-                    detailTaskContentDiv.innerHTML = "";
                     const detailTaskContDiv = document.createElement('div');
                     detailTaskContDiv.className = 'detailtask-container';
 
