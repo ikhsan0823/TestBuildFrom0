@@ -166,10 +166,8 @@ router.post('/getdetailtask', async (req, res) => {
     const { date } = req.body;
     const username = req.session.user;
 
-    const parsedDate = new Date(date);
-
     const alltask = await Daily.find({
-      date: parsedDate,
+      date: date,
       username: username
     });
 
