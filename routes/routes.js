@@ -7,6 +7,7 @@ const { Daily } = require("../models/dailies.js");
 const { Balance, History } = require("../models/money.js");
 const { upload, File } = require("../models/upload.js");
 const { parse } = require("path");
+const cron = require('node-cron');
 
 const isAuthenticated = (req, res, next) => {
   if (req.session.isAuth) {
@@ -211,6 +212,22 @@ router.post("/completeAndUpload", upload.single("myfile"), async (req, res) => {
   } catch (error) {
     console.error("Error handling request:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+cron.schedule('0 * * * *', async () => {
+  try {
+    const now = new Date();
+    const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000);
+
+    const result = await Daily.deleteMany({
+      complete: true,
+      completeAt: { $lte: twentyFourHoursAgo }
+    });
+
+    console.log(`Deleted ${result.deletedCount} tasks that were completed more than 24 hours ago.`);
+  } catch (error) {
+    console.error("Error running cleanup task:", error);
   }
 });
 
