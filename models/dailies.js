@@ -18,7 +18,7 @@ const dailySchema = {
   completedAt: {
     type: Date,
     default: null,
-    index: { expires: '5m'},
+    index: { expires: '24h'},
   }
 };
 
