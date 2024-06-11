@@ -877,14 +877,14 @@
             popupContainer.classList.remove("active");
         })
 
-        async function getDetailTask(date) {
+        async function getDetailTask(parentContainer) {
             const response = await fetch('/getdetailtask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    date: date,
+                    date: parentContainer,
                 }),
             });
             const contentType = response.headers.get('content-type');
