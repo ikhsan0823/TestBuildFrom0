@@ -346,7 +346,10 @@ router.post("/forgot-password", async (req, res) => {
     }
 
     const resetToken = generateToken();
+    const tokenExpiry = new Date(Date.now() + 30 * 60 * 1000);
+
     user.resetToken = resetToken;
+    user.resetTokenExpiry = tokenExpiry;
     await user.save();
 
     const mailOptions = {
@@ -375,7 +378,10 @@ router.post("/change-email", async (req, res) => {
     }
 
     const resetToken = generateToken();
+    const tokenExpiry = new Date(Date.now() + 30 * 60 * 1000);
+
     user.resetToken = resetToken;
+    user.resetTokenExpiry = tokenExpiry;
     await user.save();
 
     const mailOptions = {
@@ -403,9 +409,19 @@ router.post("/reset-password", async (req, res) => {
       return res.status(404).json({ message: "Invalid or expired token" });
     }
 
+    if (user.resetTokenExpiry < new Date()) {
+      user.resetToken = undefined;
+      user.resetTokenExpiry = undefined;
+      await user.save();
+
+      return res.status(400).json({ message: "Token expired" });
+    }
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
+
     user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
     await user.save();
     res.status(200).json({ message: "Password successfully reset" });
   } catch (error) {

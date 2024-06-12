@@ -21,6 +21,7 @@ const usersSchema = {
     default: "-",
   },
   resetToken: String,
+  resetTokenExpiry: Date,
 };
 
 const Users = mongoose.model("Users", usersSchema);
