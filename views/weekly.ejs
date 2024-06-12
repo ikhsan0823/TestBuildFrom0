@@ -1206,14 +1206,14 @@
             container.innerHTML = "";
 
             tasks.forEach(taskGroup => {
-                const taskDate = formatDate(taskGroup.date);
+                const taskDate = formatDate(taskGroup._id);
                 const taskProgressPercent = (taskGroup.completeCount / taskGroup.count) * 100;
                 const taskProgress = taskProgressPercent.toFixed(1);
 
 
                 const daylistDiv = document.createElement("div");
                 daylistDiv.className = "content-daylist";
-                daylistDiv.id = taskGroup.date;
+                daylistDiv.id = taskGroup._id;
 
                 const leftContentDiv = document.createElement("div");
                 leftContentDiv.className = "left-content";

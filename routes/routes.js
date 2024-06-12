@@ -619,7 +619,7 @@ router.get("/weekly", isAuthenticated, async (req, res) => {
   res.render("weekly");
 });
 
-router.post('/senddate-server', isAuthenticated, async (req, res) => {
+/*router.post('/senddate-server', isAuthenticated, async (req, res) => {
   const { firstDate, lastDate } = req.body;
 
   const username = req.session.user;
@@ -638,6 +638,42 @@ router.post('/senddate-server', isAuthenticated, async (req, res) => {
     console.error('Error finding records:', error);
     res.status(500).send('Terjadi kesalahan saat mencari data');
   }
-})
+});*/
+
+// Gabungkan kedua fungsi dalam satu endpoint
+router.post('/senddate-server', isAuthenticated, async (req, res) => {
+  const { firstDate, lastDate } = req.body;
+  const username = req.session.user;
+
+  try {
+    // Gunakan aggregation untuk filter dan grup berdasarkan rentang tanggal
+    const tasks = await Daily.aggregate([
+      { 
+        $match: { 
+          username: username,
+          date: {
+            $gte: new Date(firstDate),
+            $lte: new Date(lastDate)
+          }
+        }
+      },
+      { 
+        $group: { 
+          _id: "$date",
+          count: { $sum: 1 },
+          completeCount: { $sum: { $cond: [ "$complete", 1, 0 ] } },
+          tasks: { $push: "$$ROOT" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    res.status(200).json({ success: true, tasks });
+  } catch (error) {
+    console.error("Error fetching tasks in date range:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
 
 module.exports = router;
