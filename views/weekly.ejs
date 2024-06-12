@@ -4,8 +4,1199 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanggal Minggu Ini</title>
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        text-decoration: none;
+    }
+    body{
+        background-color: #f9f9f9;
+    }
+    .container{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+    }
+    section.active .overlay,
+    section.false .overlay{
+        z-index: 450;
+        pointer-events: auto;
+        opacity: 1;
+    }
+    .sidebar{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 75px;
+        height: 100vh;
+        padding: 20px 20px 20px 25px;
+        color: #030303;
+    }
+    .sidebar a{
+        text-decoration: none;
+        color: #030303;
+    }
+    .sidebar i{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #030303;
+        font-size: 22px;
+        cursor: pointer;
+        width: 35px;
+        height: 35px;
+        border: solid 2px #030303;
+        border-radius: 50%;
+    }
+    .sidebar .sidebar-list{
+        display: none;
+        position: relative;
+        margin-top: 25px;
+        line-height: 45px;
+        width: 100%;
+        border-bottom: solid 1px #d8d8d8;
+    }
+    .sidebar .sidebar-list .my-list i{
+        font-size: 15px;
+        margin-right: 10px;
+        border: none;
+        color: #030303;
+    }
+    .sidebar .sidebar-list .my-list{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 8px;
+        transition: .05s;
+    }
+    .sidebar-list .my-list:hover{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .sidebar-list #active-sidebar{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .sidebar .sidebar-account{
+        display: none;
+        position: relative;
+        margin-top: 25px;
+        line-height: 45px;
+        width: 100%;
+    }
+    .sidebar .sidebar-account .my-list i{
+        font-size: 15px;
+        margin-right: 10px;
+        border: none;
+        color: #030303;
+    }
+    .sidebar .sidebar-account .my-list{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 5px;
+        border-radius: 8px;
+        transition: .05s;
+    }
+    .sidebar-account .my-list:hover{
+        color: #cfcfcf;
+        background-color: #030303;
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        padding: 0px 150px 20px 150px;
+    }
+    .content .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 25px 15px 25px;
+        max-width: 50%;
+        margin-top: 20px;
+        border-radius: 10rem;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        height: 50px;
+    }
+    .content .header i{
+        margin-right: 10px;
+    }
+    .header .header-left{
+        display: flex;
+        color: #030303;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .header .header-right{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .header-right i{
+        cursor: pointer;
+        padding: 5px 5px 5px 5px;
+        border-radius: 50%;
+        transition: .05s;
+    }
+    .header-right i:hover{
+        background-color: #b9b9b9;
+    }
+    .header-right .show-createitem{
+        width: 25px;
+        border: none;
+        background-color: transparent;
+    }
+    .show-createitem i{
+        font-size: 18px;
+    }
+    .option-bar{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 35px;
+        margin-top: 15px;
+    }
+    .option-bar div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 10px 5px 10px;
+        width: fit-content;
+        border-radius: 8px;
+        text-align: center;
+        margin-right: 10px;
+        min-width: 50px;
+        height: 35px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        font-size: 16px;
+        font-weight: 600;
+        color: #030303;
+    }
+    .option-bar .all-bar{
+        background-color: #030303;
+        color: #f9f9f9;
+    }
+    .daylist{
+        width: 100%;
+        margin-top: 15px;
+        display: flex;
+        overflow-y: auto;;
+        flex-wrap: wrap;
+        height: 100vh;
+        border-radius: 8px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        overflow: hidden;
+    }
+    .daylist .sub-title{
+        display: flex;
+        height: 45px;
+        width: 100%;
+        padding: 10px 15px 10px 15px;
+        background-color: #d8d8d8
+    }
+    .sub-title .left-tab{
+        display: flex;
+        width: 90%;
+        justify-content: space-around;
+        color: #030303;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .left-tab .date-tab{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .left-tab .task-tab{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .left-tab .progress-tab{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .sub-title .right-tab{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        color: #030303;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .daylist .content-daylist-container{
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+    }
+    .content-daylist-container .content-daylist{
+        display: flex;
+        height: 45px;
+        width: 100%;
+        padding: 10px 15px 10px 15px;
+        background-color: #f9f9f9;
+        border-bottom: solid #b9b9b9 1px;
+    }
+    .content-daylist .left-content{
+        display: flex;
+        width: 90%;
+        justify-content: space-around;
+        color: #030303;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .left-content .date-content{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .left-content .task-content{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .left-content .progress-content{
+        display: flex;
+        width: 33%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .content-daylist .right-content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        color: #030303;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .content-daylist .right-content i{
+        cursor: pointer;
+    }
+    .create-item{
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        color: #030303;
+        background-color: #f9f9f9;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 15px;
+        padding: 15px 15px 15px 15px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    }
+    section.active .create-item{
+        z-index: 500;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .create-item form{
+        display: flex;
+        flex-direction: column;
+        margin-top: 15px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .create-item form label{
+        margin-bottom: -10px;
+    }
+    .create-item form input{
+        outline: none;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 5px;
+        padding: 5px 10px 5px 10px;
+        border-radius: 8px;
+        background-color: #d8d8d8;
+        color: #030303;
+        border: none;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .create-item form .date-time{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .create-item form .date-time .date{
+        width: 48%;
+    }
+    .create-item form .date-time .time{
+        width: 48%;
+    }
+    .create-item form .input-proof{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .create-item form .input-proof label{
+        font-size: 14px;
+        text-align: left;
+        width: 80%;
+    }
+    .create-item form .input-proof #upload-photo{
+        height: 20px;
+        width: 20%;
+    }
+    .create-item form .all-btn{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .create-item form .all-btn .btn{
+        width: 80px;
+        height: 40px;
+        background-color: #030303;
+        color: #f9f9f9;
+        transition: .05s;
+        cursor: pointer;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .create-item form .all-btn .btn:hover{
+        background-color: transparent;
+        border: solid 3px #030303;
+        color: #030303;
+    }
+    .create-item form .all-btn .close-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 80px;
+        height: 40px;
+        font-weight: 600;
+        background-color: #030303;
+        color: #f9f9f9;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: .05s;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .create-item form .all-btn .close-btn:hover{
+        background-color: transparent;
+        border: solid 3px #030303;
+        color: #030303;
+    }
+    .detailtask{
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 900px;
+        height: 500px;
+        color: #030303;
+        background-color: #f9f9f9;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 15px;
+        padding: 15px 15px 15px 15px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+    }
+    section.false .detailtask{
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 500;
+    }
+    .detailtask .detailtask-closebtn{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        z-index: 550;
+    }
+    .detailtask-closebtn i{
+        font-size: 18px;
+    }
+    .detailtask-content{
+        margin-top: 15px;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+    .detailtask-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 45px;
+        border-bottom: solid #b9b9b9 1px;
+        margin-top: 10px;
+    }
+    .detailtask-container .left-detailtask{
+        width: 40%;
+    }
+    .detailtask-container .center-detailtask{
+        width: 50%;
+    }
+    .detailtask-container .right-detailtask{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+    }
+    .right-detailtask i{
+        cursor: pointer;
+    }
+    .title-content{
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .time-content{
+        margin-top: 5px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .description-content{
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .show-checkinfo{
+        position: absolute;
+        width: 250px;
+        height: fit-content;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .08);
+        pointer-events: none;
+        opacity: 0;
+        padding: 15px 15px 15px 15px;
+        border-radius: 8px;
+    }
+    section.check .show-checkinfo{
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 500;
+    }
+    .show-checkinfo .check-question{
+        color: #030303;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 600;
+        width: 100%;
+        height: 50%;
+    }
+    .show-checkinfo .upload-photo{
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #030303;
+    }
+    .upload-photo form input{
+        margin-top: 15px;
+    }
+    .show-checkinfo .check-btn{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        height: 50%;
+    }
+    .check-btn .cancel-checkbtn,
+    .check-btn .ok-checkbtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 80px;
+        height: 40px;
+        font-weight: 600;
+        background-color: #030303;
+        color: #f9f9f9;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: .05s;
+        cursor: pointer;
+    }
+    .check-btn .cancel-checkbtn:hover,
+    .check-btn .ok-checkbtn:hover{
+        background-color: transparent;
+        border:  solid 3px #030303;
+        color: #030303;
+    }
+    .overlay{
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+        opacity: 0;
+    }
+    section.check .overlay{
+        z-index: 499;
+        pointer-events: auto;
+        opacity: 1;
+    }
+
+    /*media query*/
+
+    @media screen and (min-width: 1024px) {
+        
+    }
+    @media screen and (min-device-width: 768px)
+    and (max-device-width: 1024px) {
+        .sidebar{
+            position: fixed;
+            z-index: 400;
+            background-color: #f9f9f9;
+        }
+        .content{
+            width: 100%;
+            height: 100vh;
+            padding: 0px 100px 20px 150px;
+        }
+        .content .header{
+            max-width: 75%;
+        }
+    }
+    @media screen and (max-device-width: 480px)
+    and (orientation: portrait) {
+        .headershape{
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 350;
+        }
+        .sidebar{
+            position: fixed;
+            z-index: 400;
+            background-color: transparent;
+        }
+        .content .header{
+            max-width: 100%;
+        }
+        .content{
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 10px 20px 10px;
+        }
+        .daylist{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 10px 10px 10px;
+        }
+    }
+    @media screen and (max-device-width: 640px)
+    and (orientation: landscape) {
+        .sidebar{
+            position: fixed;
+            z-index: 450;
+            background-color: #f9f9f9;
+        }
+        .content{
+            width: 100%;
+            height: 100vh;
+            padding: 0px 10px 20px 50px;
+        }
+    }
+</style>
 <body>
+    <div class="container">
+        <div class="headershape"></div>
+        <section>
+            <div class="create-item">
+                <div>Create Task</div>
+                <form class="create-form" id="cardForm" method="post" action="#">
+                    <label for="title">Title</label><br>
+                    <input id="title" name="title" type="text" required><br>
+                    <label for="description">Description</label><br>
+                    <input class="description" name="description" id="description" type="text"><br>
+                    <div class="date-time">
+                        <div class="date">
+                            <label for="task-date">Date</label><br>
+                            <input type="date" name="date" id="task-date" required><br>
+                        </div>
+                        <div class="time">
+                            <label for="task-time">Time</label><br>
+                            <input type="time" name="time" id="task-time" required><br>
+                        </div>
+                    </div>
+                    <div class="input-proof">
+                        <label for="upload-photo">Do you want to upload a photo as proof?</label><br>
+                        <input type="checkbox" name="upload-photo" id="upload-photo"><br>
+                    </div>
+                    <div class="all-btn">
+                        <div class="close-btn">Cancel</div>
+                        <input class="btn" type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+            <div class="detailtask">
+                <div class="detailtask-date">Wednesday, 12 Jun 2024</div>
+                <div onclick="myEnterFunction()" class="detailtask-closebtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <div id="detailtask-content" class="detailtask-content"></div>
+            </div>
+            <div class="show-checkinfo">
+                <div class="check-question">Have you completed this task?</div>
+                <div class="upload-photo"></div>
+                <div class="check-btn">
+                    <div onclick="hideComplete()" class="cancel-checkbtn">Cancel</div>
+                    <div onclick="completeTasks(this)" class="ok-checkbtn">Yes</div>
+                </div>
+            </div>
+            <span class="overlay"></span>
+        </section>
+        <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
+            <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
+            <div id="barList" class="sidebar-list">
+                <a href="/dashboard"><div onmouseover="setColor7()" onmouseout="unsetColor7()" class="my-list">
+                    <i id="color7" class="fa-solid fa-table-columns"></i>
+                    <div>Dashboard</div>
+                </div></a>
+                <a href="/daily"><div class="my-list" id="active-sidebar">
+                    <i id="color" class="fa-solid fa-calendar-day"></i>
+                    <div>My Daily</div>
+                </div></a>
+                <div onmouseover="setColor1()" onmouseout="unsetColor1()" class="my-list">
+                    <i id="color1" id="color" class="fa-solid fa-calendar-week"></i>
+                    <div>My Weekly</div>
+                </div>
+                <div onmouseover="setColor2()" onmouseout="unsetColor2()" class="my-list">
+                    <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
+                    <div>My Monthly</div>
+                </div>
+                <a href="/money"><div onmouseover="setColor3()" onmouseout="unsetColor3()" class="my-list">
+                    <i id="color3" id="color" class="fa-solid fa-wallet"></i>
+                    <div>My Money</div>
+                </div></a>
+                <div onmouseover="setColor4()" onmouseout="unsetColor4()" class="my-list">
+                    <i id="color4" id="color" class="fa-solid fa-gift"></i>
+                    <div>My Reward</div>
+                </div>
+            </div>
+            <div id="account-list" class="sidebar-account">
+                <a href="/setting"><div onmouseover="setColor5()" onmouseout="unsetColor5()" class="my-list">
+                    <i id="color5" id="color" class="fa-solid fa-gear"></i>
+                    <div>Setting</div>
+                </div></a>
+                <div onclick="confirmLogout()" onmouseover="setColor6()" onmouseout="unsetColor6()" class="my-list">
+                    <i id="color6" id="color" class="fa-solid fa-right-from-bracket"></i>
+                    <div>Logout</div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="header">
+                <div class="header-left">
+                    <i id="color" class="fa-solid fa-calendar-day"></i>
+                    <div>My Daily</div>
+                </div>
+                <div class="header-right">
+                    <button class="show-createitem">
+                        <i class="fa-solid fa-square-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="option-bar">
+                <div class="all-bar">All</div>
+                <div class="weekly-bar">Weekly</div>
+                <div class="missed-bar">Missed</div>
+            </div>
+            <div id="daylist" class="daylist">
+                <div class="sub-title">
+                    <div class="left-tab">
+                        <div class="date-tab">Date</div>
+                        <div class="task-tab">Task</div>
+                        <div class="progress-tab">Progress</div>
+                    </div>
+                    <div class="right-tab">
+                        <div>Detail</div>
+                    </div>
+                </div>
+                <div class="content-daylist-container" id="daylist-container">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function main(){
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "block";
+                document.getElementById("account-list").style.display = "block";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "300px";
+                sidebar.style.backgroundColor = "#f9f9f9";
+                sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+            }
+        }
+        function hide(){
+            if (window.matchMedia("(min-width: 1023px)").matches) {
+                document.getElementById("barList").style.display = "none";
+                document.getElementById("account-list").style.display = "none";
+                const sidebar = document.getElementById("sidebar");
+                sidebar.style.width = "";
+                sidebar.style.backgroundColor = "";
+                sidebar.style.boxShadow = "";
+            }
+        }
+
+        let isDisplayed = false;
+        function toggleDisplay() {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                event.stopPropagation();
+                const barList = document.getElementById("barList");
+                const accountList = document.getElementById("account-list");
+                const sidebar = document.getElementById("sidebar");
+                if(!isDisplayed) {
+                    barList.style.display = "block";
+                    accountList.style.display = "block";
+                    sidebar.style.width = "200px";
+                    sidebar.style.backgroundColor = "#f9f9f9";
+                    sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+                } else {
+                    sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    barList.style.display = "none";
+                    accountList.style.display = "none";
+                    sidebar.style.boxShadow = "";
+                }
+                isDisplayed = !isDisplayed;
+            }
+        }
+
+        document.addEventListener("click", function(event) {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                const sidebar = document.getElementById("sidebar");
+                const isClickInsideSidebar = sidebar.contains(event.target);
+
+                if (!isClickInsideSidebar) {sidebar.style.width = "";
+                    sidebar.style.backgroundColor = "";
+                    sidebar.style.boxShadow = "";
+                    document.getElementById("barList").style.display = "none";
+                    document.getElementById("account-list").style.display = "none";
+                    isDisplayed = false;
+                }
+            }
+        });
+    
+        //Functions to set and unset color for elements
+        document.getElementById("color").style.color = "#cfcfcf";
+        function setColor1(){
+            document.getElementById("color1").style.color = "#cfcfcf";
+        }
+        function unsetColor1(){
+            document.getElementById("color1").style.color = "#030303";
+        }
+        function setColor2(){
+            document.getElementById("color2").style.color = "#cfcfcf";
+        }
+        function unsetColor2(){
+            document.getElementById("color2").style.color = "#030303";
+        }
+        function setColor3(){
+            document.getElementById("color3").style.color = "#cfcfcf";
+        }
+        function unsetColor3(){
+            document.getElementById("color3").style.color = "#030303";
+        }
+        function setColor4(){
+            document.getElementById("color4").style.color = "#cfcfcf";
+        }
+        function unsetColor4(){
+            document.getElementById("color4").style.color = "#030303";
+        }
+        function setColor5(){
+            document.getElementById("color5").style.color = "#cfcfcf";
+        }
+        function unsetColor5(){
+            document.getElementById("color5").style.color = "#030303";
+        }
+        function setColor6(){
+            document.getElementById("color6").style.color = "#cfcfcf";
+        }
+        function unsetColor6(){
+            document.getElementById("color6").style.color = "#030303";
+        }
+        function setColor7(){
+            document.getElementById("color7").style.color = "#cfcfcf";
+        }
+        function unsetColor7(){
+            document.getElementById("color7").style.color = "#030303";
+        }
+
+        function resetForm() {
+            const form = document.getElementById('cardForm');
+            form.reset();
+        }
+
+        async function fetchDailyTasks() {
+            try {
+                const response = await fetch("/dailytasks");
+                const data = await response.json();
+                if (data.success) {
+                displayDailyTasks(data.tasks);
+                } else {
+                console.error("Failed to fetch tasks:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+            }
+        }
+
+        function formatDate(dateString) {
+            const dates = new Date(dateString);
+            const days = dates.getDate();
+            const daysOfWeeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayIndexes = daysOfWeeks[dates.getDay()];
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const months = monthNames[dates.getMonth()];
+            const years = dates.getFullYear();
+            const fullDate = `${dayIndexes}, ${days} ${months} ${years}`;
+            return fullDate;
+        }
+
+        function displayDailyTasks(tasks) {
+            const container = document.getElementById("daylist-container");
+            container.innerHTML = "";
+
+            tasks.forEach(taskGroup => {
+                const taskDate = formatDate(taskGroup._id);
+                const taskProgressPercent = (taskGroup.completeCount / taskGroup.count) * 100;
+                const taskProgress = taskProgressPercent.toFixed(1);
+
+
+                const daylistDiv = document.createElement("div");
+                daylistDiv.className = "content-daylist";
+                daylistDiv.id = taskGroup._id;
+
+                const leftContentDiv = document.createElement("div");
+                leftContentDiv.className = "left-content";
+
+                const dateContentDiv = document.createElement("div");
+                dateContentDiv.className = "date-content";
+                dateContentDiv.textContent = taskDate;
+
+                const taskContentDiv = document.createElement("div");
+                taskContentDiv.className = "task-content";
+                taskContentDiv.textContent = taskGroup.count;
+
+                const progressContentDiv = document.createElement("div");
+                progressContentDiv.className = "progress-content";
+                progressContentDiv.innerHTML = `${taskProgress}%`;
+
+                leftContentDiv.appendChild(dateContentDiv);
+                leftContentDiv.appendChild(taskContentDiv);
+                leftContentDiv.appendChild(progressContentDiv);
+
+                const rightContentDiv = document.createElement("div");
+                rightContentDiv.className = "right-content";
+                const idDate = taskDate.replaceAll(' ', '-');
+                rightContentDiv.id = idDate
+                rightContentDiv.innerHTML = '<div onclick="detailTaskShow(this)"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>';
+
+                daylistDiv.appendChild(leftContentDiv);
+                daylistDiv.appendChild(rightContentDiv);
+                container.appendChild(daylistDiv);
+            });
+        }
+
+        fetchDailyTasks();
+
+        const popupContainer = document.querySelector("section");
+        const overlay = document.querySelector(".overlay");
+        const showCreateItem = document.querySelector(".show-createitem");
+        const closeBtn = document.querySelector(".close-btn");
+        const submitBtn = document.querySelector(".btn");
+
+        showCreateItem.addEventListener("click", () => popupContainer.classList.add("active"));
+        closeBtn.addEventListener("click", () => {
+            resetForm();
+            popupContainer.classList.remove("active");
+        });
+
+        async function detailTaskShow(element) {
+            const headerDateValue = document.querySelector(".detailtask-date");
+            headerDateValue.innerHTML = "";
+            const firstDate = element.closest('.right-content');
+            const dateContentId = firstDate.id;
+            const dateContentReplace = dateContentId.replaceAll('-', ' ');
+            const headerDate = dateContentReplace;
+            headerDateValue.textContent = headerDate;
+
+            popupContainer.classList.toggle("false");
+
+            const detailTaskContentDiv = document.querySelector('.detailtask-content');
+            detailTaskContentDiv.innerHTML = "";
+            const parentContainer = element.closest('.content-daylist');
+            const date = parentContainer.id;
+            const alltask = await getDetailTask(date);
+            if (Array.isArray(alltask) && alltask.length > 0) {
+                alltask.forEach(task => {
+
+                    const detailTaskContDiv = document.createElement('div');
+                    detailTaskContDiv.className = 'detailtask-container';
+
+                    const leftDetailTaskDiv = document.createElement('div');
+                    leftDetailTaskDiv.className = 'left-detailtask';
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'title-content';
+                    titleDiv.textContent = task.title
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'time-content';
+                    timeDiv.textContent = task.time;
+                    leftDetailTaskDiv.appendChild(titleDiv);
+                    leftDetailTaskDiv.appendChild(timeDiv);
+
+                    const centerDetailTaskDiv = document.createElement('div');
+                    centerDetailTaskDiv.className = 'center-detailtask';
+                    const descriptionDiv = document.createElement('div');
+                    descriptionDiv.className = 'description-content';
+                    descriptionDiv.textContent = task.description;
+                    centerDetailTaskDiv.appendChild(descriptionDiv);
+
+                    
+                    const completeTask = task.complete;
+                    const rightDetailTaskDiv = document.createElement('div');
+                    rightDetailTaskDiv.className = 'right-detailtask';
+                    rightDetailTaskDiv.id = `${task.uniqueId}-${task.uploadPhoto}`;
+                    const checkDiv = document.createElement('div');
+                    checkDiv.className = 'check-task';
+                    if (completeTask) {
+                        checkDiv.innerHTML = '<div onclick="#"><i class="fa-solid fa-square-check"></i></div>';
+                    } else {
+                        checkDiv.innerHTML = '<div onclick="completeShow(this)"><i class="fa-regular fa-square"></i></div>';
+                    }
+                    rightDetailTaskDiv.appendChild(checkDiv);
+
+                    detailTaskContDiv.appendChild(leftDetailTaskDiv);
+                    detailTaskContDiv.appendChild(centerDetailTaskDiv);
+                    detailTaskContDiv.appendChild(rightDetailTaskDiv);
+                    detailTaskContentDiv.appendChild(detailTaskContDiv);
+                });
+            } else {
+                console.log('No tasks found for the selected date.');
+            }
+        }
+
+        async function completeShow(element){
+            const parentContainer = element.closest('.right-detailtask');
+            const uniqueIdComplete = parentContainer.id;
+            const uniqueId = uniqueIdComplete.split("-")[0];
+            const checkBtnDiv = document.querySelector(".check-btn");
+            checkBtnDiv.id = uniqueId;
+            const uploadPhoto = uniqueIdComplete.split("-")[1];
+            if (uploadPhoto === "true") {
+                const uploadPhotoDiv = document.querySelector('.upload-photo');
+                uploadPhotoDiv.innerHTML = "";
+                const uploadPhotoForm = document.createElement('form');
+                uploadPhotoForm.innerHTML = '<label for="myfile">Upload a photo as proof</label><br><input type="file" id="myfile" name="myfile"><br>';
+                uploadPhotoDiv.appendChild(uploadPhotoForm);
+            } else {
+                const uploadPhotoDiv = document.querySelector('.upload-photo');
+                uploadPhotoDiv.innerHTML = "";
+            }
+            popupContainer.classList.remove("false");
+            requestAnimationFrame(() => {
+                popupContainer.classList.add("check");
+            });
+        }
+
+        async function completeTasks(element) {
+            const parentContainer = element.closest('.check-btn');
+            const uniqueId = parentContainer.id;
+
+            const fileInput = document.querySelector('#myfile');
+            let formData = new FormData();
+            formData.append('uniqueId', uniqueId);
+
+            if(fileInput) {
+                const file = fileInput.files[0];
+                if (!file) {
+                    alert('Please upload a photo as proof!');
+                    return;
+                }
+                formData.append('myfile', file);
+            }
+
+            try {
+                const response = await fetch('/completeAndUpload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    popupContainer.classList.remove("check");
+                    requestAnimationFrame(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    const errorData = await response.json();
+                    alert('Error: ' + errorData.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function hideComplete(){
+            popupContainer.classList.remove("check");
+            requestAnimationFrame(() => {
+                popupContainer.classList.add("false");
+            });
+        }
+
+        function myEnterFunction() {
+            popupContainer.classList.remove("false");
+        }
+
+        document.getElementById('cardForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('cardForm');
+            const formData = new FormData(form);
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('task-date').value;
+            const time = document.getElementById('task-time').value;
+            const uploadPhoto = formData.get('upload-photo') ? true : false;
+
+            function generateRandomId() {
+                const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+                const getRandomLetter = () => alphabet[Math.floor(Math.random() * alphabet.length)];
+                const getRandomNumber = () => Math.floor(Math.random() * 10);
+                const randomId = getRandomNumber() + getRandomLetter() + getRandomLetter();
+                return randomId;
+            }
+
+            const uniqueId = generateRandomId();
+
+            sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId);
+            resetForm();
+            fetchDailyTasks();
+            popupContainer.classList.remove("active");
+        })
+
+        async function getDetailTask(date) {
+            const response = await fetch('/getdetailtask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    date: date,
+                }),
+            });
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                return Array.isArray(data) ? data : [];
+            } else {
+                console.error('Unexpected response type:', contentType);
+                return [];
+            }
+        }
+
+        async function sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId, nameday) {
+            try {
+                const response = await fetch('/dailytask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        date: date,
+                        time: time,
+                        uploadPhoto: uploadPhoto,
+                        uniqueId: uniqueId,
+                    }),
+                });
+    
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('Server response:', data);
+                } else {
+                    console.error('Unexpected response type:', contentType);
+                }
+            } catch (error) {
+                console.error('Error sending data to server:', error);
+    
+                if (error instanceof TypeError || error.name === 'TypeError') {
+                    console.error('Network error. Unable to fetch data from the server.');
+                } else if (error instanceof SyntaxError || error.name === 'SyntaxError') {
+                    console.error('Error parsing JSON from the server response.');
+                } else {
+                    console.error('Other error:', error);
+                }
+            }
+        }
+
+        function confirmLogout() {
+            const logoutConfirmed = window.confirm("Are you sure you want to logout?");
+            if (logoutConfirmed) {
+                fetch("/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "/";
+                    } else {
+                        alert("Logout failed!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during logout:", error);
+                    alert("Logout failed");
+                });
+            } else {
+                window.location.href = "/daily";
+            }
+        }
+    </script>
     <script>
         function getWeekDates(date = new Date()) {
             const currentDate = new Date(date);
