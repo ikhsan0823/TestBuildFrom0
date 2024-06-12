@@ -186,7 +186,7 @@
         font-weight: 600;
         color: #030303;
     }
-    .option-bar .weekly-bar{
+    .option-bar .missed-bar{
         background-color: #030303;
     }
     .option-bar .all-bar a{
@@ -195,11 +195,11 @@
     }
     .option-bar .weekly-bar a{
         text-decoration: none;
-        color: #f9f9f9;
+        color: #030303;
     }
     .option-bar .missed-bar a{
         text-decoration: none;
-        color: #030303;
+        color: #f9f9f9;
     }
     .daylist{
         width: 100%;
@@ -1182,17 +1182,16 @@
             };
         }
 
-        sendDatetoServer(firstDate, lastDate);
+        sendDatetoServer(firstDate);
 
-        async function sendDatetoServer(firstDate, lastDate) {
-            const response = await fetch('/senddate-server', {
+        async function sendDatetoServer(firstDate) {
+            const response = await fetch('/senddatetoserver', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    firstDate: firstDate,
-                    lastDate: lastDate,
+                    firstDate: firstDate
                 }),
             });
 
