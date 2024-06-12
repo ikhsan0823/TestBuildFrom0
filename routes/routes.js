@@ -689,7 +689,7 @@ router.post('/senddatetoserver', isAuthenticated, async (req, res) => {
         $match: { 
           username: username,
           date: {
-            $lte: new Date(firstDate)
+            $lt: new Date(firstDate)
           }
         }
       },
