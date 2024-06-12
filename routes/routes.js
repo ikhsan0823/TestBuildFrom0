@@ -678,7 +678,7 @@ router.post('/senddate-server', isAuthenticated, async (req, res) => {
   }
 });
 
-router.post('/senddate-server', isAuthenticated, async (req, res) => {
+router.post('/senddatetoserver', isAuthenticated, async (req, res) => {
   const { firstDate } = req.body;
   const username = req.session.user;
 
