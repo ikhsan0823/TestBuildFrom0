@@ -1163,9 +1163,6 @@
         const weekDates = getWeekDates();
         const { firstDate, lastDate } = getFirstAndLastDates(weekDates);
 
-        document.getElementById('first-date').textContent = `Tanggal paling awal: ${firstDate}`;
-        document.getElementById('last-date').textContent = `Tanggal paling akhir: ${lastDate}`;
-
         function getFirstAndLastDates(dates) {
             if (dates.length === 0) return { firstDate: null, lastDate: null };
             return {
