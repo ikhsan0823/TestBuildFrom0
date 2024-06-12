@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const dailySchema = {
+const dailySchema = new mongoose.Schema ({
   username: String,
   title: String,
   description: String,
@@ -18,8 +18,8 @@ const dailySchema = {
   completedAt: {
     type: Date,
     default: null,
-  }
-};
+  },
+});
 
 dailySchema.index({ completedAt: 1 }, { expireAfterSeconds: 86400 });
 
