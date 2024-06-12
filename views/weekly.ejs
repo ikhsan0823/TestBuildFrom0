@@ -22,14 +22,16 @@
             for (let i = 0; i < 7; i++) {
                 const date = new Date(startOfWeek);
                 date.setDate(startOfWeek.getDate() + i);
-                weekDates.push(formatDateToCustomISO(date));
+                weekDates.push(resetTimeToMidnight(date));
             }
 
             return weekDates;
         }
 
-        function formatDateToCustomISO(date) {
-            const isoString = date.toISOString();
+        function resetTimeToMidnight(date) {
+            const newDate = new Date(date);
+            newDate.setUTCHours(0, 0, 0, 0);
+            const isoString = newDate.toISOString();
             return isoString.replace('Z', '+00:00');
         }
 
@@ -46,6 +48,28 @@
                 lastDate: dates[dates.length - 1]
             };
         }
+
+        sendDatetoServer(firstDate, lastDate);
+
+        async function sendDatetoServer(firstDate, lastDate) {
+            const response = await fetch('/senddate-server', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstDate: firstDate,
+                    lastDate: lastDate,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Data received from server:', data);
+        };
     </script>
 </body>
 </html>
