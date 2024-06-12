@@ -1151,7 +1151,7 @@
         const firstDate = resetTimeToMidnight(todayDate);
 
         function resetTimeToMidnight(todayDate) {
-            const newDate = new Date(date);
+            const newDate = new Date(todayDate);
             newDate.setUTCHours(0, 0, 0, 0);
             const isoString = newDate.toISOString();
             return isoString.replace('Z', '+00:00');
