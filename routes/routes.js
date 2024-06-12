@@ -625,7 +625,7 @@ router.post('/senddate-server', isAuthenticated, async (req, res) => {
   const username = req.session.user;
 
   try {
-    const results = await Daily.find({
+    const tasks = await Daily.find({
       username: username,
       date: {
         $gte: new Date(firstDate),
@@ -633,7 +633,7 @@ router.post('/senddate-server', isAuthenticated, async (req, res) => {
       }
     });
 
-    res.status(200).json(results);
+    res.status(200).json(tasks);
   } catch (error) {
     console.error('Error finding records:', error);
     res.status(500).send('Terjadi kesalahan saat mencari data');
