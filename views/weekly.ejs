@@ -12,10 +12,13 @@
     <script>
         function getWeekDates(date = new Date()) {
             const currentDate = new Date(date);
+            console.log(currentDate);
             const dayOfWeek = currentDate.getDay();
+            console.log(dayOfWeek);
 
             const startOfWeek = new Date(currentDate);
             startOfWeek.setDate(currentDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+            console.log(startOfWeek);
 
             const weekDates = [];
             for (let i = 0; i < 7; i++) {
@@ -23,6 +26,7 @@
                 date.setDate(startOfWeek.getDate() + i);
                 weekDates.push(date);
             }
+            console.log(weekDates);
 
             return weekDates;
         }
