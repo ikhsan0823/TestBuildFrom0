@@ -1197,7 +1197,7 @@
             }
 
             const data = await response.json();
-            displayDailyTasks(data);
+            displayDailyTasks(data.tasks);
             console.log('Data received from server:', data);
         };
 
