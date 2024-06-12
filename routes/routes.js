@@ -611,11 +611,11 @@ router.get("/cycle", isAuthenticated, async (req, res) => {
   res.render("cycle");
 });
 
-router.get("/allmydaily", isAuthenticated, async (req, res) => {
+router.get("/all-mydaily", isAuthenticated, async (req, res) => {
   res.render("allmydaily");
 });
 
-router.get("/weekly", isAuthenticated, async (req, res) => {
+router.get("/weekly-mydaily", isAuthenticated, async (req, res) => {
   res.render("weekly");
 });
 
