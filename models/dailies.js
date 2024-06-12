@@ -21,7 +21,7 @@ const dailySchema = new mongoose.Schema ({
   },
 });
 
-dailySchema.index({ completedAt: 1 }, { expireAfterSeconds: 86400 });
+dailySchema.createIndex({ completedAt: 1 }, { expireAfterSeconds: 86400 });
 
 const Daily = mongoose.model("Daily", dailySchema);
 
