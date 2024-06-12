@@ -613,6 +613,10 @@ router.get("/cycle", isAuthenticated, async (req, res) => {
 
 router.get("/allmydaily", isAuthenticated, async (req, res) => {
   res.render("allmydaily");
+});
+
+router.get("/weekly", isAuthenticated, async (req, res) => {
+  res.render("weekly");
 })
 
 module.exports = router;
