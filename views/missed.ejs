@@ -1147,39 +1147,14 @@
         }
     </script>
     <script>
-        function getWeekDates(date = new Date()) {
-            const currentDate = new Date(date);
-            const dayOfWeek = currentDate.getDay();
+        const todayDate = new Date();
+        const firstDate = resetTimeToMidnight(todayDate);
 
-            const startOfWeek = new Date(currentDate);
-            startOfWeek.setDate(currentDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-
-            const weekDates = [];
-            for (let i = 0; i < 7; i++) {
-                const date = new Date(startOfWeek);
-                date.setDate(startOfWeek.getDate() + i);
-                weekDates.push(resetTimeToMidnight(date));
-            }
-
-            return weekDates;
-        }
-
-        function resetTimeToMidnight(date) {
+        function resetTimeToMidnight(todayDate) {
             const newDate = new Date(date);
             newDate.setUTCHours(0, 0, 0, 0);
             const isoString = newDate.toISOString();
             return isoString.replace('Z', '+00:00');
-        }
-
-        const weekDates = getWeekDates();
-        const { firstDate, lastDate } = getFirstAndLastDates(weekDates);
-
-        function getFirstAndLastDates(dates) {
-            if (dates.length === 0) return { firstDate: null, lastDate: null };
-            return {
-                firstDate: dates[0],
-                lastDate: dates[dates.length - 1]
-            };
         }
 
         sendDatetoServer(firstDate);
