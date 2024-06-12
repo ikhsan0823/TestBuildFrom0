@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanggal Minggu Ini</title>
+</head>
+<body>
+    <h1>Tanggal dalam Minggu Ini:</h1>
+    <ul id="week-dates"></ul>
+
+    <script>
+        function getWeekDates(date = new Date()) {
+            const currentDate = new Date(date);
+            const dayOfWeek = currentDate.getDay();
+
+            const startOfWeek = new Date(currentDate);
+            startOfWeek.setDate(currentDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+            const weekDates = [];
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startOfWeek);
+                date.setDate(startOfWeek.getDate() + i);
+                weekDates.push(date);
+            }
+
+            return weekDates;
+        }
+
+        const weekDates = getWeekDates();
+        const ul = document.getElementById('week-dates');
+        
+        weekDates.forEach(date => {
+            const li = document.createElement('li');
+            li.textContent = date.toDateString();
+            ul.appendChild(li);
+        });
+    </script>
+</body>
+</html>
