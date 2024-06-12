@@ -6,39 +6,46 @@
     <title>Tanggal Minggu Ini</title>
 </head>
 <body>
-    <h1>Tanggal dalam Minggu Ini:</h1>
-    <ul id="week-dates"></ul>
+    <h1>Tanggal Paling Awal dan Paling Akhir Minggu Ini:</h1>
+    <p id="first-date"></p>
+    <p id="last-date"></p>
 
     <script>
         function getWeekDates(date = new Date()) {
             const currentDate = new Date(date);
-            console.log(currentDate);
             const dayOfWeek = currentDate.getDay();
-            console.log(dayOfWeek);
 
             const startOfWeek = new Date(currentDate);
             startOfWeek.setDate(currentDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-            console.log(startOfWeek);
 
             const weekDates = [];
             for (let i = 0; i < 7; i++) {
                 const date = new Date(startOfWeek);
                 date.setDate(startOfWeek.getDate() + i);
-                weekDates.push(date);
+                weekDates.push(formatDateToCustomISO(date));
             }
-            console.log(weekDates);
 
             return weekDates;
         }
 
+        function formatDateToCustomISO(date) {
+            const isoString = date.toISOString();
+            return isoString.replace('Z', '+00:00');
+        }
+
         const weekDates = getWeekDates();
-        const ul = document.getElementById('week-dates');
-        
-        weekDates.forEach(date => {
-            const li = document.createElement('li');
-            li.textContent = date.toDateString();
-            ul.appendChild(li);
-        });
+        const { firstDate, lastDate } = getFirstAndLastDates(weekDates);
+
+        document.getElementById('first-date').textContent = `Tanggal paling awal: ${firstDate}`;
+        document.getElementById('last-date').textContent = `Tanggal paling akhir: ${lastDate}`;
+
+        function getFirstAndLastDates(dates) {
+            if (dates.length === 0) return { firstDate: null, lastDate: null };
+            return {
+                firstDate: dates[0],
+                lastDate: dates[dates.length - 1]
+            };
+        }
     </script>
 </body>
 </html>
