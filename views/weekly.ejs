@@ -877,8 +877,6 @@
             return fullDate;
         }
 
-        fetchDailyTasks();
-
         const popupContainer = document.querySelector("section");
         const overlay = document.querySelector(".overlay");
         const showCreateItem = document.querySelector(".show-createitem");
@@ -1050,7 +1048,6 @@
 
             sendDailyTaskToServer(title, description, date, time, uploadPhoto, uniqueId);
             resetForm();
-            fetchDailyTasks();
             popupContainer.classList.remove("active");
         })
 
