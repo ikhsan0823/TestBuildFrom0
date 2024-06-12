@@ -18,9 +18,10 @@ const dailySchema = {
   completedAt: {
     type: Date,
     default: null,
-    index: { expires: '24h'},
   }
 };
+
+dailySchema.index({ completedAt: 1 }, { expireAfterSeconds: 86400 });
 
 const Daily = mongoose.model("Daily", dailySchema);
 
