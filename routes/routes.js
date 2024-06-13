@@ -9,6 +9,7 @@ const { upload, File } = require("../models/upload.js");
 const { parse } = require("path");
 const cron = require('node-cron');
 
+// User authentication
 const isAuthenticated = (req, res, next) => {
   if (req.session.isAuth) {
     next();
@@ -18,6 +19,7 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+// User sign in methode
 router.get("/", async (req, res) => {
   if (req.session.isAuth) {
     const nameUser = await Users.findOne({ username: req.session.user });
@@ -72,10 +74,6 @@ router.post("/signup", async function (req, res) {
   }
 });
 
-router.get("/forgotpass", async (req, res) => {
-  res.render("forgotpass");
-});
-
 router.post("/login", async (req, res) => {
   try {
     const username = req.body.username;
@@ -104,6 +102,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/forgotpass", async (req, res) => {
+  res.render("forgotpass");
+});
+
+// Dashboard routes
 router.get("/dashboard", isAuthenticated, async (req, res) => {
   const nameUser = await Users.findOne({ username: req.session.user });
   if (nameUser) {
@@ -114,11 +117,87 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
   }
 });
 
-router.get("/daily", isAuthenticated, async (req, res) => {
-  res.render("daily");
+// My Daily routes
+router.get("/all-mydaily", isAuthenticated, async (req, res) => {
+  res.render("allmydaily");
 });
 
-router.post("/dailytask", async (req, res) => {
+router.get("/weekly-mydaily", isAuthenticated, async (req, res) => {
+  res.render("weekly");
+});
+
+router.post('/senddate-server', isAuthenticated, async (req, res) => {
+  const { firstDate, lastDate } = req.body;
+  const username = req.session.user;
+
+  try {
+    // Gunakan aggregation untuk filter dan grup berdasarkan rentang tanggal
+    const tasks = await Daily.aggregate([
+      { 
+        $match: { 
+          username: username,
+          date: {
+            $gte: new Date(firstDate),
+            $lte: new Date(lastDate)
+          }
+        }
+      },
+      { 
+        $group: { 
+          _id: "$date",
+          count: { $sum: 1 },
+          completeCount: { $sum: { $cond: [ "$complete", 1, 0 ] } },
+          tasks: { $push: "$$ROOT" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    res.status(200).json({ success: true, tasks });
+  } catch (error) {
+    console.error("Error fetching tasks in date range:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+router.get("/missed-mydaily", isAuthenticated, async (req, res) => {
+  res.render("missed");
+});
+
+router.post('/senddatetoserver', isAuthenticated, async (req, res) => {
+  const { firstDate } = req.body;
+  const username = req.session.user;
+
+  try {
+    // Gunakan aggregation untuk filter dan grup berdasarkan rentang tanggal
+    const tasks = await Daily.aggregate([
+      { 
+        $match: { 
+          username: username,
+          date: {
+            $lt: new Date(firstDate)
+          }
+        }
+      },
+      { 
+        $group: { 
+          _id: "$date",
+          count: { $sum: 1 },
+          completeCount: { $sum: { $cond: [ "$complete", 1, 0 ] } },
+          tasks: { $push: "$$ROOT" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    res.status(200).json({ success: true, tasks });
+  } catch (error) {
+    console.error("Error fetching tasks in date range:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+router.post("/dailytask", isAuthenticated, async (req, res) => {
   const { title, description, date, time, uploadPhoto, uniqueId} = req.body;
   try {
     let newDaily = new Daily({
@@ -142,7 +221,7 @@ router.post("/dailytask", async (req, res) => {
   }
 });
 
-router.get("/dailytasks", async (req, res) => {
+router.get("/dailytasks", isAuthenticated, async (req, res) => {
   try {
     const username = req.session.user;
     const tasks = await Daily.aggregate([
@@ -162,7 +241,7 @@ router.get("/dailytasks", async (req, res) => {
   }
 });
 
-router.post('/getdetailtask', async (req, res) => {
+router.post('/getdetailtask', isAuthenticated, async (req, res) => {
   try {
     const { date } = req.body;
     const username = req.session.user;
@@ -182,7 +261,7 @@ router.post('/getdetailtask', async (req, res) => {
   }
 });
 
-router.post("/completeAndUpload", upload.single("myfile"), async (req, res) => {
+router.post("/completeAndUpload", isAuthenticated, upload.single("myfile"), async (req, res) => {
   const { uniqueId } = req.body;
 
   try {
@@ -216,7 +295,11 @@ router.post("/completeAndUpload", upload.single("myfile"), async (req, res) => {
   }
 });
 
-router.get("/carddaily", async (req, res) => {
+/*router.get("/daily", isAuthenticated, async (req, res) => {
+  res.render("daily");
+});*/
+
+/*router.get("/carddaily", async (req, res) => {
   try {
     const dailyTasks = await Daily.find({ username: req.session.user });
     const formattedTask = dailyTasks.map((task) => ({
@@ -233,7 +316,7 @@ router.get("/carddaily", async (req, res) => {
     console.error("Error retrieving daily tasks:", error);
     res.status(500).send("Internal Server Error");
   }
-});
+});*/
 
 /*router.delete("/dailytask/:uniqueId", async (req, res) => {
   const uniqueId = req.params.uniqueId;
@@ -254,7 +337,7 @@ router.get("/carddaily", async (req, res) => {
   }
 });*/
 
-router.post("/upload", upload.single("myfile"), async (req, res) => {
+/*router.post("/upload", upload.single("myfile"), async (req, res) => {
   if (req.file) {
     const fileBuffer = req.file.buffer.toString('base64');
     const newFile = new File({
@@ -278,176 +361,16 @@ router.post("/upload", upload.single("myfile"), async (req, res) => {
       .status(400)
       .json({ success: false, error: "Tidak ada file yang diberikan" });
   }
-});
+});*/
 
-router.get("/setting", async (req, res) => {
-  try {
-    const username = req.session.user;
-    const account = await Users.find({ username: username });
-    const accountInfo = account.map((users) => ({
-      name: users.name,
-      email: users.email,
-      gender: users.gender,
-      phoneNum: users.phoneNum,
-      birth: users.birth,
-    }));
-
-    res.render("setting", { username: username, users: accountInfo });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-router.post("/editProfile", async (req, res) => {
-  try {
-    const { name, email, birth, gender, phoneNum } = req.body;
-    const user = await Users.find({ username: req.session.user });
-
-    await Users.findOneAndUpdate(
-      { username: req.session.user },
-      {
-        $set: {
-          name: name || user.name,
-          email: email || user.email,
-          birth: birth || user.birth,
-          gender: gender || user.gender,
-          phoneNum: phoneNum || user.phoneNum,
-        },
-      }
-    );
-    res.redirect("setting");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Terjadi kesalahan saat memperbarui profil");
-  }
-});
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "thisistips919@gmail.com",
-    pass: "qwtmgtvljuobrxks",
-  },
-});
-
-const generateToken = () => {
-  const token = Math.floor(100000 + Math.random() * 900000).toString();
-  return token;
-};
-
-router.post("/forgot-password", async (req, res) => {
-  try {
-    const { emailpass } = req.body;
-    const user = await Users.findOne({ email: emailpass });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const resetToken = generateToken();
-    const tokenExpiry = new Date(Date.now() + 30 * 60 * 1000);
-
-    user.resetToken = resetToken;
-    user.resetTokenExpiry = tokenExpiry;
-    await user.save();
-
-    const mailOptions = {
-      from: "thisistips919@gmail.com",
-      to: emailpass,
-      subject: "My SelfManage Account Password Reset",
-      text: `Your token is ${resetToken}`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.status(200).json({ message: "Password reset email sent" });
-  } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).json({ message: "Error sending email" });
-  }
-});
-
-router.post("/change-email", async (req, res) => {
-  try {
-    const { firstEmail } = req.body;
-    const user = await Users.findOne({ email: firstEmail });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const resetToken = generateToken();
-    const tokenExpiry = new Date(Date.now() + 30 * 60 * 1000);
-
-    user.resetToken = resetToken;
-    user.resetTokenExpiry = tokenExpiry;
-    await user.save();
-
-    const mailOptions = {
-      from: "thisistips919@gmail.com",
-      to: firstEmail,
-      subject: "My SelfManage Account Email Change",
-      text: `Your token is ${resetToken}`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.status(200).json({ message: "Token sending to email" });
-  } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).json({ message: "Error sending email" });
-  }
-})
-
-router.post("/reset-password", async (req, res) => {
-  try {
-    const { token, newPassword } = req.body;
-
-    const user = await Users.findOne({ resetToken: token });
-    if (!user) {
-      return res.status(404).json({ message: "Invalid or expired token" });
-    }
-
-    if (user.resetTokenExpiry < new Date()) {
-      user.resetToken = undefined;
-      user.resetTokenExpiry = undefined;
-      await user.save();
-
-      return res.status(400).json({ message: "Token expired" });
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-
-    user.resetToken = undefined;
-    user.resetTokenExpiry = undefined;
-    await user.save();
-    res.status(200).json({ message: "Password successfully reset" });
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    res.status(500).json({ message: "Error resetting password" });
-  }
-});
-
-router.post("/logout", async (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error during logout:", err);
-      res.status(500).send("Internal Server Error");
-    } else {
-      res.json({ success: true, message: "Logout successful" });
-    }
-  });
-});
-
+// My Money routes
 router.get("/money", isAuthenticated, async (req, res) => {
   const balance = await Balance.findOne({ username: req.session.user });
   const value = balance.value;
   res.render("money", { usernames: req.session.user, value: value });
 });
 
-router.post("/addvalue", async (req, res) => {
+router.post("/addvalue", isAuthenticated, async (req, res) => {
   const { value, formattedDate, formattedTime, type, amount } = req.body;
   const balance = await Balance.findOne({ username: req.session.user });
   const values = balance.value;
@@ -483,7 +406,7 @@ router.post("/addvalue", async (req, res) => {
   }
 });
 
-router.post("/minvalue", async (req, res) => {
+router.post("/minvalue", isAuthenticated, async (req, res) => {
   const { value, formattedDate, formattedTime, type, amount } = req.body;
   const balance = await Balance.findOne({ username: req.session.user });
   const values = balance.value;
@@ -520,7 +443,7 @@ router.post("/minvalue", async (req, res) => {
   }
 });
 
-router.post("/resetvalue", async (req, res) => {
+router.post("/resetvalue", isAuthenticated, async (req, res) => {
   const { value, formattedDate, formattedTime, type } = req.body;
   try {
     const currentHistory = await History.find({ username: req.session.user });
@@ -553,7 +476,7 @@ router.post("/resetvalue", async (req, res) => {
   }
 });
 
-router.get("/gethistory", async (req, res) => {
+router.get("/gethistory", isAuthenticated, async (req, res) => {
   try {
     const getHistory = await History.find({ username: req.session.user });
     const formattedHistory = getHistory.map((history) => ({
@@ -572,7 +495,7 @@ router.get("/gethistory", async (req, res) => {
   }
 });
 
-router.delete("/history/delete", async (req, res) => {
+router.delete("/history/delete", isAuthenticated, async (req, res) => {
   const username = req.session.user;
   try {
     const deleteHistory = await History.deleteMany({ username: username });
@@ -588,6 +511,174 @@ router.delete("/history/delete", async (req, res) => {
     console.error("Error deleting history:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
+});
+
+// Setting routes
+router.get("/setting", isAuthenticated, async (req, res) => {
+  try {
+    const username = req.session.user;
+    const account = await Users.find({ username: username });
+    const accountInfo = account.map((users) => ({
+      name: users.name,
+      email: users.email,
+      gender: users.gender,
+      phoneNum: users.phoneNum,
+      birth: users.birth,
+    }));
+
+    res.render("setting", { username: username, users: accountInfo });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/editProfile", isAuthenticated, async (req, res) => {
+  try {
+    const { name, email, birth, gender, phoneNum } = req.body;
+    const user = await Users.find({ username: req.session.user });
+
+    await Users.findOneAndUpdate(
+      { username: req.session.user },
+      {
+        $set: {
+          name: name || user.name,
+          email: email || user.email,
+          birth: birth || user.birth,
+          gender: gender || user.gender,
+          phoneNum: phoneNum || user.phoneNum,
+        },
+      }
+    );
+    res.redirect("setting");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Terjadi kesalahan saat memperbarui profil");
+  }
+});
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "thisistips919@gmail.com",
+    pass: "qwtmgtvljuobrxks",
+  },
+});
+
+const generateToken = () => {
+  const token = Math.floor(100000 + Math.random() * 900000).toString();
+  return token;
+};
+
+router.post("/forgot-password", isAuthenticated, async (req, res) => {
+  try {
+    const { emailpass } = req.body;
+    const user = await Users.findOne({ email: emailpass });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const resetToken = generateToken();
+    const tokenExpiry = new Date(Date.now() + 30 * 60 * 1000);
+
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = tokenExpiry;
+    await user.save();
+
+    const mailOptions = {
+      from: "thisistips919@gmail.com",
+      to: emailpass,
+      subject: "My SelfManage Account Password Reset",
+      text: `Your token is ${resetToken}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Password reset email sent" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Error sending email" });
+  }
+});
+
+router.post("/change-email", isAuthenticated, async (req, res) => {
+  try {
+    const { firstEmail } = req.body;
+    const user = await Users.findOne({ email: firstEmail });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const resetToken = generateToken();
+    const tokenExpiry = new Date(Date.now() + 30 * 60 * 1000);
+
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = tokenExpiry;
+    await user.save();
+
+    const mailOptions = {
+      from: "thisistips919@gmail.com",
+      to: firstEmail,
+      subject: "My SelfManage Account Email Change",
+      text: `Your token is ${resetToken}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Token sending to email" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Error sending email" });
+  }
+})
+
+router.post("/reset-password", isAuthenticated, async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const user = await Users.findOne({ resetToken: token });
+    if (!user) {
+      return res.status(404).json({ message: "Invalid or expired token" });
+    }
+
+    if (user.resetTokenExpiry < new Date()) {
+      user.resetToken = undefined;
+      user.resetTokenExpiry = undefined;
+      await user.save();
+
+      return res.status(400).json({ message: "Token expired" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    await user.save();
+    res.status(200).json({ message: "Password successfully reset" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ message: "Error resetting password" });
+  }
+});
+
+// Log out methode
+router.post("/logout", async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error during logout:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.json({ success: true, message: "Logout successful" });
+    }
+  });
+});
+
+// Other routes
+router.get("/viewimg", isAuthenticated, async (req, res) => {
+  res.render("viewimg");
 });
 
 router.get("/display", isAuthenticated, async (req, res) => {
@@ -619,113 +710,8 @@ router.get("/display", isAuthenticated, async (req, res) => {
   }
 });
 
-router.get("/viewimg", isAuthenticated, async (req, res) => {
-  res.render("viewimg");
-});
-
 router.get("/cycle", isAuthenticated, async (req, res) => {
   res.render("cycle");
 });
-
-router.get("/all-mydaily", isAuthenticated, async (req, res) => {
-  res.render("allmydaily");
-});
-
-router.get("/weekly-mydaily", isAuthenticated, async (req, res) => {
-  res.render("weekly");
-});
-router.get("/missed-mydaily", isAuthenticated, async (req, res) => {
-  res.render("missed");
-});
-
-/*router.post('/senddate-server', isAuthenticated, async (req, res) => {
-  const { firstDate, lastDate } = req.body;
-
-  const username = req.session.user;
-
-  try {
-    const tasks = await Daily.find({
-      username: username,
-      date: {
-        $gte: new Date(firstDate),
-        $lte: new Date(lastDate)
-      }
-    });
-
-    res.status(200).json(tasks);
-  } catch (error) {
-    console.error('Error finding records:', error);
-    res.status(500).send('Terjadi kesalahan saat mencari data');
-  }
-});*/
-
-// Gabungkan kedua fungsi dalam satu endpoint
-router.post('/senddate-server', isAuthenticated, async (req, res) => {
-  const { firstDate, lastDate } = req.body;
-  const username = req.session.user;
-
-  try {
-    // Gunakan aggregation untuk filter dan grup berdasarkan rentang tanggal
-    const tasks = await Daily.aggregate([
-      { 
-        $match: { 
-          username: username,
-          date: {
-            $gte: new Date(firstDate),
-            $lte: new Date(lastDate)
-          }
-        }
-      },
-      { 
-        $group: { 
-          _id: "$date",
-          count: { $sum: 1 },
-          completeCount: { $sum: { $cond: [ "$complete", 1, 0 ] } },
-          tasks: { $push: "$$ROOT" }
-        }
-      },
-      { $sort: { _id: 1 } }
-    ]);
-
-    res.status(200).json({ success: true, tasks });
-  } catch (error) {
-    console.error("Error fetching tasks in date range:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
-  }
-});
-
-router.post('/senddatetoserver', isAuthenticated, async (req, res) => {
-  const { firstDate } = req.body;
-  const username = req.session.user;
-
-  try {
-    // Gunakan aggregation untuk filter dan grup berdasarkan rentang tanggal
-    const tasks = await Daily.aggregate([
-      { 
-        $match: { 
-          username: username,
-          date: {
-            $lt: new Date(firstDate)
-          }
-        }
-      },
-      { 
-        $group: { 
-          _id: "$date",
-          count: { $sum: 1 },
-          completeCount: { $sum: { $cond: [ "$complete", 1, 0 ] } },
-          tasks: { $push: "$$ROOT" }
-        }
-      },
-      { $sort: { _id: 1 } }
-    ]);
-
-    res.status(200).json({ success: true, tasks });
-  } catch (error) {
-    console.error("Error fetching tasks in date range:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
-  }
-});
-
 
 module.exports = router;
