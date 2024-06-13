@@ -169,14 +169,14 @@ router.post('/senddatetoserver', isAuthenticated, async (req, res) => {
   const username = req.session.user;
 
   try {
-    // Gunakan aggregation untuk filter dan grup berdasarkan rentang tanggal
     const tasks = await Daily.aggregate([
       { 
         $match: { 
           username: username,
           date: {
             $lt: new Date(firstDate)
-          }
+          },
+          complete: false
         }
       },
       { 
