@@ -52,6 +52,9 @@
       border: solid 2px #030303;
       border-radius: 50%;
     }
+    .sidebar .header-icon{
+      display: flex;
+    }
     .sidebar .sidebar-list {
       display: none;
       position: relative;
@@ -454,7 +457,10 @@
         class="sidebar"
         id="sidebar"
       >
-        <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i><img src="/header-logo.png" alt="logo" height="35">
+        <div class="header-icon">
+          <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
+          <img src="/header-logo.png" alt="logo" height="35">
+        </div>
         <div id="barList" class="sidebar-list">
           <a href="/dashboard"
             ><div class="my-list" id="active-sidebar">
