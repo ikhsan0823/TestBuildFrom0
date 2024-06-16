@@ -471,16 +471,6 @@
               <div>Dashboard</div>
             </div></a
           >
-          <a href="/cycle"
-            ><div
-              onmouseover="setColor8()"
-              onmouseout="unsetColor8()"
-              class="my-list"
-            >
-              <i id="color8" class="fa-solid fa-arrows-spin"></i>
-              <div>My Cycle</div>
-            </div></a
-          >
           <a href="/all-mydaily"
             ><div
               onmouseover="setColor()"
@@ -491,24 +481,16 @@
               <div>My Daily</div>
             </div></a
           >
-          <a href="#"
+          <a href="/cycle"
             ><div
-              onmouseover="setColor1()"
-              onmouseout="unsetColor1()"
+              onmouseover="setColor8()"
+              onmouseout="unsetColor8()"
               class="my-list"
             >
-              <i id="color1" id="color" class="fa-solid fa-calendar-week"></i>
-              <div>My Weekly</div>
+              <i id="color8" class="fa-solid fa-arrows-spin"></i>
+              <div>My Cycle</div>
             </div></a
           >
-          <div
-            onmouseover="setColor2()"
-            onmouseout="unsetColor2()"
-            class="my-list"
-          >
-            <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
-            <div>My Monthly</div>
-          </div>
           <a href="/money"
             ><div
               onmouseover="setColor3()"
@@ -519,14 +501,26 @@
               <div>My Money</div>
             </div></a
           >
-          <div
-            onmouseover="setColor4()"
-            onmouseout="unsetColor4()"
-            class="my-list"
+          <a href="/galery"
+            ><div
+              onmouseover="setColor2()"
+              onmouseout="unsetColor2()"
+              class="my-list"
+            >
+              <i id="color2" id="color" class="fa-solid fa-images"></i>
+              <div>My Galery</div>
+            </div></a
           >
-            <i id="color4" id="color" class="fa-solid fa-gift"></i>
-            <div>My Reward</div>
-          </div>
+          <a href="/reward"
+            ><div
+              onmouseover="setColor4()"
+              onmouseout="unsetColor4()"
+              class="my-list"
+            >
+              <i id="color4" id="color" class="fa-solid fa-gift"></i>
+              <div>My Reward</div>
+            </div></a
+          >
         </div>
         <div id="account-list" class="sidebar-account">
           <a href="/setting"
@@ -698,12 +692,6 @@
       }
       function unsetColor() {
         document.getElementById("color").style.color = "#030303";
-      }
-      function setColor1() {
-        document.getElementById("color1").style.color = "#cfcfcf";
-      }
-      function unsetColor1() {
-        document.getElementById("color1").style.color = "#030303";
       }
       function setColor2() {
         document.getElementById("color2").style.color = "#cfcfcf";

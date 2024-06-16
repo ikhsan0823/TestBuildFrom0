@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Galery</title>
+</head>
+<style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+      text-decoration: none;
+    }
+    body {
+      background-color: #f9f9f9;
+    }
+    .container {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+    }
+    section.active .overlay,
+    section.false .overlay {
+      z-index: 450;
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 75px;
+      height: 100vh;
+      padding: 20px 20px 20px 25px;
+      color: #030303;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: #030303;
+    }
+    .sidebar i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #030303;
+      font-size: 22px;
+      cursor: pointer;
+      width: 35px;
+      height: 35px;
+      border: solid 2px #030303;
+      border-radius: 50%;
+    }
+    .sidebar .header-icon{
+      display: flex;
+    }
+    .header-icon img{
+      margin-left: 20px;
+    }
+    .sidebar .sidebar-list {
+      display: none;
+      position: relative;
+      margin-top: 25px;
+      line-height: 45px;
+      width: 100%;
+      border-bottom: solid 1px #d8d8d8;
+    }
+    .sidebar .sidebar-list .my-list i {
+      font-size: 15px;
+      margin-right: 10px;
+      border: none;
+      color: #030303;
+    }
+    .sidebar .sidebar-list .my-list {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      transition: 0.05s;
+    }
+    .sidebar-list .my-list:hover {
+      color: #cfcfcf;
+      background-color: #030303;
+    }
+    .sidebar-list #active-sidebar {
+      color: #cfcfcf;
+      background-color: #030303;
+    }
+    .sidebar .sidebar-account {
+      display: none;
+      position: relative;
+      margin-top: 25px;
+      line-height: 45px;
+      width: 100%;
+    }
+    .sidebar .sidebar-account .my-list i {
+      font-size: 15px;
+      margin-right: 10px;
+      border: none;
+      color: #030303;
+    }
+    .sidebar .sidebar-account .my-list {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      transition: 0.05s;
+    }
+    .sidebar-account .my-list:hover {
+      color: #cfcfcf;
+      background-color: #030303;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+      padding: 0px 150px 20px 150px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="headershape"></div>
+        <div
+        onmouseover="main()"
+        onmouseout="hide()"
+        class="sidebar"
+        id="sidebar"
+      >
+        <div class="header-icon">
+          <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
+          <img src="/header-logo.png" alt="logo" height="35">
+        </div>
+        <div id="barList" class="sidebar-list">
+          <a href="/dashboard"
+            onmouseover="setColor7()"
+            onmouseout="unsetColor7()"
+            ><div class="my-list">
+              <i id="color7" class="fa-solid fa-table-columns"></i>
+              <div>Dashboard</div>
+            </div></a
+          >
+          <a href="/all-mydaily"
+            ><div
+              onmouseover="setColor()"
+              onmouseout="unsetColor()"
+              class="my-list"
+            >
+              <i id="color" class="fa-solid fa-calendar-day"></i>
+              <div>My Daily</div>
+            </div></a
+          >
+          <a href="/cycle"
+            ><div
+              onmouseover="setColor8()"
+              onmouseout="unsetColor8()"
+              class="my-list"
+            >
+              <i id="color8" class="fa-solid fa-arrows-spin"></i>
+              <div>My Cycle</div>
+            </div></a
+          >
+          <a href="/money"
+            ><div
+              onmouseover="setColor3()"
+              onmouseout="unsetColor3()"
+              class="my-list"
+            >
+              <i id="color3" id="color" class="fa-solid fa-wallet"></i>
+              <div>My Money</div>
+            </div></a
+          >
+          <a href="/galery"
+            ><div class="my-list" id="active-sidebar">
+              <i id="color2" id="color" class="fa-solid fa-images"></i>
+              <div>My Galery</div>
+            </div></a
+          >
+          <a href="/reward"
+            ><div
+              onmouseover="setColor4()"
+              onmouseout="unsetColor4()"
+              class="my-list"
+            >
+              <i id="color4" id="color" class="fa-solid fa-gift"></i>
+              <div>My Reward</div>
+            </div></a
+          >
+        </div>
+        <div id="account-list" class="sidebar-account">
+          <a href="/setting"
+            ><div
+              onmouseover="setColor5()"
+              onmouseout="unsetColor5()"
+              class="my-list"
+            >
+              <i id="color5" id="color" class="fa-solid fa-gear"></i>
+              <div>Setting</div>
+            </div></a
+          >
+          <div
+            onclick="confirmLogout()"
+            onmouseover="setColor6()"
+            onmouseout="unsetColor6()"
+            class="my-list"
+          >
+            <i
+              id="color6"
+              id="color"
+              class="fa-solid fa-right-from-bracket"
+            ></i>
+            <div>Logout</div>
+          </div>
+        </div>
+      </div>
+        <div class="content">
+            <div>Sorry, My Galery is not available now. Please wait for the next update!</div>
+        </div>
+    </div>
+    <script>
+        // Sidebar function
+      function main() {
+        if (window.matchMedia("(min-width: 1023px)").matches) {
+          document.getElementById("barList").style.display = "block";
+          document.getElementById("account-list").style.display = "block";
+          const sidebar = document.getElementById("sidebar");
+          sidebar.style.width = "300px";
+          sidebar.style.backgroundColor = "#f9f9f9";
+          sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+        }
+      }
+      function hide() {
+        if (window.matchMedia("(min-width: 1023px)").matches) {
+          document.getElementById("barList").style.display = "none";
+          document.getElementById("account-list").style.display = "none";
+          const sidebar = document.getElementById("sidebar");
+          sidebar.style.width = "";
+          sidebar.style.backgroundColor = "";
+          sidebar.style.boxShadow = "";
+        }
+      }
+
+      let isDisplayed = false;
+      function toggleDisplay() {
+        if (window.matchMedia("(max-width: 1023px)").matches) {
+          event.stopPropagation();
+          const barList = document.getElementById("barList");
+          const accountList = document.getElementById("account-list");
+          const sidebar = document.getElementById("sidebar");
+          if (!isDisplayed) {
+            barList.style.display = "block";
+            accountList.style.display = "block";
+            sidebar.style.width = "200px";
+            sidebar.style.backgroundColor = "#f9f9f9";
+            sidebar.style.boxShadow = "0 2px 18px rgba(0, 0, 0, .08)";
+          } else {
+            sidebar.style.width = "";
+            sidebar.style.backgroundColor = "";
+            barList.style.display = "none";
+            accountList.style.display = "none";
+            sidebar.style.boxShadow = "";
+          }
+          isDisplayed = !isDisplayed;
+        }
+      }
+
+      document.addEventListener("click", function (event) {
+        if (window.matchMedia("(max-width: 1023px)").matches) {
+          const sidebar = document.getElementById("sidebar");
+          const isClickInsideSidebar = sidebar.contains(event.target);
+
+          if (!isClickInsideSidebar) {
+            sidebar.style.width = "";
+            sidebar.style.backgroundColor = "";
+            sidebar.style.boxShadow = "";
+            document.getElementById("barList").style.display = "none";
+            document.getElementById("account-list").style.display = "none";
+            isDisplayed = false;
+          }
+        }
+      });
+
+      //Functions to set and unset color for side bar
+      function setColor() {
+        document.getElementById("color").style.color = "#cfcfcf";
+      }
+      function unsetColor() {
+        document.getElementById("color").style.color = "#030303";
+      }
+      document.getElementById("color2").style.color = "#cfcfcf";
+      function setColor3() {
+        document.getElementById("color3").style.color = "#cfcfcf";
+      }
+      function unsetColor3() {
+        document.getElementById("color3").style.color = "#030303";
+      }
+      function setColor4() {
+        document.getElementById("color4").style.color = "#cfcfcf";
+      }
+      function unsetColor4() {
+        document.getElementById("color4").style.color = "#030303";
+      }
+      function setColor5() {
+        document.getElementById("color5").style.color = "#cfcfcf";
+      }
+      function unsetColor5() {
+        document.getElementById("color5").style.color = "#030303";
+      }
+      function setColor6() {
+        document.getElementById("color6").style.color = "#cfcfcf";
+      }
+      function unsetColor6() {
+        document.getElementById("color6").style.color = "#030303";
+      }
+      function setColor7() {
+        document.getElementById("color7").style.color = "#cfcfcf";
+      }
+      function unsetColor7() {
+        document.getElementById("color7").style.color = "#030303";
+      }
+      function setColor8() {
+        document.getElementById("color8").style.color = "#cfcfcf";
+      }
+      function unsetColor8() {
+        document.getElementById("color8").style.color = "#030303";
+      }
+    </script>
+</body>
+</html>

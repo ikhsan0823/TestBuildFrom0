@@ -699,48 +699,100 @@
             </div>
             <span class="overlay"></span>
         </section>
-        <div onmouseover="main()" onmouseout="hide()" class="sidebar" id="sidebar">
-            <div class="header-icon">
-                <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
-                <img src="/header-logo.png" alt="logo" height="35">
-            </div>
-            <div id="barList" class="sidebar-list">
-                <a href="/dashboard"><div onmouseover="setColor7()" onmouseout="unsetColor7()" class="my-list">
-                    <i id="color7" class="fa-solid fa-table-columns"></i>
-                    <div>Dashboard</div>
-                </div></a>
-                <a href="/all-mydaily"><div class="my-list" id="active-sidebar">
-                    <i id="color" class="fa-solid fa-calendar-day"></i>
-                    <div>My Daily</div>
-                </div></a>
-                <div onmouseover="setColor1()" onmouseout="unsetColor1()" class="my-list">
-                    <i id="color1" id="color" class="fa-solid fa-calendar-week"></i>
-                    <div>My Weekly</div>
-                </div>
-                <div onmouseover="setColor2()" onmouseout="unsetColor2()" class="my-list">
-                    <i id="color2" id="color" class="fa-solid fa-calendar-days"></i>
-                    <div>My Monthly</div>
-                </div>
-                <a href="/money"><div onmouseover="setColor3()" onmouseout="unsetColor3()" class="my-list">
-                    <i id="color3" id="color" class="fa-solid fa-wallet"></i>
-                    <div>My Money</div>
-                </div></a>
-                <div onmouseover="setColor4()" onmouseout="unsetColor4()" class="my-list">
-                    <i id="color4" id="color" class="fa-solid fa-gift"></i>
-                    <div>My Reward</div>
-                </div>
-            </div>
-            <div id="account-list" class="sidebar-account">
-                <a href="/setting"><div onmouseover="setColor5()" onmouseout="unsetColor5()" class="my-list">
-                    <i id="color5" id="color" class="fa-solid fa-gear"></i>
-                    <div>Setting</div>
-                </div></a>
-                <div onclick="confirmLogout()" onmouseover="setColor6()" onmouseout="unsetColor6()" class="my-list">
-                    <i id="color6" id="color" class="fa-solid fa-right-from-bracket"></i>
-                    <div>Logout</div>
-                </div>
-            </div>
+        <div
+        onmouseover="main()"
+        onmouseout="hide()"
+        class="sidebar"
+        id="sidebar"
+      >
+        <div class="header-icon">
+          <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
+          <img src="/header-logo.png" alt="logo" height="35">
         </div>
+        <div id="barList" class="sidebar-list">
+          <a href="/dashboard"
+            ><div
+              onmouseover="setColor7()"
+              onmouseout="unsetColor7()"
+              class="my-list"
+            >
+              <i id="color7" class="fa-solid fa-table-columns"></i>
+              <div>Dashboard</div>
+            </div></a
+          >
+          <a href="/all-mydaily"
+            ><div class="my-list" id="active-sidebar">
+              <i id="color" class="fa-solid fa-calendar-day"></i>
+              <div>My Daily</div>
+            </div></a
+          >
+          <a href="/cycle"
+            ><div
+              onmouseover="setColor8()"
+              onmouseout="unsetColor8()"
+              class="my-list"
+            >
+              <i id="color8" class="fa-solid fa-arrows-spin"></i>
+              <div>My Cycle</div>
+            </div></a
+          >
+          <a href="/money"
+            ><div
+              onmouseover="setColor3()"
+              onmouseout="unsetColor3()"
+              class="my-list"
+            >
+              <i id="color3" id="color" class="fa-solid fa-wallet"></i>
+              <div>My Money</div>
+            </div></a
+          >
+          <a href="/galery"
+            ><div
+              onmouseover="setColor2()"
+              onmouseout="unsetColor2()"
+              class="my-list"
+            >
+              <i id="color2" id="color" class="fa-solid fa-images"></i>
+              <div>My Galery</div>
+            </div></a
+          >
+          <a href="/reward"
+            ><div
+              onmouseover="setColor4()"
+              onmouseout="unsetColor4()"
+              class="my-list"
+            >
+              <i id="color4" id="color" class="fa-solid fa-gift"></i>
+              <div>My Reward</div>
+            </div></a
+          >
+        </div>
+        <div id="account-list" class="sidebar-account">
+          <a href="/setting"
+            ><div
+              onmouseover="setColor5()"
+              onmouseout="unsetColor5()"
+              class="my-list"
+            >
+              <i id="color5" id="color" class="fa-solid fa-gear"></i>
+              <div>Setting</div>
+            </div></a
+          >
+          <div
+            onclick="confirmLogout()"
+            onmouseover="setColor6()"
+            onmouseout="unsetColor6()"
+            class="my-list"
+          >
+            <i
+              id="color6"
+              id="color"
+              class="fa-solid fa-right-from-bracket"
+            ></i>
+            <div>Logout</div>
+          </div>
+        </div>
+      </div>
         <div class="content">
             <div class="header">
                 <div class="header-left">
@@ -837,12 +889,6 @@
     
         //Functions to set and unset color for elements
         document.getElementById("color").style.color = "#cfcfcf";
-        function setColor1(){
-            document.getElementById("color1").style.color = "#cfcfcf";
-        }
-        function unsetColor1(){
-            document.getElementById("color1").style.color = "#030303";
-        }
         function setColor2(){
             document.getElementById("color2").style.color = "#cfcfcf";
         }
@@ -878,6 +924,12 @@
         }
         function unsetColor7(){
             document.getElementById("color7").style.color = "#030303";
+        }
+        function setColor8(){
+            document.getElementById("color8").style.color = "#cfcfcf";
+        }
+        function unsetColor8(){
+            document.getElementById("color8").style.color = "#030303";
         }
 
         function resetForm() {

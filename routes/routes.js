@@ -117,6 +117,11 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
   }
 });
 
+// My Cycle routes
+router.get("/cycle", isAuthenticated, async (req, res) => {
+  res.render("cycle-2");
+});
+
 // My Daily routes
 router.get("/all-mydaily", isAuthenticated, async (req, res) => {
   res.render("allmydaily");
@@ -513,6 +518,16 @@ router.delete("/history/delete", isAuthenticated, async (req, res) => {
   }
 });
 
+// My Galery routes
+router.get("/galery", isAuthenticated, async (req, res) => {
+  res.render("galery");
+})
+
+// My Reward routes
+router.get("/reward", isAuthenticated, async (req, res) => {
+  res.render("reward");
+})
+
 // Setting routes
 router.get("/setting", isAuthenticated, async (req, res) => {
   try {
@@ -708,10 +723,6 @@ router.get("/display", isAuthenticated, async (req, res) => {
     console.error("Get file from MongoDB is error:", error);
     res.status(500).json({ success: false, error: "kesalahan server internal" });
   }
-});
-
-router.get("/cycle", isAuthenticated, async (req, res) => {
-  res.render("cycle");
 });
 
 module.exports = router;
