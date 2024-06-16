@@ -60,10 +60,10 @@
       border: solid 2px #030303;
       border-radius: 50%;
     }
-    .sidebar .header-icon{
+    .sidebar .header-icon {
       display: flex;
     }
-    .header-icon img{
+    .header-icon img {
       margin-left: 20px;
     }
     .sidebar .sidebar-list {
@@ -730,7 +730,7 @@
       >
         <div class="header-icon">
           <i onclick="toggleDisplay()" class="fa-solid fa-bars"></i>
-          <img src="/header-logo.png" alt="logo" height="35">
+          <img src="/header-logo.png" alt="logo" height="35" />
         </div>
         <div id="barList" class="sidebar-list">
           <a href="/dashboard"
@@ -1016,7 +1016,9 @@
                 alert(`Retrying... (${attempt + 1}/${retries})`);
                 await new Promise((res) => setTimeout(res, 1000));
               } else {
-                alert("Maximum retry attempts reached. Please check the network and refresh your browser!");
+                alert(
+                  "Maximum retry attempts reached. Please check the network and refresh your browser!"
+                );
                 throw error;
               }
             }
@@ -1204,7 +1206,9 @@
               clearTimeout(fetchTimeout);
 
               if (!response.ok) {
-                console.error(`Failed to send task: HTTP status ${response.status}`);
+                console.error(
+                  `Failed to send task: HTTP status ${response.status}`
+                );
                 throw new Error(`HTTP status ${response.status}`);
               }
 
@@ -1227,7 +1231,9 @@
                 alert(`Retrying... (${attempt + 1}/${retries})`);
                 await new Promise((res) => setTimeout(res, 1000));
               } else {
-                alert("Maximum retry attempts reached. Please check the network and refresh your browser!");
+                alert(
+                  "Maximum retry attempts reached. Please check the network and refresh your browser!"
+                );
                 throw error;
               }
             }
@@ -1237,7 +1243,6 @@
           return null;
         }
       }
-
 
       // Function to fetch detail task
       async function getDetailTask(date, retries = 3, timeout = 5000) {
@@ -1289,7 +1294,9 @@
                 alert(`Retrying... (${attempt + 1}/${retries})`);
                 await new Promise((res) => setTimeout(res, 1000));
               } else {
-                alert("Maximum retry attempts reached. Please check the network and refresh your browser!");
+                alert(
+                  "Maximum retry attempts reached. Please check the network and refresh your browser!"
+                );
                 throw error;
               }
             }
