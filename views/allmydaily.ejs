@@ -976,7 +976,7 @@
 
               if (!response.ok) {
                 console.error(
-                  `Gagal mengambil tugas: HTTP status ${response.status}`
+                  `Failed to send task: HTTP status ${response.status}`
                 );
                 throw new Error(`HTTP status ${response.status}`);
               }
@@ -987,27 +987,27 @@
                 displayDailyTasks(data.tasks);
                 return;
               } else {
-                console.error("Gagal mengambil tugas:", data.message);
+                console.error("Failed to get task:", data.message);
                 throw new Error(data.message);
               }
             } catch (error) {
               if (error.name === "AbortError") {
-                alert("Fetch was canceled due to time out. Please check the network and refresh your browser!");
+                alert("Fetch was canceled due to time out.");
               } else {
-                console.error("Error mengambil tugas:", error);
+                console.error("Failed to get task:", error);
               }
 
               if (attempt < retries - 1) {
-                console.log(`Mencoba lagi... (${attempt + 1}/${retries})`);
-                await new Promise((res) => setTimeout(res, 1000)); // Tunggu sebentar sebelum mencoba lagi
+                alert(`Retrying... (${attempt + 1}/${retries})`);
+                await new Promise((res) => setTimeout(res, 1000));
               } else {
-                console.error("Jumlah retry maksimum tercapai. Menyerah.");
+                alert("Maximum retry attempts reached. Please check the network and refresh your browser!");
                 throw error;
               }
             }
           }
         } catch (error) {
-          console.error("Tidak dapat mengambil tugas:", error);
+          console.error("Failed to get task:", error);
         }
       }
 
@@ -1189,43 +1189,40 @@
               clearTimeout(fetchTimeout);
 
               if (!response.ok) {
-                console.error(
-                  `Gagal mengirim tugas: HTTP status ${response.status}`
-                );
+                console.error(`Failed to send task: HTTP status ${response.status}`);
                 throw new Error(`HTTP status ${response.status}`);
               }
 
               const contentType = response.headers.get("content-type");
               if (contentType && contentType.includes("application/json")) {
                 const data = await response.json();
-                console.log("Server response:", data);
                 return data;
               } else {
-                console.error("Jenis respons tak terduga:", contentType);
+                console.error("Unexpected response type:", contentType);
                 throw new Error("Unexpected response type");
               }
             } catch (error) {
               if (error.name === "AbortError") {
-                alert("Fetch was canceled due to time out. Please check the network and refresh your browser!");
+                alert("Fetch was canceled due to timeout.");
               } else {
-                console.error("Error mengirim data ke server:", error);
+                console.error("Error sending data to the server:", error);
               }
 
               if (attempt < retries - 1) {
-                console.log(`Mencoba lagi... (${attempt + 1}/${retries})`);
-                await new Promise((res) => setTimeout(res, 1000)); // Tunggu sebentar sebelum mencoba lagi
+                alert(`Retrying... (${attempt + 1}/${retries})`);
+                await new Promise((res) => setTimeout(res, 1000));
               } else {
-                console.error("Jumlah retry maksimum tercapai. Menyerah.");
+                alert("Maximum retry attempts reached. Please check the network and refresh your browser!");
                 throw error;
               }
             }
           }
         } catch (error) {
-          // Penanganan error akhir
-          console.error("Tidak dapat mengirim tugas:", error);
-          return null; // Mengembalikan null jika gagal mengirim
+          console.error("Failed to send task:", error);
+          return null;
         }
       }
+
 
       // Function to fetch detail task
       async function getDetailTask(date, retries = 3, timeout = 5000) {
@@ -1253,7 +1250,7 @@
 
               if (!response.ok) {
                 console.error(
-                  `Gagal mengambil detail tugas: HTTP status ${response.status}`
+                  `Failed to get details task: HTTP status ${response.status}`
                 );
                 throw new Error(`HTTP status ${response.status}`);
               }
@@ -1263,27 +1260,27 @@
                 const data = await response.json();
                 return Array.isArray(data) ? data : [];
               } else {
-                console.error("Jenis respons tak terduga:", contentType);
+                console.error("Unexpected response type:", contentType);
                 return [];
               }
             } catch (error) {
               if (error.name === "AbortError") {
-                alert("Fetch was canceled due to time out. Please check the network and refresh your browser!");
+                alert("Fetch was canceled due to time out.");
               } else {
-                console.error("Error mengambil detail tugas:", error);
+                console.error("Error get details task:", error);
               }
 
               if (attempt < retries - 1) {
-                console.log(`Mencoba lagi... (${attempt + 1}/${retries})`);
+                alert(`Retrying... (${attempt + 1}/${retries})`);
                 await new Promise((res) => setTimeout(res, 1000));
               } else {
-                console.error("Jumlah retry maksimum tercapai. Menyerah.");
+                alert("Maximum retry attempts reached. Please check the network and refresh your browser!");
                 throw error;
               }
             }
           }
         } catch (error) {
-          console.error("Tidak dapat mengambil detail tugas:", error);
+          console.error("Failed to get details task", error);
           return [];
         }
       }
