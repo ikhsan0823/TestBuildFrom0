@@ -110,9 +110,13 @@ router.get("/forgotpass", async (req, res) => {
 router.get("/dashboard", isAuthenticated, async (req, res) => {
   const nameUser = await Users.findOne({ username: req.session.user });
   if (nameUser) {
+    const totalTasks = await Daily.countDocuments({ username: req.session.user});
+    const completedTasks = await Daily.countDocuments({ username: req.session.user, complete: true });
     res.render("dashboard", {
       username: nameUser.name || req.session.user,
       usernames: req.session.user,
+      sumtask: totalTasks,
+      completedTask: completedTasks,
     });
   }
 });

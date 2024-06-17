@@ -572,20 +572,21 @@
             <div onclick="myDaily()" class="list-card">
               <i class="fa-solid fa-calendar-day"></i>
               <div>My Daily</div>
+              <progress id="myDailyProgress" value="<%= sumtask %>" max="<%= completedTask %>"></progress>
             </div>
-            <div class="list-card">
-              <i class="fa-solid fa-calendar-week"></i>
-              <div>My Weekly</div>
-            </div>
-            <div class="list-card">
-              <i class="fa-solid fa-calendar-days"></i>
-              <div>My Monthly</div>
+            <div onclick="myCycle()" class="list-card">
+              <i class="fa-solid fa-arrows-spin"></i>
+              <div>My Cycle</div>
             </div>
             <div onclick="myMoney()" class="list-card">
               <i class="fa-solid fa-wallet"></i>
               <div>My Money</div>
             </div>
-            <div class="list-card">
+            <div onclick="myGalery()" class="list-card">
+              <i class="fa-solid fa-images"></i>
+              <div>My Galery</div>
+            </div>
+            <div onclick="myReward()" class="list-card">
               <i class="fa-solid fa-gift"></i>
               <div>My Reward</div>
             </div>
@@ -812,8 +813,20 @@
         window.location.href = "/all-mydaily";
       }
 
+      function myCycle() {
+        window.location.href = "/cycle";
+      }
+
       function myMoney() {
         window.location.href = "/money";
+      }
+
+      function myGalery() {
+        window.location.href = "/galery";
+      }
+
+      function myReward() {
+        window.location.href = "/reward";
       }
 
       // chat popup methode
