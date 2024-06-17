@@ -117,7 +117,7 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
     res.render("dashboard", {
       username: nameUser.name || req.session.user,
       usernames: req.session.user,
-      percentage: percentage,
+      percentage: percentage.toFixed(2),
     });
   }
 });
