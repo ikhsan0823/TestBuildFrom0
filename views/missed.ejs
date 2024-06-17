@@ -1274,14 +1274,16 @@
     </script>
     <script>
       const todayDate = new Date();
-      console.log(todayDate);
+      const offsetMatch = todayDate.match(/GMT([+-]\d{4})/);
       const firstDate = resetTimeToMidnight(todayDate);
 
       function resetTimeToMidnight(todayDate) {
         const newDate = new Date(todayDate);
         newDate.setUTCHours(0, 0, 0, 0);
         const isoString = newDate.toISOString();
-        return isoString.replace("Z", "+00:00");
+        const offset = offsetMatch[1];
+        const formattedOffset = offset.slice(0, 3) + ':' + offset.slice(3);
+        return isoString.replace("Z", formattedOffset);
       }
 
       sendDatetoServer(firstDate);
