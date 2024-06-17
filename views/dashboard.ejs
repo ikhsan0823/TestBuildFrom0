@@ -650,7 +650,9 @@
           </div>
           <div class="main-chat">
             <div id="username-hidden" class="username-hidden"></div>
-            <ul id="messages"></ul>
+            <ul id="messages">
+              <li id="please-wait-message">Please wait...</li>
+            </ul>
             <form id="form" action="">
               <input type="text" id="m" autocomplete="off" /><button>
                 <i class="fa-solid fa-paper-plane"></i>
@@ -950,6 +952,10 @@
         query: {
           username: username,
         },
+      });
+
+      socket.on("connect", function () {
+        $("#please-wait-message").remove();
       });
 
       socket.emit("username", username);
