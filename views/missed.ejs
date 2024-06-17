@@ -1274,7 +1274,8 @@
     </script>
     <script>
       const todayDate = new Date();
-      const offsetMatch = todayDate.match(/GMT([+-]\d{4})/);
+      const dateStr = String(todayDate);
+      const offsetMatch = dateStr.match(/GMT([+-]\d{4})/);
       const firstDate = resetTimeToMidnight(todayDate);
 
       function resetTimeToMidnight(todayDate) {
