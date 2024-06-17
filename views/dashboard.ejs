@@ -12,6 +12,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   <style>
     * {
@@ -579,8 +580,10 @@
               <i class="fa-solid fa-calendar-day"></i>
               <div>My Daily</div>
               <div class="mydaily-progress">
-                <progress id="myDailyProgress" value="<%= completedTask %>" max="<%= sumtask %>"></progress>
-                <div><%= completedTask %>/<%= sumtask %></div>
+                <div class="w3-light-grey w3-round-large">
+                  <div id="percentageBar" class="w3-container w3-blue w3-round-large"><%= percentage %>%</div>
+                </div>                
+                </div>                
               </div>
             </div>
             <div onclick="myCycle()" class="list-card">
@@ -821,6 +824,14 @@
       function myDaily() {
         window.location.href = "/all-mydaily";
       }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const percentage = "<%= percentage %>";
+        const percentageBar = document.getElementById('percentageBar');
+        if (percentageBar) {
+          percentageBar.style.width = percentage + '%';
+        }
+      });
 
       function myCycle() {
         window.location.href = "/cycle";

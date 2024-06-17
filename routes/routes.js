@@ -112,11 +112,12 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
   if (nameUser) {
     const totalTasks = await Daily.countDocuments({ username: req.session.user});
     const completedTasks = await Daily.countDocuments({ username: req.session.user, complete: true });
+    const percentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
     res.render("dashboard", {
       username: nameUser.name || req.session.user,
       usernames: req.session.user,
-      sumtask: totalTasks,
-      completedTask: completedTasks,
+      percentage: percentage,
     });
   }
 });
