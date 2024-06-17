@@ -217,11 +217,15 @@
       font-size: 30px;
       margin-bottom: 5px;
     }
-    .list-card .mydaily-progress{
+    .list-card .mydaily-progress,
+    .list-card .mymoney-balance{
       width: 100%;
       padding: 0px 15px 0px 15px;
       margin-top: 20px;
-      font-size: 15px;
+      font-size: 12px;
+    }
+    .list-card .mymoney-balance{
+      color: #030303;
     }
     .chat-container .button-chat {
       cursor: pointer;
@@ -592,6 +596,9 @@
             <div onclick="myMoney()" class="list-card">
               <i class="fa-solid fa-wallet"></i>
               <div>My Money</div>
+              <div class="mymoney-balance">
+                <div>Rp<%= value %></div>               
+              </div> 
             </div>
             <div onclick="myGalery()" class="list-card">
               <i class="fa-solid fa-images"></i>
