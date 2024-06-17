@@ -591,13 +591,18 @@
               <div>My Daily</div>
               <div class="mydaily-progress">
                 <div class="w3-light-grey w3-round-large">
-                  <div id="percentageBar" class="w3-container w3-dark-grey w3-round-large"><%= percentage %>%</div>
+                  <div id="percentageBar1" class="w3-container w3-dark-grey w3-round-large"><%= percentage %>%</div>
                 </div>                
               </div>                
             </div>
             <div onclick="myCycle()" class="list-card">
               <i class="fa-solid fa-arrows-spin"></i>
               <div>My Cycle</div>
+              <div class="mydaily-progress">
+                <div class="w3-light-grey w3-round-large">
+                  <div id="percentageBar2" class="w3-container w3-dark-grey w3-round-large">0%</div>
+                </div>                
+              </div>
             </div>
             <div onclick="myMoney()" class="list-card">
               <i class="fa-solid fa-wallet"></i>
@@ -609,10 +614,18 @@
             <div onclick="myGalery()" class="list-card">
               <i class="fa-solid fa-images"></i>
               <div>My Galery</div>
+              <div class="mymoney-balance">
+                <div>0</div>               
+              </div> 
             </div>
             <div onclick="myReward()" class="list-card">
               <i class="fa-solid fa-gift"></i>
               <div>My Reward</div>
+              <div class="mydaily-progress">
+                <div class="w3-light-grey w3-round-large">
+                  <div id="percentageBar3" class="w3-container w3-dark-grey w3-round-large">0%</div>
+                </div>                
+              </div>
             </div>
           </div>
         </div>
@@ -839,7 +852,7 @@
 
       document.addEventListener('DOMContentLoaded', function() {
         const percentage = "<%= percentage %>";
-        const percentageBar = document.getElementById('percentageBar');
+        const percentageBar = document.getElementById('percentageBar1');
         if (percentageBar) {
           percentageBar.style.width = percentage + '%';
         }
@@ -848,6 +861,14 @@
       function myCycle() {
         window.location.href = "/cycle";
       }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const percentage = 0;
+        const percentageBar = document.getElementById('percentageBar2');
+        if (percentageBar) {
+          percentageBar.style.width = percentage + '%';
+        }
+      });
 
       function myMoney() {
         window.location.href = "/money";
@@ -860,6 +881,14 @@
       function myReward() {
         window.location.href = "/reward";
       }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const percentage = 0;
+        const percentageBar = document.getElementById('percentageBar3');
+        if (percentageBar) {
+          percentageBar.style.width = percentage + '%';
+        }
+      });
 
       // chat popup methode
       document.addEventListener("DOMContentLoaded", function () {
